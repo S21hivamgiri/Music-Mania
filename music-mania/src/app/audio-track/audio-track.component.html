@@ -1,0 +1,198 @@
+<mat-form-field class="search-bar" [style.background]="getCurrentSong()?.backgroundColor" *ngIf="isSearch">
+    <input matInput type="text" [(ngModel)]="searchItem">
+    <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear" (click)="searchItem=''">
+        <mat-icon>close</mat-icon>
+    </button>
+</mat-form-field>
+<mat-sidenav-container class="container" hasBackdrop="false">
+    <mat-sidenav #sidenav class="playlist-sidenav" mode="side">
+        <div class="fixed-navbar">
+            <div class="close-button " [style.color]="getCurrentSong()?.textColor">
+                <button mat-icon-button (click)="isSearch=!isSearch">
+                    <mat-icon>search</mat-icon>
+                </button>
+                <button mat-icon-button (click)="sidenav.close()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
+                <mat-icon>queue_music</mat-icon>
+                <h2 class="playlist-header">Playlist ({{tracks.length}} songs)</h2>
+            </div>
+            <mat-divider></mat-divider>
+        </div>
+        <mat-list role="list">
+            <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+                <div *ngFor="let track of tracks;let i=index;" cdkDrag>
+                    <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i)">
+                        <div class="utiity-box">
+                            <div class="drag-handle mr-3" [style.color]="getCurrentSong()?.textColor" cdkDragHandle>
+                                <div class='d-flex h-100 drag-class'>
+                                    <mat-icon>
+                                        drag_indicator
+                                    </mat-icon>
+                                </div>
+                            </div>
+                            <div class="track-list-data" [title]="track?.title">
+                                <img [src]="getThumbNailSrc(i)" class="thumbnail" [title]="track?.album">
+                                <div class="track-text" class="marquee">
+                                        <span class="track-title" [style.color]="getCurrentSong()?.textColor">
+                                            {{track?.title}}
+                                        </span>
+                                        <br>
+                                        <span class="track-artist"
+                                              [style.color]="getCurrentSong()?.textColor">
+                                            {{track?.artist}}
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                        <span class="boxContainer" *ngIf="i===currentTrackIndex">
+                            <span class="box" [class.box1]="audioStatus"
+                                [style.background]="getCurrentSong()?.textColor"></span>
+                            <span class="box" [class.box2]="audioStatus"
+                                [style.background]="getCurrentSong()?.textColor"></span>
+                            <span class="box" [class.box3]="audioStatus"
+                                [style.background]="getCurrentSong()?.textColor"></span>
+                            <span class="box" [class.box4]="audioStatus"
+                                [style.background]="getCurrentSong()?.textColor"></span>
+                            <span class="box" [class.box5]="audioStatus"
+                                [style.background]="getCurrentSong()?.textColor"></span>
+                        </span>
+                    </mat-list-item>
+                    <mat-divider></mat-divider>
+                    <div *cdkDragPreview class='preview-class-text'>
+                        <span class="preview-panel" [style.display]="'flex'"
+                            [style.color]="getCurrentSong()?.textColor">
+                            <mat-icon>audiotrack</mat-icon>
+                            <h1 [style.fontWeight]="'bold'">{{track?.title}}</h1>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </mat-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="page-wrapper">
+            <div class="album-data" [style.background]="getCurrentSong()?.backgroundColor"
+                [style.color]="getCurrentSong()?.textColor"
+                [style.boxShadow]="'0 0 100px rgba(0,0,0,0), 0 0 200px rgba(0,0,0,0), 0 0 130px '+getCurrentSong()?.backgroundColor+', 0 0 170px '+getCurrentSong()?.backgroundColor+', 0 0 160px '+getCurrentSong()?.backgroundColor+', 0 0 180px '+getCurrentSong()?.backgroundColor+', 0 0 200px '+getCurrentSong()?.backgroundColor+''">
+                <div class="song-title" *ngIf="getCurrentSong()?.title">
+                    <mat-icon>music_note</mat-icon>
+                    <span class="text">{{getCurrentSong()?.title}}</span>
+                </div>
+                <mat-divider></mat-divider>
+                <div class="song-album" *ngIf="getCurrentSong()?.album">
+                    <mat-icon>collections</mat-icon>
+                    <span class="text">{{getCurrentSong()?.album}}</span>
+                </div>
+                <div class="song-artist" *ngIf="getCurrentSong()?.artist">
+                    <mat-icon>people</mat-icon>
+                    <span class="text">{{getCurrentSong()?.artist?.join(', ')}}</span>
+                </div>
+            </div>
+            <div class="album-image-wrapper" [style.background]="getCurrentSong()?.backgroundColor"></div>
+            <div class="album-image" [style.backgroundImage]="'url('+getPicture()+')'"><img [src]="getPicture()"></div>
+        </div>
+        <div class="audio-container" [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
+            <div class="audio">
+                <audio id='audioTrack'>
+                    Audio tag not supported in this browser
+                </audio>
+            </div>
+            <div class="volume-wrapper ">
+                <div class="full-screen-wrapper ">
+                    <div class="playlist ">
+                        <button mat-icon-button [style.color]="getCurrentSong()?.textColor " (click)="sidenav.toggle()">
+                            <mat-icon>queue_music</mat-icon>
+                        </button>
+                    </div>
+                    <div class="full-screen">
+                        <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="setFullScreen()">
+                            <mat-icon>{{fullScreen?'fullscreen_exit':'fullscreen'}}</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                <div class="player-wrapper ">
+                    <div class="duration-slider ">
+                        <mat-slider class="audio-player" (input)="onInputChange($event)" [max]="duration" min="0 "
+                            step="1" aria-labelledby="Slider for the Audio" [(ngModel)]="currentDuration">
+                        </mat-slider>
+                    </div>
+                    <div class="duration-wrapper ">
+                        <div class="current-duration ">
+                            <span class="current-duration " id="duration-content"
+                                [style.color]="getCurrentSong()?.textColor">00:00</span>
+                        </div>
+                        <div class="total-duration ">
+                            <span class="total-duration" id="total-duration-content"
+                                [style.color]="getCurrentSong()?.textColor">00:00
+                            </span>
+                        </div>
+                    </div>
+                    <div class="controls-wrapper">
+                        <div class="rewind-button ">
+                            <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="rewind()">
+                                <mat-icon>replay_10</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="shuffle ">
+                            <button mat-icon-button [disabled]="loop" [style.color]="getCurrentSong()?.textColor"
+                                (click)="setShuffle()">
+                                <mat-icon>{{shuffle?"shuffle_on":"shuffle"}}</mat-icon>
+                            </button>
+                        </div>
+
+
+                        <div class="skip-previous-button ">
+                            <button [disabled]="!currentTrackIndex || loop" mat-icon-button
+                                [style.color]="getCurrentSong()?.textColor " (click)="prevAudio() ">
+                                <mat-icon>skip_previous</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="play-button ">
+                            <button mat-icon-button [style.color]="getCurrentSong()?.textColor " (click)="playAudio() ">
+                                <mat-icon>{{audioStatus?'pause ':'play_arrow '}}</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="skip-next-button ">
+                            <button [disabled]="(currentTrackIndex===tracks.length-1) || loop" mat-icon-button
+                                [style.color]="getCurrentSong()?.textColor " (click)="nextAudio() ">
+                                <mat-icon>skip_next</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="repeat">
+                            <button mat-icon-button [style.color]="getCurrentSong()?.textColor " (click)="setLoop()">
+                                <mat-icon>{{loop?"repeat_on":"repeat_one"}}</mat-icon>
+                            </button>
+                        </div>
+
+                        <div class="forward-button">
+                            <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="forward()">
+                                <mat-icon>forward_10</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="volume-layer ">
+                    <div class="volume-slider ">
+                        <mat-slider class="audio-volume " (change)="sliderOnChange() " max=" 1 " min="0 " step="0.1 "
+                            vertical="true " [(ngModel)]="volume " aria-labelledby="Slider for the Volume ">
+                        </mat-slider>
+                    </div>
+
+                    <div class="volume-button " (click)="muteAudio() ">
+                        <button mat-icon-button [style.color]="getCurrentSong()?.textColor ">
+                            <mat-icon>{{muted?'volume_off ': volume>0.5?'volume_up ':volume===0?'volume_mute
+                                ':'volume_down '}}</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
