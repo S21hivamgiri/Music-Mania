@@ -4,12 +4,8 @@ export function sortSongsByTitle(data:Track[]) {
    return data.sort((a, b) => {
         let nameA = a.title.toLowerCase();
         let nameB = b.title.toLowerCase();
-        if (nameA < nameB) {
-            return -1;
-        }
-        if (nameA > nameB) {
-            return 1;
-        }
+        if (nameA < nameB) return -1;
+        if (nameA > nameB) return 1;
         return 0;
     });
 }

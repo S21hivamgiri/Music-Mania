@@ -6,6 +6,9 @@ export function setTextColorOnHeader(e: any) {
                     .mat-form-field.mat-focused .mat-form-field-ripple {
                       background: ${textColor}!important;
                     }
+                    .mat-chip.mat-standard-chip {
+                      background: ${textColor}!important;
+                    }
                     .mat-form-field-label{
                       color: ${textColor}!important;
                     }

@@ -87,9 +87,6 @@
     }
     animation: 0.5s slide-left;
     padding:0 10px 0 20px;
-    position: absolute;
-    top: 0;
-    width: 23vw;
     z-index: 2000;
 }
 
@@ -175,6 +172,7 @@
             padding: 5px 20px 10px;
 
             .playlist-header {
+                font-size: 14px;
                 font-weight: 600;
                 margin: 0 0 0 20px;
                 text-transform: uppercase;
@@ -308,5 +306,17 @@
 
     .mat-sidenav-container {
         height: 100vh !important;
+    }
+
+    .mat-slider-thumb-label-text{
+        font-weight:bold;
+        text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #ffffff, 0 0 4px #ffffff;
+    }
+    
+    .mat-standard-chip {
+        color: white!important;
+        font-size: 11px;
+        min-height: 24px!important;
+        opacity: 0.6;
     }
 }

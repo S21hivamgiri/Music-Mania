@@ -14,11 +14,12 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   declarations: [
     AppComponent,
-    AudioTrackComponent
+    AudioTrackComponent,
   ],
   imports: [
     HttpClientModule, FormsModule,
@@ -27,7 +28,7 @@ import { MatInputModule } from '@angular/material/input';
     MatSliderModule, MatListModule,
     BrowserModule, DragDropModule,
     AppRoutingModule, MatInputModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule, MatChipsModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

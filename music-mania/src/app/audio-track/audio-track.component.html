@@ -1,12 +1,3 @@
-<div class="search-bar" [style.background]="getCurrentSong()?.backgroundColor" *ngIf="isSearch && sidenav.opened">
-    <mat-form-field class="search-input-wrapper">
-        <input matInput type="text" [(ngModel)]="searchItem" #searchInput (input)="filterSong()">
-        <mat-label>Enter Artist, Album or Song</mat-label>
-        <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear" (click)="searchItem='';filterSong();">
-            <mat-icon [style.color]="getCurrentSong()?.textColor">close</mat-icon>
-        </button>
-    </mat-form-field>
-</div>
 <mat-sidenav-container class="container" hasBackdrop="false">
     <mat-sidenav #sidenav class="playlist-sidenav" mode="side">
         <div class="fixed-navbar">
@@ -18,18 +9,43 @@
                     <mat-icon>close</mat-icon>
                 </button>
             </div>
-            <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
-                <mat-icon>queue_music</mat-icon>
-                <h2 class="playlist-header">Playlist ({{finalTracks.length}} songs)</h2>
+            <div class="search-bar" [style.background]="getCurrentSong()?.backgroundColor" *ngIf="isSearch && sidenav.opened">
+                <mat-form-field class="search-input-wrapper">
+                    <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="filterSong()" autocomplete="off">
+                    <mat-label>Enter Artists, Albums or Songs</mat-label>
+                    <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear" (click)="searchItem='';filterSong();">
+                        <mat-icon [style.color]="getCurrentSong()?.textColor">close</mat-icon>
+                    </button>
+                </mat-form-field>
+                <mat-chip-list class="example-chip">
+                    <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="searchItem=hotTitle;filterSong();">
+                        {{hotTitle}}
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+                <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
+                <mat-icon>playlist_add_check</mat-icon>
+                <h2 class="playlist-header">Current Playlist ({{currentPlaylist.length}} songs)</h2>
+                <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="searchedPlaylist=currentPlaylist"  *ngIf="!isCurrentPlaylist()">
+                    <mat-icon>forward</mat-icon>
+                </button>
             </div>
             <mat-divider></mat-divider>
+        <ng-container *ngIf="!isCurrentPlaylist()">
+            <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
+                <mat-icon>queue_music</mat-icon>
+                <h2 class="playlist-header">Search Playlist ({{searchedPlaylist.length}} songs)</h2>
+            </div>
+            <mat-divider></mat-divider>
+            </ng-container>
         </div>
         <mat-list role="list">
             <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-                <div *ngFor="let track of finalTracks;let i=index;" cdkDrag>
+                <div *ngFor="let track of searchedPlaylist;let i=index;" cdkDrag>
                     <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i)">
                         <div class="utiity-box">
-                            <div class="drag-handle mr-3" [style.color]="getCurrentSong()?.textColor" cdkDragHandle>
+                            <div class="drag-handle mr-3" [style.color]="getCurrentSong()?.textColor" cdkDragHandle 
+                            *ngIf="isCurrentPlaylist()">
                                 <div class='d-flex h-100 drag-class'>
                                     <mat-icon>
                                         drag_indicator
@@ -49,7 +65,7 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="boxContainer" *ngIf="i===currentTrackIndex">
+                        <span class="boxContainer" *ngIf="getCurrentSong()?._id===track?._id">
                             <span class="box" [class.box1]="audioStatus"
                                 [style.background]="getCurrentSong()?.textColor"></span>
                             <span class="box" [class.box2]="audioStatus"
@@ -118,8 +134,16 @@
                 </div>
                 <div class="player-wrapper ">
                     <div class="duration-slider ">
-                        <mat-slider class="audio-player" (input)="onPlayerInputChange($event)" [max]="duration" min="0 "
-                            step="1" aria-labelledby="Slider for the Audio" [(ngModel)]="currentDuration">
+                        <mat-slider 
+                            class="audio-player" 
+                            (input)="onPlayerInputChange($event)" 
+                            [max]="duration" 
+                            min="0"
+                            step="1"
+                            aria-labelledby="Slider for the Audio" 
+                            [(ngModel)]="currentDuration"  
+                            thumbLabel
+                            [displayWith]="formatTimeLabel">
                         </mat-slider>
                     </div>
                     <div class="duration-wrapper ">
@@ -155,7 +179,7 @@
                             </button>
                         </div>
 
-                        <div class="play-button "  title="Play/ Pause (Enter, Space)">
+                        <div class="play-button "  title="Play/ Pause (Space)">
                             <button mat-icon-button 
                                     [style.color]="getCurrentSong()?.textColor" 
                                     (click)="playAudio()">
@@ -164,7 +188,7 @@
                         </div>
 
                         <div class="skip-next-button " title="Next (N)">
-                            <button [disabled]="(currentTrackIndex===tracks.length-1) || loop" mat-icon-button
+                            <button [disabled]="(currentTrackIndex===currentPlaylist.length-1) || loop" mat-icon-button
                                 [style.color]="getCurrentSong()?.textColor " (click)="nextAudio() ">
                                 <mat-icon>skip_next</mat-icon>
                             </button>

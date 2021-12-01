@@ -1,23 +1,25 @@
-export function filterSongs(e:any){
-    e.finalTracks = [];
+export function filterSongs(e: any) {
     let searchedValue = e.searchItem.toLowerCase();
     if (!searchedValue) {
-        e.finalTracks = e.tracks;
+        e.searchedPlaylist = e.tracks;
         return;
     }
-    for (let j = 0; j < e.tracks.length; ++j) {
-        let result = !e.finalTracks.includes(e.tracks[j]);
-        result = result && !(e.tracks[j].title.toLowerCase().startsWith(searchedValue));
-        result = result && !(e.tracks[j].album.toLowerCase().startsWith(searchedValue));
-        for (let data in e.tracks[j].artist) { result = result && !(data.toLowerCase().startsWith(searchedValue)); };
+    let allTracks = [];
+    for (let j = 0; j < e.searchedPlaylist.length; ++j) {
+        let result = true;
+        result = result && !(e.searchedPlaylist[j].title.toLowerCase().startsWith(searchedValue));
+        result = result && !(e.searchedPlaylist[j].album.toLowerCase().startsWith(searchedValue));
+        result = result && !(e.searchedPlaylist[j].artist.reduce((
+            (previousValue:boolean, currentValue:string) => {
+                return previousValue || currentValue.toLowerCase().startsWith(searchedValue);
+            }
+        ), false ));
         if (!result) {
-            e.finalTracks.push(e.tracks[j]);
+            allTracks.push(e.searchedPlaylist[j]);
         }
     }
-
-    if (!e.finalTracks.length) {
-        e.finalTracks = [];
+    e.searchedPlaylist= allTracks;
+    if (!e.searchedPlaylist.length) {
+        e.searchedPlaylist = [];
     }
-    e.sortSongs();
-
 }
