@@ -1,3 +1,4 @@
+import { SPACE, F11, ENTER, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, SHIFT, UP_ARROW, L } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
@@ -5,6 +6,11 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../environments/environment';
 import { DOCUMENT } from '@angular/common';
 import { MatSidenav } from '@angular/material/sidenav';
+import { fullScreenContoller } from '../controller/full-screen-contoller';
+import { setTextColorOnHeader } from '../controller/set-text-colour-controller';
+import { getCurrentTimeInFormat, getDurationInFormat } from '../controller/time-controller';
+import { filterSongs } from '../controller/filter-song-controller';
+import { shuffleAllSongs, sortSongsByTitle } from '../controller/sort-shuffle-controller';
 
 @Component({
   selector: 'app-audio-track',
@@ -12,48 +18,86 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./audio-track.component.scss']
 })
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
+  @HostListener('document:keydown', ['$event'])
+  handleDeleteKeyboardEvent(event: KeyboardEvent) {
+    if (event.keyCode === SPACE || event.keyCode === ENTER) {
+      this.playAudio();
+    }
+    else if (event.keyCode === F11) {
+      this.setFullScreen();
+    }
+    else if (event.keyCode === S) {
+      this.setShuffle();
+    }
+    else if (event.keyCode === LEFT_ARROW) {
+      this.rewind();
+    }
+    else if (event.keyCode === RIGHT_ARROW) {
+      this.forward();
+    }
+    else if (event.keyCode === R) {
+      this.loop = !this.loop;
+    }
+    else if (event.keyCode === P) {
+      this.prevAudio();
+    }
+    else if (event.keyCode === N) {
+      this.nextAudio();
+    }
+    else if (event.keyCode === L) {
+      this.sidenav?.toggle();
+    }
+  }
+  
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('searchInput') searchTextInput?: ElementRef;
+
   tracks: Track[] = [];
   finalTracks: Track[] = [];
   isSearch = false;
+  elem: any;
+  interval: any;
+  timeOut: any;
+  
+  audioStatus = false;
   audioSource = "";
   duration = 1;
   searchItem = '';
   shuffle = true;
-  elem: any;
   fullScreen = false;
   currentDuration = 0;
   currentTrackIndex = 0;
   muted = false;
-  audioStatus = false;
   volume = 1;
   loop = false;
-  interval: any;
-  timeOut: any;
 
   constructor(private trackStore: TrackStore, readonly changeDetectionRef: ChangeDetectorRef, readonly sideNav: ElementRef, @Inject(DOCUMENT) private document: any) { }
 
   ngOnInit() {
     this.elem = document.documentElement;
+    
     this.trackStore.loadAllTracks().subscribe((data) => {
       this.tracks = data;
       this.filterSong();
       this.setAudioPlayer();
     });
+
     this.interval = setInterval(() => {
       this.getDuration();
       this.getCurrentTime();
     }, 500);
+
+    document.addEventListener('fullscreenchange', () => { this.onFullScreen(this) });
+    document.addEventListener('webkitfullscreenchange', () => { this.onFullScreen(this) });
+    document.addEventListener('mozfullscreenchange', () => { this.onFullScreen(this) });
+    document.addEventListener('MSFullscreenChange', () => { this.onFullScreen(this) });
   }
 
   setAudioPlayer() {
     this.audioSource = `${environment.apiAddress}track/stream/${this.finalTracks[this.currentTrackIndex]._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.src = this.audioSource;
-    myAudio.onended = () => {
-      this.nextAudio();
-    }
+    myAudio.onended = () => {this.nextAudio();}
     this.getPicture();
     this.settextColor();
   }
@@ -74,80 +118,27 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     return this.tracks.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
   }
 
-  sortSongs() {
+  sortAndShuffleSongs() {
     let removedSong = this.finalTracks.splice(this.currentTrackIndex, 1);
-    let allTracks = this.finalTracks.sort((a, b) => {
-      let nameA = a.title.toLowerCase();
-      let nameB = b.title.toLowerCase();
-      if (nameA < nameB) {
-        return -1;
-      }
-      if (nameA > nameB) {
-        return 1;
-      }
-      return 0;
-    });;
+    let allTracks = sortSongsByTitle(this.finalTracks);
     if (this.shuffle) {
-      let currentIndex = this.finalTracks.length - 1, randomIndex;
-      while (currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex--);
-        [allTracks[currentIndex], allTracks[randomIndex]] = [
-          allTracks[randomIndex], allTracks[currentIndex]];
-      }
+      shuffleAllSongs(allTracks);
     }
     allTracks.splice(this.currentTrackIndex, 0, removedSong[0]);
     this.finalTracks = allTracks;
   }
 
-
   filterSong() {
-    this.finalTracks = [];
-    let searchedValue = this.searchItem.toLowerCase();
-    if (!searchedValue) {
-      this.finalTracks = this.tracks;
-      return;
-    }
-    for (let j = 0; j < this.tracks.length; ++j) {
-      let result = !this.finalTracks.includes(this.tracks[j]);
-      result = result && !(this.tracks[j].title.toLowerCase().startsWith(searchedValue));
-      result = result && !(this.tracks[j].album.toLowerCase().startsWith(searchedValue));
-      for (let data in this.tracks[j].artist) { result = result && !(data.toLowerCase().startsWith(searchedValue)); };
-      if (!result) {
-        this.finalTracks.push(this.tracks[j]);
-      }
-    }
-
-    if (!this.finalTracks.length) {
-      this.finalTracks = [];
-    }
-    this.sortSongs();
+    filterSongs(this);
   }
 
   settextColor() {
-    const textColor = this.getCurrentSong()?.textColor;
-    const textCss = `.mat-accent .mat-slider-track-fill, .mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label {
-                      background: ${textColor}!important;
-                    }
-                    .mat-form-field.mat-focused .mat-form-field-ripple {
-                      background: ${textColor}!important;
-                    }
-                    .mat-form-field-label{
-                      color: ${textColor}!important;
-                    }
-                    `
-    let sliderClass = document.getElementsByTagName('style')[0];
-    if (!(sliderClass.classList.contains('audio-tag'))) {
-      sliderClass.classList.add('audio-tag');
-      sliderClass.append(textCss);
-    } else {
-      sliderClass.innerText = sliderClass.innerText.replace(sliderClass.innerText, textCss);
-    }
+    setTextColorOnHeader(this);
   }
 
   getPlayer() {
     return <HTMLVideoElement>document.getElementsByTagName('audio')[0];
   }
-
 
   playAudio() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
@@ -161,46 +152,17 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     }
   }
 
-  getTimeFormat(a: number) {
-    let temp = Math.floor(a)
-    return temp < 10 ? `0${temp}` : temp
-  }
-
   getDuration() {
-    let myAudio: HTMLMediaElement | null = this.getPlayer();
-    this.duration = Math.floor(myAudio.duration || 0);
-    let durationDom = document.getElementById('total-duration-content');
-    let finaDuration = this.duration ? (this.getTimeFormat(this.duration / 60)) + ":" + (this.getTimeFormat(this.duration % 60)) : '00:00'
-    durationDom!.innerHTML = finaDuration;
+    getDurationInFormat(this);
   }
 
   getCurrentTime() {
-    let myAudio: HTMLMediaElement | null = this.getPlayer();
-    this.currentDuration = Math.floor(myAudio.currentTime || 0);
-    let currentTime = (this.getTimeFormat(this.currentDuration / 60)) + ":" + (this.getTimeFormat(this.currentDuration % 60));
-    let durationDom = document.getElementById('duration-content');
-    durationDom!.innerHTML = currentTime;
-    return currentTime;
+    getCurrentTimeInFormat(this);
   }
-
-  setLoop() {
-    if (this.loop) {
-      this.loop = false;
-    }
-    else {
-      this.loop = true;
-    }
-  }
-
 
   setShuffle() {
-    if (this.shuffle) {
-      this.shuffle = false;
-    }
-    else {
-      this.shuffle = true;
-    }
-    this.sortSongs();
+    this.shuffle = !this.shuffle;
+    this.sortAndShuffleSongs();
   }
 
   getCurrentSong() {
@@ -236,23 +198,17 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.currentTrackIndex = i;
     this.setAudioPlayer();
     this.playAudio();
-
   }
 
   nextAudio() {
     this.audioStatus = !this.audioStatus;
-    if (this.loop) {
-      this.currentTrackIndex;
-    } else
-      if (this.currentTrackIndex < this.finalTracks.length - 1)
-        ++this.currentTrackIndex;
+    if (this.loop) this.currentTrackIndex;
+    else {
+      if (this.currentTrackIndex < this.finalTracks.length - 1) ++this.currentTrackIndex;
       else this.currentTrackIndex = 0;
+    }
     this.setAudioPlayer();
     this.playAudio();
-  }
-
-  ngAfterContentChecked() {
-    this.changeDetectionRef.detectChanges();
   }
 
   onPlayerInputChange(e: any) {
@@ -260,7 +216,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     myAudio.currentTime = e.value;
     this.currentDuration = e.value;
   }
-
 
   forward() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
@@ -270,7 +225,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   rewind() {
-
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     let currentTime = Math.round(myAudio.currentTime) - 10;
     myAudio.currentTime = currentTime;
@@ -292,58 +246,29 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   setFullScreen() {
     this.fullScreen = !this.fullScreen;
-
-    if (this.fullScreen) {
-      if (this.elem.requestFullscreen) {
-        this.elem.requestFullscreen();
-      } else if (this.elem.mozRequestFullScreen) {
-        /* Firefox */
-        this.elem.mozRequestFullScreen();
-      } else if (this.elem.webkitRequestFullscreen) {
-        /* Chrome, Safari and Opera */
-        this.elem.webkitRequestFullscreen();
-      } else if (this.elem.msRequestFullscreen) {
-        /* IE/Edge */
-        this.elem.msRequestFullscreen();
-      }
-      document.addEventListener('fullscreenchange', () => { this.onFullScreenExit(this) });
-      document.addEventListener('webkitfullscreenchange', () => { this.onFullScreenExit(this) });
-      document.addEventListener('mozfullscreenchange', () => { this.onFullScreenExit(this) });
-      document.addEventListener('MSFullscreenChange', () => { this.onFullScreenExit(this) });
-    }
-    else {
-      if (this.document.exitFullscreen) {
-        this.document.exitFullscreen();
-      } else if (this.document.mozCancelFullScreen) {
-        /* Firefox */
-        this.document.mozCancelFullScreen();
-      } else if (this.document.webkitExitFullscreen) {
-        /* Chrome, Safari and Opera */
-        this.document.webkitExitFullscreen();
-      } else if (this.document.msExitFullscreen) {
-        /* IE/Edge */
-        this.document.msExitFullscreen();
-      }
-    }
+    fullScreenContoller(this);
   }
 
-  onFullScreenExit(event: any) {
-    if (!this.document.fullScreen &&!this.document.webkitIsFullScreen && !this.document.mozFullScreen && !this.document.msFullscreenElement) {
+  onFullScreen(event: any) {
+    if (!this.document.fullScreen && !this.document.webkitIsFullScreen && !this.document.mozFullScreen && !this.document.msFullscreenElement)
       event.fullScreen = false;
-      document.removeEventListener('fullscreenchange', () => {
-      });
-      document.removeEventListener('webkitfullscreenchange', () => {
-      });
-      document.removeEventListener('mozfullscreenchange', () => {
-      });
-      document.removeEventListener('MSFullscreenChange', () => {
-      });
-    }
+    else event.fullScreen = true;
+  }
+
+  ngAfterContentChecked() {
+    this.changeDetectionRef.detectChanges();
   }
 
   ngOnDestroy() {
     this.interval.clearInterval();
     clearTimeout(this.timeOut);
-    this.onFullScreenExit(this);
+    document.removeEventListener('fullscreenchange', () => {
+    });
+    document.removeEventListener('webkitfullscreenchange', () => {
+    });
+    document.removeEventListener('mozfullscreenchange', () => {
+    });
+    document.removeEventListener('MSFullscreenChange', () => {
+    });
   }
 }
