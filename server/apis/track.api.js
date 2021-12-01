@@ -93,13 +93,17 @@ router.route('/stream/:id').get((req, res) => {
 router.route('/image/:picture').get((req, res) => {
     let picture = req.params.picture;
     const file = __dirname + '/../data/pictures/' + picture;
-    fs.createReadStream(file).pipe(res);
+    fs.createReadStream(file).on('error',()=>{
+        res.end("File not found")
+    }).pipe(res);
     });
 
 router.route('/thumbnail/:picture').get((req, res) => {
     let picture = req.params.picture;
     const file = __dirname + '/../data/thumbnail/' + picture;
-    fs.createReadStream(file).pipe(res);
+    fs.createReadStream(file).on('error',()=>{
+        res.end("File not found")
+    }).pipe(res);
 });
 
 

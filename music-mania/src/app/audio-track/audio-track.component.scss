@@ -1,87 +1,103 @@
 .page-wrapper {
-    padding: 0;
     display: flex;
-    margin: 0;
-    width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
 
     .album-data {
-        width: 50%;
-        z-index: 100;
-        padding: 50px;
         display: flex;
         flex-direction: column;
+        padding: 50px;
+        width: 50%;
+        z-index: 100;
 
         .song-title {
+            align-items: center;
+            display: flex;
             font-size: 48px;
             font-weight: 700;
-            display: flex;
-            margin-bottom: 120px;
-            line-height: 1;
-            margin-top: 60px;
-            align-items: center;
             gap: 30px;
+            line-height: 1;
+            margin-bottom: 120px;
+            margin-top: 60px;
             text-transform: capitalize;
         }
 
         .song-album {
+            align-items: center;
+            display: flex;
             font-size: 30px;
             font-weight: 600;
-            margin-top: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
             gap: 30px;
             line-height: 1;
+            margin-bottom: 10px;
+            margin-top: 10px;
             text-transform: capitalize;
         }
 
         .song-artist {
-            font-size: 30px;
-            line-height: 1;
-            font-weight: bold;
-            text-transform: capitalize;
-            margin-top: 10px;
-            display: flex;
             align-items: center;
+            display: flex;
+            font-size: 30px;
+            font-weight: bold;
             gap: 30px;
+            line-height: 1;
+            margin-top: 10px;
+            text-transform: capitalize;
         }
     }
 
     .album-image {
+        background-size: cover;
         width: 50%;
         z-index: 1;
-        background-size: cover;
 
         img {
-            width: 100%;
             height: 100%;
+            width: 100%;
         }
     }
 
     .album-image-wrapper {
-        opacity: 0.7;
         height: 100%;
-        width: 50%;
+        opacity: 0.7;
         position: absolute;
-        z-index: 50;
-        right: 0
+        right: 0;
+        width: 50%;
+        z-index: 50
     }
 }
 
 .search-bar {
+    @keyframes slide-left {
+        from {
+            margin-left: 10%;
+            width: 0vw;
+        }
+
+        to {
+            margin-left: 0%;
+            width: 23vw;
+        }
+    }
+    .search-input-wrapper{
+            animation: 0.5s slide-left;
+        width: 22vw   
+    }
+    animation: 0.5s slide-left;
+    padding:0 10px 0 20px;
     position: absolute;
     top: 0;
-    left: 0;
+    width: 23vw;
     z-index: 2000;
-    width: 25vw;
 }
 
 .audio-container {
-    padding: 2% 3%;
-    z-index: 200;
     bottom: 0;
+    padding: 2% 3%;
     position: fixed;
+    z-index: 200;
 
     .volume-wrapper {
         display: flex;
@@ -89,31 +105,31 @@
         .volume-layer {
             align-items: center;
             display: flex;
-            justify-content: center;
             flex-direction: column;
+            justify-content: center;
         }
 
         .player-wrapper {
-            width: 100%;
             display: flex;
-            justify-content: center;
             flex-direction: column;
+            justify-content: center;
+            width: 100%;
 
             .duration-slider {
-                width: auto;
                 padding: 2% 6% 0;
+                width: auto;
 
                 .audio-player {
-                    width: 100%;
                     padding-bottom: 0;
+                    width: 100%;
                 }
             }
 
             .duration-wrapper {
                 display: flex;
-                padding: 0 6%;
-                margin: -16px 10px 0;
                 justify-content: space-between;
+                margin: -16px 10px 0;
+                padding: 0 6%;
 
                 .current-duration {
                     font-weight: bold
@@ -122,20 +138,19 @@
                 .total-duration {
                     font-weight: bold
                 }
-
             }
 
             .controls-wrapper {
                 display: flex;
-                justify-content: center;
                 gap: 5%;
+                justify-content: center;
             }
         }
 
         .full-screen-wrapper {
             display: flex;
-            justify-content: space-between;
             flex-direction: column;
+            justify-content: space-between;
         }
     }
 }
@@ -145,25 +160,23 @@
         width: 25vw;
 
         .close-button {
-
-            position: fixed;
-            left: 25vw;
-            justify-content: flex-start;
-            flex-direction: column;
             display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            left: 25vw;
+            position: fixed;
             width: 100%;
         }
 
-
         .playlist-title {
-            padding: 5px 20px 10px;
-            display: flex;
             align-items: center;
+            display: flex;
             justify-content: center;
+            padding: 5px 20px 10px;
 
             .playlist-header {
-                margin: 0 0 0 20px;
                 font-weight: 600;
+                margin: 0 0 0 20px;
                 text-transform: uppercase;
             }
         }
@@ -172,23 +185,24 @@
             cursor: pointer;
 
             .utiity-box {
-                display: flex;
                 align-items: center;
+                display: flex;
 
-                .drag-handle{
-                    cursor:move ;
-                } 
+                .drag-handle {
+                    cursor: move;
+                }
+
                 .track-list-data {
-                    white-space: nowrap;
+                    display: flex;
                     overflow: hidden;
                     text-overflow: ellipsis;
+                    white-space: nowrap;
                     width: 15vw;
-                    display: flex;
 
                     .thumbnail {
-                        width: 50px;
                         height: 50px;
                         margin-right: 10px;
+                        width: 50px;
                     }
 
                     .track-artist {
@@ -199,18 +213,16 @@
 
             .mat-list-item-content {
                 display: flex;
-                justify-content: space-between;
                 font-weight: 700;
+                justify-content: space-between;
 
                 @keyframes quiet {
                     25% {
                         transform: scaleY(.6);
                     }
-
                     50% {
                         transform: scaleY(.4);
                     }
-
                     75% {
                         transform: scaleY(.7);
                     }
@@ -220,11 +232,9 @@
                     25% {
                         transform: scaleY(1);
                     }
-
                     50% {
                         transform: scaleY(.4);
                     }
-
                     75% {
                         transform: scaleY(.6);
                     }
@@ -234,32 +244,29 @@
                     25% {
                         transform: scaleY(1);
                     }
-
                     50% {
                         transform: scaleY(.4);
                     }
-
                     75% {
                         transform: scaleY(1.2);
                     }
                 }
-
                 .boxContainer {
                     display: flex;
-                    justify-content: space-between;
                     height: 20px;
+                    justify-content: space-between;
+                    width: calc((var(--boxSize) + var(--gutter)) * 5);
                     --boxSize: 6px;
                     --gutter: 4px;
-                    width: calc((var(--boxSize) + var(--gutter)) * 5);
 
                     .box {
-                        transform: scaleY(.4);
-                        height: 100%;
-                        width: var(--boxSize);
                         animation-duration: 1.2s;
-                        animation-timing-function: ease-in-out;
                         animation-iteration-count: infinite;
+                        animation-timing-function: ease-in-out;
                         border-radius: 8px;
+                        height: 100%;
+                        transform: scaleY(.4);
+                        width: var(--boxSize);
                     }
 
                     .box1 {
@@ -282,17 +289,15 @@
                         animation-name: quiet;
                     }
                 }
-
-
             }
         }
     }
 
     .mat-icon {
+        font-size: 36px !important;
         height: 36px !important;
-        width: 36px !important;
-        font-size: 36px;
         line-height: 36px !important;
+        width: 36px !important;
     }
 
     .mat-icon-button {
