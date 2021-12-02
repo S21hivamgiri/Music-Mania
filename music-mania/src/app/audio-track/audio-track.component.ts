@@ -1,4 +1,4 @@
-import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L } from '@angular/cdk/keycodes';
+import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
@@ -26,29 +26,48 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.playAudio();
     }
     else if (event.keyCode === F11) {
-      this.setFullScreen();
+      this.lock || this.setFullScreen();
     }
     else if (event.keyCode === S) {
-      this.setShuffle();
+      this.lock || this.setShuffle();
     }
     else if (event.keyCode === LEFT_ARROW) {
-      this.rewind();
+      this.lock || this.rewind();
     }
     else if (event.keyCode === RIGHT_ARROW) {
-      this.forward();
+      this.lock || this.forward();
+    }
+    else if (event.keyCode === UP_ARROW) {
+      if (this.volume < 1) this.volume = this.volume + 0.1;
+      this.setVolume();
+    }
+    else if (event.keyCode === DOWN_ARROW) {
+      if (this.volume > 0) this.volume = this.volume - 0.1;
+      this.setVolume();
     }
     else if (event.keyCode === R) {
-      this.loop = !this.loop;
+      this.lock || (this.loop = !this.loop);
     }
     else if (event.keyCode === P) {
-      this.prevAudio();
+      this.lock || this.prevAudio();
     }
     else if (event.keyCode === N) {
-      this.nextAudio();
+      this.lock || this.nextAudio();
+    }
+    else if (event.keyCode === Z) {
+      this.lock || this.sidenav?.toggle();
     }
     else if (event.keyCode === L) {
-      this.sidenav?.toggle();
+      this.lock = false;
+      this.setLock();
     }
+    else if (event.keyCode === F) {
+      this.lock || (this.sidenav?.open() && (this.isSearch = true))
+    }
+    else if (event.keyCode === M) {
+      this.muteAudio();
+    }
+    event.preventDefault();
   }
 
   @ViewChild('sidenav') sidenav?: MatSidenav;
@@ -60,6 +79,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   searchedPlaylist: Track[] = [];
   currentPlaylist: Track[] = [];
   isSearch = false;
+  lock = false;
   elem: any;
   interval: any;
   timeOut: any;
@@ -77,10 +97,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   audioStatus = false;
   audioSource = "";
   duration = 1;
+  currentDuration = 0;
   searchItem = '';
   shuffle = true;
   fullScreen = false;
-  currentDuration = 0;
   currentTrackIndex = 0;
   muted = false;
   volume = 1;
@@ -107,8 +127,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       .pipe(debounceTime(300))
       .subscribe(() => {
         this.filterSong();
-      }
-      );
+      });
 
     document.addEventListener('fullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('webkitfullscreenchange', () => { this.onFullScreen(this) });
@@ -126,6 +145,14 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       myAudio.play();
       this.audioStatus = true;
     }
+  }
+
+  setLock() {
+    this.searchItem = '';
+    this.isSearch = false;
+    this.sidenav?.close();
+    this.lock = !this.lock;
+    this.setFullScreen();
   }
 
   setAudioPlayer() {
@@ -168,7 +195,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   sortAndShuffleSongs() {
     let allTracks;
-      allTracks = sortSongsByProperty(this.currentPlaylist, this.sort);
+    allTracks = sortSongsByProperty(this.currentPlaylist, this.sort);
 
     if (this.shuffle) {
       shuffleAllSongs(allTracks);
@@ -177,7 +204,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   sortSongByTitle() {
-    this.sort = 'title'; 
+    this.sort = 'title';
     this.sortSongByProperty();
   }
 
@@ -240,7 +267,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     }
   }
 
-  sliderOnChange() {
+  setVolume() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.volume = this.volume;
   }
@@ -253,9 +280,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   setCurrentIndex(i: number) {
-    if (!this.isCurrentPlaylist()) {
-      this.currentPlaylist = this.searchedPlaylist;
-    }
+    if (!this.isCurrentPlaylist()) this.currentPlaylist = this.searchedPlaylist;
     this.audioStatus = false;
     this.currentTrackIndex = i;
     this.setAudioPlayer();
@@ -271,6 +296,14 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     }
     this.setAudioPlayer();
     this.playAudio();
+  }
+
+  getNextVideo() {
+    if (this.loop) return this.currentSong;
+    else {
+      if (this.currentTrackIndex < this.currentPlaylist.length - 1) return this.currentPlaylist[this.currentTrackIndex+1];
+      else return this.currentPlaylist[0];
+    }
   }
 
   onPlayerInputChange(e: any) {
@@ -312,8 +345,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   onFullScreen(event: any) {
-    if (!this.document.fullScreen && !this.document.webkitIsFullScreen && !this.document.mozFullScreen && !this.document.msFullscreenElement)
+    if (!this.document.fullScreen && !this.document.webkitIsFullScreen && !this.document.mozFullScreen && !this.document.msFullscreenElement) {
       event.fullScreen = false;
+      event.lock = false;
+    }
     else event.fullScreen = true;
   }
 
