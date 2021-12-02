@@ -1,5 +1,5 @@
 export function setTextColorOnHeader(e: any) {
-  const textColor = e.getCurrentSong()?.textColor;
+  const textColor = e.currentSong?.textColor;
   const textCss = `.mat-accent .mat-slider-track-fill, .mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label {
                       background: ${textColor}!important;
                     }

@@ -1,19 +1,9 @@
 import { Track } from "../model/track.model";
 
-export function sortSongsByTitle(data:Track[]) {
-   return data.sort((a, b) => {
-        let nameA = a.title.toLowerCase();
-        let nameB = b.title.toLowerCase();
-        if (nameA < nameB) return -1;
-        if (nameA > nameB) return 1;
-        return 0;
-    });
-}
-
-export function sortSongsByAlbum(data: Track[]) {
+export function sortSongsByProperty(data: Track[], property:any) {
     return data.sort((a, b) => {
-        let nameA = a.album.toLowerCase();
-        let nameB = b.album.toLowerCase();
+        let nameA = `${a[property as keyof Track]}`.toLowerCase();
+        let nameB = `${b[property as keyof Track]}`.toLowerCase();
         if (nameA < nameB) return -1;
         if (nameA > nameB) return 1;
         return 0;

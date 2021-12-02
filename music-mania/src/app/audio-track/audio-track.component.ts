@@ -1,4 +1,4 @@
-import { SPACE, F11, ENTER, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, SHIFT, UP_ARROW, L, BACKSPACE } from '@angular/cdk/keycodes';
+import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
@@ -10,7 +10,9 @@ import { fullScreenContoller } from '../controller/full-screen-contoller';
 import { setTextColorOnHeader } from '../controller/set-text-colour-controller';
 import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '../controller/time-controller';
 import { filterSongs } from '../controller/filter-song-controller';
-import { shuffleAllSongs, sortSongsByAlbum, sortSongsByTitle } from '../controller/sort-shuffle-controller';
+import { shuffleAllSongs, sortSongsByProperty } from '../controller/sort-shuffle-controller';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-audio-track',
@@ -52,6 +54,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('searchInput') searchTextInput?: ElementRef;
 
+  textValueSubject: Subject<any> = new Subject();
   hotListItems = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
   tracks: Track[] = [];
   searchedPlaylist: Track[] = [];
@@ -99,6 +102,13 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.getDuration();
       this.getCurrentTime();
     }, 500);
+
+    this.textValueSubject
+      .pipe(debounceTime(300))
+      .subscribe(() => {
+        this.filterSong();
+      }
+      );
 
     document.addEventListener('fullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('webkitfullscreenchange', () => { this.onFullScreen(this) });
@@ -149,7 +159,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   getPicture() {
     return this.tracks.length ?
-      `${environment.apiAddress}track/image/${this.getCurrentSong()?.picture}` : '/assets/music-image.jpg';
+      `${environment.apiAddress}track/image/${this.currentSong?.picture}` : '/assets/music-image.jpg';
   }
 
   getThumbNailSrc(title?: string) {
@@ -158,10 +168,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   sortAndShuffleSongs() {
     let allTracks;
-    if (this.sort === 'album')
-      allTracks = sortSongsByAlbum(this.currentPlaylist);
-    else
-      allTracks = sortSongsByTitle(this.currentPlaylist);
+      allTracks = sortSongsByProperty(this.currentPlaylist, this.sort);
 
     if (this.shuffle) {
       shuffleAllSongs(allTracks);
@@ -170,18 +177,26 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   sortSongByTitle() {
-    this.sort = 'title';
-    this.searchedPlaylist = sortSongsByTitle(this.searchedPlaylist);
+    this.sort = 'title'; 
+    this.sortSongByProperty();
   }
 
   sortSongByAlbum() {
     this.sort = 'album';
-    this.searchedPlaylist = sortSongsByAlbum(this.searchedPlaylist);
+    this.sortSongByProperty();
+  }
+
+  sortSongByProperty() {
+    if (!this.isCurrentPlaylist()) {
+      this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.sort);
+    } else {
+      this.currentPlaylist = sortSongsByProperty(this.currentPlaylist, this.sort);
+    }
   }
 
   onKeyUp(event: KeyboardEvent) {
     event.stopPropagation();
-    this.filterSong();
+    this.textValueSubject.next();
   }
 
   filterSong() {
@@ -211,10 +226,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   setShuffle() {
     this.shuffle = !this.shuffle;
     this.sortAndShuffleSongs();
-  }
-
-  getCurrentSong() {
-    return this.currentSong;
   }
 
   muteAudio() {
@@ -313,6 +324,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   ngOnDestroy() {
     this.interval.clearInterval();
     clearTimeout(this.timeOut);
+    this.textValueSubject.unsubscribe();
     document.removeEventListener('fullscreenchange', () => {
     });
     document.removeEventListener('webkitfullscreenchange', () => {
