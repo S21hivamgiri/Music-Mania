@@ -15,6 +15,7 @@ import { MatListModule } from '@angular/material/list';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { MatChipsModule } from '@angular/material/chips';
     MatSliderModule, MatListModule,
     BrowserModule, DragDropModule,
     AppRoutingModule, MatInputModule,
-    BrowserAnimationsModule, MatChipsModule
+    BrowserAnimationsModule, MatChipsModule, 
+    MatMenuModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

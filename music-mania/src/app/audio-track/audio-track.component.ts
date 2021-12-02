@@ -10,7 +10,7 @@ import { fullScreenContoller } from '../controller/full-screen-contoller';
 import { setTextColorOnHeader } from '../controller/set-text-colour-controller';
 import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '../controller/time-controller';
 import { filterSongs } from '../controller/filter-song-controller';
-import { shuffleAllSongs, sortSongsByTitle } from '../controller/sort-shuffle-controller';
+import { shuffleAllSongs, sortSongsByAlbum, sortSongsByTitle } from '../controller/sort-shuffle-controller';
 
 @Component({
   selector: 'app-audio-track',
@@ -52,14 +52,15 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('searchInput') searchTextInput?: ElementRef;
 
-  hotListItems = ['Arijit Singh', 'I Hate Luv Storys','Nazm Nazm', 'Ajab Prem Ki Ghazab Kahani','Mann Mera','Sab Tera']
+  hotListItems = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
   tracks: Track[] = [];
   searchedPlaylist: Track[] = [];
   currentPlaylist: Track[] = [];
   isSearch = false;
   elem: any;
   interval: any;
-  currentSong:Track={
+  timeOut: any;
+  currentSong: Track = {
     backgroundColor: '',
     _id: '',
     textColor: '',
@@ -68,8 +69,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     album: '',
     picture: ''
   };
-  timeOut: any;
-  
+
+  sort = 'title';
   audioStatus = false;
   audioSource = "";
   duration = 1;
@@ -122,7 +123,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.audioSource = `${environment.apiAddress}track/stream/${this.currentPlaylist[this.currentTrackIndex]._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.src = this.audioSource;
-    myAudio.onended = () => {this.nextAudio();}
+    myAudio.onended = () => { this.nextAudio(); }
     this.getPicture();
     this.settextColor();
   }
@@ -139,9 +140,16 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     }, 1)
   }
 
+  setSearchBar(searchText?: string) {
+    this.sidenav?.open();
+    this.isSearch = true;
+    this.searchItem = searchText || '';
+    this.filterSong();
+  }
+
   getPicture() {
     return this.tracks.length ?
-      `${environment.apiAddress}track/image/${this.currentPlaylist[this.currentTrackIndex]?.picture}` : '/assets/music-image.jpg';
+      `${environment.apiAddress}track/image/${this.getCurrentSong()?.picture}` : '/assets/music-image.jpg';
   }
 
   getThumbNailSrc(title?: string) {
@@ -149,13 +157,31 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   sortAndShuffleSongs() {
-    let removedSong = this.currentPlaylist.splice(this.currentTrackIndex, 1);
-    let allTracks = sortSongsByTitle(this.currentPlaylist);
+    let allTracks;
+    if (this.sort === 'album')
+      allTracks = sortSongsByAlbum(this.currentPlaylist);
+    else
+      allTracks = sortSongsByTitle(this.currentPlaylist);
+
     if (this.shuffle) {
       shuffleAllSongs(allTracks);
     }
-    allTracks.splice(this.currentTrackIndex, 0, removedSong[0]);
     this.currentPlaylist = allTracks;
+  }
+
+  sortSongByTitle() {
+    this.sort = 'title';
+    this.searchedPlaylist = sortSongsByTitle(this.searchedPlaylist);
+  }
+
+  sortSongByAlbum() {
+    this.sort = 'album';
+    this.searchedPlaylist = sortSongsByAlbum(this.searchedPlaylist);
+  }
+
+  onKeyUp(event: KeyboardEvent) {
+    event.stopPropagation();
+    this.filterSong();
   }
 
   filterSong() {
@@ -178,7 +204,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     getCurrentTimeInFormat(this);
   }
 
-  formatTimeLabel(value: number){
+  formatTimeLabel(value: number) {
     return getFormattedTime(value);
   }
 
@@ -216,8 +242,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   setCurrentIndex(i: number) {
-    if(this.searchedPlaylist.length!==this.currentPlaylist.length){
-      this.currentPlaylist =this.searchedPlaylist;
+    if (!this.isCurrentPlaylist()) {
+      this.currentPlaylist = this.searchedPlaylist;
     }
     this.audioStatus = false;
     this.currentTrackIndex = i;

@@ -8,35 +8,54 @@
                 <button mat-icon-button (click)="sidenav.close();this.isSearch = false;searchItem='';filterSong();">
                     <mat-icon>close</mat-icon>
                 </button>
+                <button mat-icon-button [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
+                    <mat-icon>sort</mat-icon>
+                </button>
+                <mat-menu #sortMenu="matMenu">
+                    <button mat-menu-item (click)="sortSongByAlbum()" >
+                        <mat-icon [style.color]="getCurrentSong()?.textColor">collections</mat-icon>
+                        <span [style.color]="getCurrentSong()?.textColor">Sort By Album</span>
+                    </button>
+                    <button mat-menu-item (click)="sortSongByTitle()" >
+                        <mat-icon [style.color]="getCurrentSong()?.textColor">music_note</mat-icon>
+                        <span [style.color]="getCurrentSong()?.textColor">Sort By Title</span>
+                    </button>
+                </mat-menu>
             </div>
-            <div class="search-bar" [style.background]="getCurrentSong()?.backgroundColor" *ngIf="isSearch && sidenav.opened">
+            <div class="search-bar" [style.background]="getCurrentSong()?.backgroundColor"
+                *ngIf="isSearch && sidenav.opened">
                 <mat-form-field class="search-input-wrapper">
-                    <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="filterSong()" autocomplete="off">
+                    <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyUp($event)"
+                        autocomplete="off">
                     <mat-label>Enter Artists, Albums or Songs</mat-label>
-                    <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear" (click)="searchItem='';filterSong();">
+                    <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="searchItem='';filterSong();">
                         <mat-icon [style.color]="getCurrentSong()?.textColor">close</mat-icon>
                     </button>
                 </mat-form-field>
-                <mat-chip-list class="example-chip">
-                    <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="searchItem=hotTitle;filterSong();">
+                <mat-chip-list class="hotlist">
+                    <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems"
+                        (click)="searchItem=hotTitle;filterSong();">
                         {{hotTitle}}
                     </mat-chip>
                 </mat-chip-list>
             </div>
-                <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
+            <mat-divider></mat-divider>
+            <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
                 <mat-icon>playlist_add_check</mat-icon>
                 <h2 class="playlist-header">Current Playlist ({{currentPlaylist.length}} songs)</h2>
-                <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="searchedPlaylist=currentPlaylist"  *ngIf="!isCurrentPlaylist()">
+                <button mat-icon-button [style.color]="getCurrentSong()?.textColor"
+                    (click)="searchedPlaylist=currentPlaylist; searchItem=''" *ngIf="!isCurrentPlaylist()">
                     <mat-icon>forward</mat-icon>
                 </button>
             </div>
             <mat-divider></mat-divider>
-        <ng-container *ngIf="!isCurrentPlaylist()">
-            <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
-                <mat-icon>queue_music</mat-icon>
-                <h2 class="playlist-header">Search Playlist ({{searchedPlaylist.length}} songs)</h2>
-            </div>
-            <mat-divider></mat-divider>
+            <ng-container *ngIf="!isCurrentPlaylist()">
+                <div class="playlist-title" [style.color]="getCurrentSong()?.textColor">
+                    <mat-icon>queue_music</mat-icon>
+                    <h2 class="playlist-header">Searched Playlist ({{searchedPlaylist.length}} songs)</h2>
+                </div>
+                <mat-divider></mat-divider>
             </ng-container>
         </div>
         <mat-list role="list">
@@ -44,8 +63,8 @@
                 <div *ngFor="let track of searchedPlaylist;let i=index;" cdkDrag>
                     <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i)">
                         <div class="utiity-box">
-                            <div class="drag-handle mr-3" [style.color]="getCurrentSong()?.textColor" cdkDragHandle 
-                            *ngIf="isCurrentPlaylist()">
+                            <div class="drag-handle mr-3" [style.color]="getCurrentSong()?.textColor" cdkDragHandle
+                                *ngIf="isCurrentPlaylist()">
                                 <div class='d-flex h-100 drag-class'>
                                     <mat-icon>
                                         drag_indicator
@@ -97,16 +116,22 @@
                 [style.boxShadow]="'0 0 100px rgba(0,0,0,0), 0 0 200px rgba(0,0,0,0), 0 0 130px '+getCurrentSong()?.backgroundColor+', 0 0 170px '+getCurrentSong()?.backgroundColor+', 0 0 160px '+getCurrentSong()?.backgroundColor+', 0 0 180px '+getCurrentSong()?.backgroundColor+', 0 0 200px '+getCurrentSong()?.backgroundColor+''">
                 <div class="song-title" *ngIf="getCurrentSong()?.title">
                     <mat-icon>music_note</mat-icon>
-                    <span class="text">{{getCurrentSong()?.title}}</span>
+                    <marquee>
+                        <span class="text">{{getCurrentSong()?.title}}</span>
+                    </marquee>
                 </div>
                 <mat-divider></mat-divider>
                 <div class="song-album" *ngIf="getCurrentSong()?.album">
                     <mat-icon>collections</mat-icon>
-                    <span class="text">{{getCurrentSong()?.album}}</span>
+                    <span class="album" (click)="setSearchBar(getCurrentSong()?.album)">{{getCurrentSong()?.album?.trim()}}</span>
                 </div>
                 <div class="song-artist" *ngIf="getCurrentSong()?.artist">
                     <mat-icon>people</mat-icon>
-                    <span class="text">{{getCurrentSong()?.artist?.join(', ')}}</span>
+                    <div>
+                    <ng-container *ngFor="let artist of getCurrentSong()?.artist; let i=index">
+                        <span class="text" *ngIf="i">,&nbsp;</span><span class="artist" (click)="setSearchBar(artist)">{{artist?.trim()}}</span>
+                    </ng-container>
+                    </div>
                 </div>
             </div>
             <div class="album-image-wrapper" [style.background]="getCurrentSong()?.backgroundColor"></div>
@@ -127,22 +152,15 @@
                     </div>
                     <div class="full-screen">
                         <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="setFullScreen()"
-                        [title]="fullScreen?'Exit Full Screen (F11/ ESC)':'Full Screen (F11)'">
+                            [title]="fullScreen?'Exit Full Screen (F11/ ESC)':'Full Screen (F11)'">
                             <mat-icon>{{fullScreen?'fullscreen_exit':'fullscreen'}}</mat-icon>
                         </button>
                     </div>
                 </div>
                 <div class="player-wrapper ">
                     <div class="duration-slider ">
-                        <mat-slider 
-                            class="audio-player" 
-                            (input)="onPlayerInputChange($event)" 
-                            [max]="duration" 
-                            min="0"
-                            step="1"
-                            aria-labelledby="Slider for the Audio" 
-                            [(ngModel)]="currentDuration"  
-                            thumbLabel
+                        <mat-slider class="audio-player" (input)="onPlayerInputChange($event)" [max]="duration" min="0"
+                            step="1" aria-labelledby="Slider for the Audio" [(ngModel)]="currentDuration" thumbLabel
                             [displayWith]="formatTimeLabel">
                         </mat-slider>
                     </div>
@@ -158,8 +176,7 @@
                         </div>
                     </div>
                     <div class="controls-wrapper">
-                        <div class="rewind-button "
-                             title="Rewind 10s (Left Arrow)">
+                        <div class="rewind-button " title="Rewind 10s (Left Arrow)">
                             <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="rewind()">
                                 <mat-icon>replay_10</mat-icon>
                             </button>
@@ -172,17 +189,15 @@
                             </button>
                         </div>
 
-                        <div class="skip-previous-button "  title="Previous (P)">
+                        <div class="skip-previous-button " title="Previous (P)">
                             <button [disabled]="!currentTrackIndex || loop" mat-icon-button
                                 [style.color]="getCurrentSong()?.textColor " (click)="prevAudio() ">
                                 <mat-icon>skip_previous</mat-icon>
                             </button>
                         </div>
 
-                        <div class="play-button "  title="Play/ Pause (Space)">
-                            <button mat-icon-button 
-                                    [style.color]="getCurrentSong()?.textColor" 
-                                    (click)="playAudio()">
+                        <div class="play-button " title="Play/ Pause (Space)">
+                            <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="playAudio()">
                                 <mat-icon>{{audioStatus?'pause':'play_arrow'}}</mat-icon>
                             </button>
                         </div>
@@ -200,8 +215,7 @@
                             </button>
                         </div>
 
-                        <div class="forward-button" 
-                             title="Forward 10s (Left Arrow)">
+                        <div class="forward-button" title="Forward 10s (Left Arrow)">
                             <button mat-icon-button [style.color]="getCurrentSong()?.textColor" (click)="forward()">
                                 <mat-icon>forward_10</mat-icon>
                             </button>
