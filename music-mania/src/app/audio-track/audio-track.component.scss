@@ -127,32 +127,7 @@
                 height: 60px;
                 justify-content: center;
                 padding: 0 6%;
-
-                .track-list-data {
-                    align-items: center;
-                    background: rgba(255, 255, 255, 0.3);
-                    border: 2px solid;
-                    cursor: pointer;
-                    display: flex;
-                    flex-direction: row;
-                    font-weight: bold;
-                    line-height: initial;
-                    padding: 0 2px;
-
-                    .thumbnail {
-                        margin: 0 10px;
-                    }
-
-                    .marquee {
-                        .track-artist {
-                            font-size: 12px;
-                        }
-
-                        .track-album {
-                            font-size: 12px;
-                        }
-                    }
-                }
+                width: 50%;
             }
 
             .duration-slider {
@@ -326,15 +301,7 @@
                     }
 
                     .box3 {
-                        animation-name: quiet;
-                    }
-
-                    .box4 {
                         animation-name: loud;
-                    }
-
-                    .box5 {
-                        animation-name: quiet;
                     }
                 }
             }

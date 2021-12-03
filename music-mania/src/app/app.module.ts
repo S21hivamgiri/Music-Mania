@@ -17,12 +17,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { PlaylistComponent } from './playlist/playlist.component';
+import { EquilizerComponent } from './equilizer/equilizer.component';
+import { NextSongPreviewComponent } from './next-song-preview/next-song-preview.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     AudioTrackComponent,
     PlaylistComponent,
+    EquilizerComponent,
+    NextSongPreviewComponent,
   ],
   imports: [
     HttpClientModule, FormsModule,

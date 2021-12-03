@@ -62,7 +62,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.setLock();
     }
     else if (event.keyCode === F) {
-      this.lock || (this.sidenav?.open() && (this.isSearch = true))
+      this.lock || (this.sidenav?.open() && (this.isSearch = true) && this.setSearchBarFocus())
     }
     else if (event.keyCode === M) {
       this.muteAudio();
@@ -172,9 +172,14 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   setSearch() {
     this.isSearch = !this.isSearch;
+    this.setSearchBarFocus();
+  }
+
+  setSearchBarFocus() {
+    //The setTimOut is set because as soona s search bar opens focus cannot be attained 10ms timing for opening it after animation. 
     this.timeOut = setTimeout(() => {
       this.searchTextInput?.nativeElement.focus();
-    }, 1)
+    }, 10);
   }
 
   setSearchBar(searchText?: string) {
@@ -196,27 +201,28 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   sortAndShuffleSongs() {
     let allTracks;
     allTracks = sortSongsByProperty(this.currentPlaylist, this.sort);
-
-    if (this.shuffle) {
-      shuffleAllSongs(allTracks);
-    }
+    if (this.shuffle) shuffleAllSongs(allTracks);
     this.currentPlaylist = allTracks;
   }
 
   sortSongByTitle() {
     this.sort = 'title';
     this.sortSongByProperty();
+    //Set the current Index with respect to sorted list if current playlist === searched playlist
+    this.currentTrackIndex = this.getCurrentIndex();
   }
 
   sortSongByAlbum() {
     this.sort = 'album';
     this.sortSongByProperty();
+    this.currentTrackIndex = this.getCurrentIndex();
   }
 
   sortSongByProperty() {
     if (!this.isCurrentPlaylist()) {
       this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.sort);
     } else {
+      this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.sort);
       this.currentPlaylist = sortSongsByProperty(this.currentPlaylist, this.sort);
     }
   }
@@ -279,8 +285,27 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.playAudio();
   }
 
-  setCurrentIndex(i: number) {
-    if (!this.isCurrentPlaylist()) this.currentPlaylist = this.searchedPlaylist;
+  getCurrentIndex() {
+    if (!this.isCurrentPlaylist()) {
+      return this.currentTrackIndex;
+    } else {
+      let currentTrackId = this.currentSong._id
+      let data = this.currentPlaylist.findIndex((data) => { return data._id === currentTrackId })
+      return data;
+    }
+  }
+
+  setCurrentIndex(i: number, id: string) {
+    const isSamePlayList = this.isCurrentPlaylist();
+    if (isSamePlayList && (this.currentSong._id === id))
+      return;
+    if (this.currentSong._id === id && !isSamePlayList) {
+      this.currentPlaylist = this.searchedPlaylist;
+      this.currentTrackIndex = i;
+      return;
+    }
+    if (!isSamePlayList) this.currentPlaylist = this.searchedPlaylist;
+
     this.audioStatus = false;
     this.currentTrackIndex = i;
     this.setAudioPlayer();
@@ -298,10 +323,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.playAudio();
   }
 
-  getNextVideo() {
+  getNextSong() {
     if (this.loop) return this.currentSong;
     else {
-      if (this.currentTrackIndex < this.currentPlaylist.length - 1) return this.currentPlaylist[this.currentTrackIndex+1];
+      if (this.currentTrackIndex < this.currentPlaylist.length - 1) return this.currentPlaylist[this.currentTrackIndex + 1];
       else return this.currentPlaylist[0];
     }
   }

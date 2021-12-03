@@ -60,7 +60,7 @@
         <mat-list role="list">
             <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
                 <div *ngFor="let track of searchedPlaylist;let i=index;" cdkDrag>
-                    <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i)">
+                    <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i, track._id)">
                         <div class="utiity-box">
                             <div class="drag-handle mr-3" [style.color]="currentSong?.textColor" cdkDragHandle
                                 *ngIf="isCurrentPlaylist()">
@@ -88,11 +88,11 @@
                                 [style.background]="currentSong?.textColor"></span>
                             <span class="box" [class.box2]="audioStatus"
                                 [style.background]="currentSong?.textColor"></span>
+                            <span class="box" [class.box1]="audioStatus"
+                                [style.background]="currentSong?.textColor"></span>
                             <span class="box" [class.box3]="audioStatus"
                                 [style.background]="currentSong?.textColor"></span>
-                            <span class="box" [class.box4]="audioStatus"
-                                [style.background]="currentSong?.textColor"></span>
-                            <span class="box" [class.box5]="audioStatus"
+                            <span class="box" [class.box1]="audioStatus"
                                 [style.background]="currentSong?.textColor"></span>
                         </span>
                     </mat-list-item>
@@ -164,32 +164,13 @@
                     </div>
                 </div>
                 <div class="player-wrapper">
-                    <div class="next-audio-wrapper" >
-                        <div class="track-list-data"*ngIf="lock||currentDuration>duration-60" (click)="nextAudio()" [title]="getNextVideo()?.title" [style.borderColor]="currentSong?.textColor">
-                            <div class="track-text" class="marquee">
-                                <span class="track-title" [style.color]="getNextVideo()?.textColor">
-                                    Upcoming
-                                </span>
-                                <br>
-                                <span class="track-title" [style.color]="getNextVideo()?.textColor">
-                                    Song
-                                </span>
-                            </div>
-                            <img [src]="getThumbNailSrc(getNextVideo()?.title)" class="thumbnail"
-                                [title]="getNextVideo()?.album">
-                            <div class="track-text" class="marquee">
-                                <span class="track-title" [style.color]="getNextVideo()?.textColor">
-                                    {{getNextVideo()?.title}}
-                                </span>
-                                <br>
-                                <span class="track-album" [style.color]="getNextVideo()?.textColor">
-                                    {{getNextVideo()?.album}}
-                                </span>
-                                <br>
-                                <span class="track-artist" [style.color]="getNextVideo()?.textColor">
-                                    {{getNextVideo()?.artist}}
-                                </span>
-                            </div>
+                    <div class='equilizer-wrapper' *ngIf="lock && audioStatus">
+                        <app-equilizer [currentSong]='currentSong'></app-equilizer>
+                    </div>
+                    <div class="next-audio-wrapper">
+                        <div class='next-song-preview' *ngIf="lock||currentDuration>duration-60">
+                            <app-next-song-preview [lock]='lock' [nextSong]="getNextSong()"
+                                (nextAudioEvent)='nextAudio()'></app-next-song-preview>
                         </div>
                     </div>
                     <div class="duration-slider" *ngIf="!lock">
@@ -209,7 +190,7 @@
                             </span>
                         </div>
                     </div>
-                    <div class="controls-wrapper"  *ngIf="!lock">
+                    <div class="controls-wrapper" *ngIf="!lock">
                         <div class="rewind-button " title="Rewind 10s (Left Arrow)">
                             <button mat-icon-button [style.color]="currentSong?.textColor" (click)="rewind()">
                                 <mat-icon>replay_10</mat-icon>

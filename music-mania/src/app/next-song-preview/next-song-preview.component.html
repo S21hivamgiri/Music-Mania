@@ -1,0 +1,29 @@
+<div class="track-list-data" (click)="lock||nextAudio()" [title]="nextSong?.title"
+    [style.borderColor]="nextSong?.textColor" [style.background]="nextSong?.backgroundColor">
+    <div class="track-text" class="marquee" [style.color]="nextSong?.textColor">
+        <mat-icon>library_music</mat-icon>
+    </div>
+    <div class="track-text" class="marquee" [style.color]="nextSong?.textColor">
+        <span class="track-title">
+            Upcoming
+        </span>
+        <br>
+        <span class="track-title">
+            Song
+        </span>
+    </div>
+    <img [src]="getThumbNailSrc(nextSong?.title)" class="thumbnail" [title]="nextSong?.album">
+    <div class="track-text" class="marquee">
+        <span class="track-title" [style.color]="nextSong?.textColor">
+            {{nextSong?.title}}
+        </span>
+        <br>
+        <span class="track-album" [style.color]="nextSong?.textColor">
+            {{nextSong?.album}}
+        </span>
+        <br>
+        <span class="track-artist" [style.color]="nextSong?.textColor">
+            {{nextSong?.artist}}
+        </span>
+    </div>
+</div>
