@@ -1,0 +1,33 @@
+<div class="navbar" [style.backgroundColor]="!displayTitle||'#000000'">
+    <div class="logo-wrapper" (click)="router.navigate(['/'])">
+        <div class="logo-container">
+            <a title="MusicMania">
+                <img src="/assets/music-mania-logo.png" class="logo-img"
+                    [style.animationPlayState]="isPlaying?'running':'paused'"
+                    [style.backgroundColor]="!displayTitle?'transparent': '#fff'">
+            </a>
+        </div>
+        <div class="title-name" *ngIf="displayTitle">
+            <span class="title-name-container">
+                MUS<img src="/assets/music-mania-i.png" class="title-i">C MAN<img src="/assets/music-mania-i.png"
+                    class="title-i">A
+            </span>
+            <app-playing-animation [audioStatus]="true" color="#FFD700"></app-playing-animation>
+        </div>
+    </div>
+    <div class="user-wrapper" [matMenuTriggerFor]="menu"  [style.backgroundColor]="!displayTitle||'#ffffff'"
+                    [style.animationPlayState]="isPlaying?'running':'paused'">?</div>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>
+            <mat-icon  [style.color]="currentSong?.textColor">login</mat-icon>
+            <span  [style.color]="currentSong?.textColor">Log In</span>
+        </button><button mat-menu-item>
+            <mat-icon  [style.color]="currentSong?.textColor">logout</mat-icon>
+            <span  [style.color]="currentSong?.textColor">Log Out</span>
+        </button>
+        <button mat-menu-item>
+            <mat-icon  [style.color]="currentSong?.textColor">app_registration</mat-icon>
+            <span  [style.color]="currentSong?.textColor">Sign Up!</span>
+        </button>
+    </mat-menu>
+</div>

@@ -19,6 +19,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { EquilizerComponent } from './equilizer/equilizer.component';
 import { NextSongPreviewComponent } from './next-song-preview/next-song-preview.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { PlayingAnimationComponent } from './playing-animation/playing-animation.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,9 @@ import { NextSongPreviewComponent } from './next-song-preview/next-song-preview.
     PlaylistComponent,
     EquilizerComponent,
     NextSongPreviewComponent,
+    NavbarComponent,
+    HomepageComponent,
+    PlayingAnimationComponent,
   ],
   imports: [
     HttpClientModule, FormsModule,

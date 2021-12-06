@@ -1,11 +1,11 @@
 <mat-sidenav-container class="container" hasBackdrop="false">
     <mat-sidenav #sidenav class="playlist-sidenav" mode="side">
         <div class="fixed-navbar">
-            <div class="close-button " [style.color]="currentSong?.textColor">
-                <button mat-icon-button (click)="setSearch()">
+            <div class="close-button" [style.color]="currentSong?.textColor">
+                <button mat-icon-button title="Search (S)" (click)="setSearch()">
                     <mat-icon>search</mat-icon>
                 </button>
-                <button mat-icon-button (click)="sidenav.close();this.isSearch = false;searchItem='';filterSong();">
+                <button mat-icon-button title="Close Playlist(Z)" (click)="sidenav.close();this.isSearch = false;searchItem='';filterSong();">
                     <mat-icon>close</mat-icon>
                 </button>
                 <button mat-icon-button [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
@@ -83,18 +83,10 @@
                                 </div>
                             </div>
                         </div>
-                        <span class="boxContainer" *ngIf="currentSong?._id===track?._id">
-                            <span class="box" [class.box1]="audioStatus"
-                                [style.background]="currentSong?.textColor"></span>
-                            <span class="box" [class.box2]="audioStatus"
-                                [style.background]="currentSong?.textColor"></span>
-                            <span class="box" [class.box1]="audioStatus"
-                                [style.background]="currentSong?.textColor"></span>
-                            <span class="box" [class.box3]="audioStatus"
-                                [style.background]="currentSong?.textColor"></span>
-                            <span class="box" [class.box1]="audioStatus"
-                                [style.background]="currentSong?.textColor"></span>
-                        </span>
+                        <ng-container *ngIf="currentSong?._id===track?._id">
+                            <app-playing-animation [audioStatus]="audioStatus" [color]="currentSong?.textColor"></app-playing-animation>
+                        </ng-container>
+                        
                     </mat-list-item>
                     <mat-divider></mat-divider>
                     <div *cdkDragPreview class='preview-class-text'>
@@ -108,6 +100,7 @@
         </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>
+        <app-navbar *ngIf="!lock" [isPlaying]="audioStatus" [currentSong]="currentSong"></app-navbar>
         <div class="page-wrapper">
             <div class="album-data" [style.background]="currentSong?.backgroundColor"
                 [style.color]="currentSong?.textColor"
@@ -145,9 +138,9 @@
                 </audio>
             </div>
             <div class="control-panel-wrapper">
-                <div class="full-screen-wrapper ">
+                <div class="full-screen-wrapper">
                     <div class="playlist" *ngIf="!lock" title="Open PlayList (Z)">
-                        <button mat-icon-button [style.color]="currentSong?.textColor " (click)="sidenav.toggle()">
+                        <button mat-icon-button [style.color]="currentSong?.textColor" (click)="sidenav.toggle()">
                             <mat-icon>queue_music</mat-icon>
                         </button>
                     </div>
@@ -157,7 +150,7 @@
                         </button>
                     </div>
                     <div class="full-screen" *ngIf="!lock"
-                        [title]="fullScreen?'Exit Full Screen (F11/ ESC)':'Full Screen (F11)'">
+                        [title]="fullScreen?'Exit Full Screen (F/F11/ ESC)':'Full Screen (F/F11)'">
                         <button mat-icon-button [style.color]="currentSong?.textColor" (click)="setFullScreen()">
                             <mat-icon>{{fullScreen?'fullscreen_exit':'fullscreen'}}</mat-icon>
                         </button>
@@ -180,52 +173,52 @@
                         </mat-slider>
                     </div>
                     <div class="duration-wrapper" *ngIf="!lock">
-                        <div class="current-duration ">
-                            <span class="current-duration " id="duration-content"
+                        <div class="current-duration">
+                            <span class="current-duration" id="duration-content"
                                 [style.color]="currentSong?.textColor">00:00</span>
                         </div>
-                        <div class="total-duration ">
+                        <div class="total-duration">
                             <span class="total-duration" id="total-duration-content"
                                 [style.color]="currentSong?.textColor">00:00
                             </span>
                         </div>
                     </div>
                     <div class="controls-wrapper" *ngIf="!lock">
-                        <div class="rewind-button " title="Rewind 10s (Left Arrow)">
+                        <div class="rewind-button" title="Rewind 10s (Left Arrow)">
                             <button mat-icon-button [style.color]="currentSong?.textColor" (click)="rewind()">
                                 <mat-icon>replay_10</mat-icon>
                             </button>
                         </div>
 
-                        <div class="shuffle " title="Shuffle/ Sort(S)">
+                        <div class="shuffle" title="Shuffle/ Sort(X)">
                             <button mat-icon-button [disabled]="loop" [style.color]="currentSong?.textColor"
                                 (click)="setShuffle()">
                                 <mat-icon>{{shuffle?"shuffle_on":"shuffle"}}</mat-icon>
                             </button>
                         </div>
 
-                        <div class="skip-previous-button " title="Previous (P)">
+                        <div class="skip-previous-button" title="Previous (P)">
                             <button [disabled]="!currentTrackIndex || loop" mat-icon-button
-                                [style.color]="currentSong?.textColor " (click)="prevAudio() ">
+                                [style.color]="currentSong?.textColor" (click)="prevAudio()">
                                 <mat-icon>skip_previous</mat-icon>
                             </button>
                         </div>
 
-                        <div class="play-button " title="Play/ Pause (Space)">
+                        <div class="play-button" title="Play/ Pause (Space)">
                             <button mat-icon-button [style.color]="currentSong?.textColor" (click)="playAudio()">
                                 <mat-icon>{{audioStatus?'pause':'play_arrow'}}</mat-icon>
                             </button>
                         </div>
 
-                        <div class="skip-next-button " title="Next (N)">
-                            <button [disabled]="loop" mat-icon-button [style.color]="currentSong?.textColor "
-                                (click)="nextAudio() ">
+                        <div class="skip-next-button" title="Next (N)">
+                            <button [disabled]="loop" mat-icon-button [style.color]="currentSong?.textColor"
+                                (click)="nextAudio()">
                                 <mat-icon>skip_next</mat-icon>
                             </button>
                         </div>
 
                         <div class="repeat" title="Repeat (R)">
-                            <button mat-icon-button [style.color]="currentSong?.textColor " (click)="loop = !loop">
+                            <button mat-icon-button [style.color]="currentSong?.textColor" (click)="loop = !loop">
                                 <mat-icon>{{loop?"repeat_on":"repeat_one"}}</mat-icon>
                             </button>
                         </div>
@@ -237,15 +230,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="volume-layer " *ngIf="!lock">
-                    <div class="volume-slider ">
-                        <mat-slider class="audio-volume " (change)="setVolume() " max=" 1 " min="0 " step="0.1 "
-                            vertical="true " [(ngModel)]="volume " aria-labelledby="Slider for the Volume ">
+                <div class="volume-layer" *ngIf="!lock">
+                    <div class="volume-slider">
+                        <mat-slider class="audio-volume" (change)="setVolume()" max=" 1" min="0" step="0.1"
+                            vertical="true" [(ngModel)]="volume" aria-labelledby="Slider for the Volume">
                         </mat-slider>
                     </div>
 
-                    <div class="volume-button " (click)="muteAudio() ">
-                        <button mat-icon-button [style.color]="currentSong?.textColor ">
+                    <div class="volume-button" (click)="muteAudio()">
+                        <button mat-icon-button [style.color]="currentSong?.textColor">
                             <mat-icon>
                                 {{muted?'volume_off ': volume>0.5?'volume_up ':volume===0?'volume_mute':'volume_down '}}
                             </mat-icon>

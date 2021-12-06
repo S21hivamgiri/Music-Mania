@@ -1,4 +1,4 @@
-import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW } from '@angular/cdk/keycodes';
+import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW, X } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
@@ -13,6 +13,7 @@ import { filterSongs } from '../controller/filter-song-controller';
 import { shuffleAllSongs, sortSongsByProperty } from '../controller/sort-shuffle-controller';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-audio-track',
@@ -25,10 +26,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     if (event.keyCode === SPACE) {
       this.playAudio();
     }
-    else if (event.keyCode === F11) {
+    else if (event.keyCode === F11 || event.keyCode === F) {
       this.lock || this.setFullScreen();
     }
-    else if (event.keyCode === S) {
+    else if (event.keyCode === X) {
       this.lock || this.setShuffle();
     }
     else if (event.keyCode === LEFT_ARROW) {
@@ -61,7 +62,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.lock = false;
       this.setLock();
     }
-    else if (event.keyCode === F) {
+    else if (event.keyCode === S) {
       this.lock || (this.sidenav?.open() && (this.isSearch = true) && this.setSearchBarFocus())
     }
     else if (event.keyCode === M) {
@@ -106,7 +107,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   volume = 1;
   loop = false;
 
-  constructor(private trackStore: TrackStore, readonly changeDetectionRef: ChangeDetectorRef, readonly sideNav: ElementRef, @Inject(DOCUMENT) private document: any) { }
+  constructor(private titleService: Title, private trackStore: TrackStore, readonly changeDetectionRef: ChangeDetectorRef, readonly sideNav: ElementRef, @Inject(DOCUMENT) private document: any) { }
 
   ngOnInit() {
     this.elem = document.documentElement;
@@ -157,7 +158,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   setAudioPlayer() {
     this.currentSong = this.currentPlaylist[this.currentTrackIndex];
-    this.audioSource = `${environment.apiAddress}track/stream/${this.currentPlaylist[this.currentTrackIndex]._id}`;
+    this.titleService.setTitle('MusicMania | ' + this.currentSong.title);
+    this.audioSource = `${environment.apiAddress}track/stream/${this.currentSong._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.src = this.audioSource;
     myAudio.onended = () => { this.nextAudio(); }
@@ -382,7 +384,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   ngOnDestroy() {
-    this.interval.clearInterval();
+    clearInterval(this.interval);
     clearTimeout(this.timeOut);
     this.textValueSubject.unsubscribe();
     document.removeEventListener('fullscreenchange', () => {
