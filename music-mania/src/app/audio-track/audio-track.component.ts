@@ -79,9 +79,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   tracks: Track[] = [];
   searchedPlaylist: Track[] = [];
   currentPlaylist: Track[] = [];
-  isSearch = false;
-  lock = false;
   elem: any;
+  searchItem = '';
   interval: any;
   timeOut: any;
   currentSong: Track = {
@@ -94,12 +93,13 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     picture: ''
   };
 
+  isSearch = false;
+  lock = false;
   sort = 'title';
   audioStatus = false;
   audioSource = "";
   duration = 1;
   currentDuration = 0;
-  searchItem = '';
   shuffle = true;
   fullScreen = false;
   currentTrackIndex = 0;
@@ -117,6 +117,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.filterSong();
       this.sortAndShuffleSongs();
       this.setAudioPlayer();
+    });
+
+    this.trackStore.currentSong.subscribe((data) => {
+      this.currentSong= data;
     });
 
     this.interval = setInterval(() => {
@@ -157,7 +161,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   setAudioPlayer() {
-    this.currentSong = this.currentPlaylist[this.currentTrackIndex];
+    this.trackStore.currentSong.next(this.currentPlaylist[this.currentTrackIndex]);
     this.titleService.setTitle('MusicMania | ' + this.currentSong.title);
     this.audioSource = `${environment.apiAddress}track/stream/${this.currentSong._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
@@ -168,7 +172,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   isCurrentPlaylist() {
-    return this.currentPlaylist.length == this.searchedPlaylist.length &&
+    return this.currentPlaylist.length === this.searchedPlaylist.length &&
       this.currentPlaylist.every((this_i, i) => { return this_i == this.searchedPlaylist[i] })
   }
 
@@ -282,7 +286,11 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   prevAudio() {
     this.audioStatus = !this.audioStatus;
-    --this.currentTrackIndex;
+    if (this.loop) this.currentTrackIndex;
+    else {
+      if (this.currentTrackIndex === 0) this.currentTrackIndex = this.currentPlaylist.length - 1;
+      else --this.currentTrackIndex;
+    }
     this.setAudioPlayer();
     this.playAudio();
   }

@@ -11,16 +11,21 @@ export function getCurrentTimeInFormat(e: any) {
     let myAudio: HTMLMediaElement | null = e.getPlayer();
     e.currentDuration = Math.floor(myAudio?.currentTime || 0);
     let currentTime = getFormattedTime(e.currentDuration);
-    let durationDom = document.getElementById('duration-content');
-    durationDom!.innerHTML = currentTime;
+    if (!e.lock) {
+        let durationDom = document.getElementById('duration-content');
+        durationDom!.innerHTML = currentTime;
+    } 
     return currentTime;
 }
 
 export function getDurationInFormat(e: any) {
     let myAudio: HTMLMediaElement | null = e.getPlayer();
     e.duration = Math.floor(myAudio?.duration || 0);
-    let durationDom = document.getElementById('total-duration-content');
     let finaDuration = e.duration ? getFormattedTime(e.duration) : '00:00'
-    durationDom!.innerHTML = finaDuration;
+    if (!e.lock) {
+        let durationDom = document.getElementById('total-duration-content');
+        durationDom!.innerHTML = finaDuration;
+    }
+
 }
 

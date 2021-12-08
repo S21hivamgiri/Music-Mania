@@ -3,9 +3,9 @@
         <div class="fixed-navbar">
             <div class="close-button" [style.color]="currentSong?.textColor">
                 <button mat-icon-button title="Search (S)" (click)="setSearch()">
-                    <mat-icon>search</mat-icon>
+                    <mat-icon>{{isSearch?'search_off':'search'}}</mat-icon>
                 </button>
-                <button mat-icon-button title="Close Playlist(Z)" (click)="sidenav.close();this.isSearch = false;searchItem='';filterSong();">
+                <button mat-icon-button title="Close Playlist(Z)" (click)="sidenav.close();isSearch = false;searchItem='';filterSong();">
                     <mat-icon>close</mat-icon>
                 </button>
                 <button mat-icon-button [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
@@ -158,7 +158,7 @@
                 </div>
                 <div class="player-wrapper">
                     <div class='equilizer-wrapper' *ngIf="lock && audioStatus">
-                        <app-equilizer [currentSong]='currentSong'></app-equilizer>
+                        <app-equilizer></app-equilizer>
                     </div>
                     <div class="next-audio-wrapper">
                         <div class='next-song-preview' *ngIf="lock||currentDuration>duration-60">
@@ -198,7 +198,7 @@
                         </div>
 
                         <div class="skip-previous-button" title="Previous (P)">
-                            <button [disabled]="!currentTrackIndex || loop" mat-icon-button
+                            <button [disabled]="loop" mat-icon-button
                                 [style.color]="currentSong?.textColor" (click)="prevAudio()">
                                 <mat-icon>skip_previous</mat-icon>
                             </button>

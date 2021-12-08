@@ -1,0 +1,182 @@
+@import "/src/styles.scss";
+
+.container {
+    &.second {
+        background: #000000;
+
+        .intro-text {
+            .intro-lead-in {
+                .closing {
+                    margin-left: 150px;
+                }
+
+            }
+        }
+
+        .player {
+            .cta-button {
+                .mat-icon {
+                    color: #000000;
+                }
+
+                color: #000000;
+            }
+        }
+    }
+
+    &.third {
+        .intro-text {
+            .intro-lead-in {
+                .closing {
+                    margin-left: 225px;
+                }
+            }
+        }
+
+        .player {
+            .cta-button {
+                .mat-icon {
+                    color: #373737;
+                }
+
+                color: #373737;
+            }
+        }
+    }
+    align-items: center;
+    background: #373737;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+
+    height: 100vh;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+
+    .intro-text {
+        .intro-lead-in {
+            color: white;
+            font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 40px;
+            margin-bottom: 25px;
+
+            .magic {
+                animation: magical infinite 3s;
+                margin-top: -32px;
+                position: absolute;
+                visibility: hidden;
+            }
+
+            .music {
+                animation: music infinite 3s;
+                margin-top: 0;
+                position: absolute;
+            }
+
+            .closing {
+                margin-left: 50px;
+            }
+        }
+    }
+
+    .player {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .cta-button {
+            align-items: center;
+            background: $music-mania-pink;
+            border-radius: 40px 10px;
+            cursor: pointer;
+            display: flex;
+            font-size: 25px;
+            font-weight: 600;
+            justify-content: center;
+            padding: 10px 30px 10px 10px;
+
+            .mat-icon {
+                font-size: 40px;
+                font-size: 40px;
+                height: 40px;
+                padding-right: 20px;
+                width: 40px;
+            }
+        }
+
+        .intro-desc {
+            color: #fff;
+            font-size: 20px;
+            padding-top: 10px;
+        }
+
+        .material-icons {
+            color: $music-mania-pink;
+            cursor: pointer;
+            font-size: 150px;
+            font-size: 150px;
+            height: 150px;
+            width: 150px;
+
+            &:hover {
+                transform: scale(1.2);
+            }
+        }
+    }
+}
+
+@keyframes music {
+    0% {
+        margin-top: 0;
+        text-decoration: line-through red;
+    }
+
+    40% {
+        margin-top: 32px;
+        text-decoration: line-through red;
+    }
+
+    70% {
+        margin-top: 32px;
+        text-decoration: line-through red;
+    }
+
+    100% {
+        margin-top: 0;
+        text-decoration: none;
+    }
+}
+
+@keyframes magical {
+    0% {
+        margin-top: -32px;
+        visibility: hidden;
+    }
+
+    10% {
+        visibility: hidden;
+    }
+
+    40% {
+        margin-top: 0;
+        visibility: visible;
+    }
+
+    70% {
+        margin-top: 0;
+        visibility: visible;
+    }
+
+    75% {
+        visibility: hidden;
+    }
+
+    100% {
+        margin-top: -32px;
+        visibility: hidden;
+    }
+}

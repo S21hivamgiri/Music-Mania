@@ -30,6 +30,16 @@ export class TrackStore {
             );
         return loadTracks$;
     }
+    
+    currentSong: BehaviorSubject<Track> = new BehaviorSubject(<Track>{
+        backgroundColor: '',
+        _id: '',
+        textColor: '',
+        title: '',
+        artist: [],
+        album: '',
+        picture: ''
+    });
 
     // saveTrack(trackId: string, changes: Partial<Track>): Observable<any> {
 

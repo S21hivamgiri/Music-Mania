@@ -14,5 +14,15 @@ export class NavbarComponent implements OnInit {
   constructor(readonly router: Router) { }
 
   ngOnInit(): void {
+
+    window.addEventListener('scroll', (e: Event)=> {
+      if (document.body.scrollTop > 100 ||
+        document.documentElement.scrollTop > 100){
+        this.displayTitle=false;
+    }else{
+        this.displayTitle = true;
+    }
+    }, true);
+
   }
 }

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { TrackStore } from '../services/track-store';
 
 @Component({
   selector: 'app-homepage',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomepageComponent implements OnInit {
 
-  constructor() { }
+  constructor(readonly router: Router, private trackStore: TrackStore) { trackStore.loadAllTracks().subscribe(); }
 
   ngOnInit(): void {
   }

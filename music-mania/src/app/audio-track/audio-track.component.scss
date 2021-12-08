@@ -11,6 +11,9 @@
         padding: 50px;
         width: 50%;
         z-index: 100;
+        justify-content: space-around;
+        padding-bottom: 250px;
+        padding-top: 150px;
 
         .song-title {
             align-items: center;
@@ -19,8 +22,6 @@
             font-weight: 700;
             gap: 30px;
             line-height: 1;
-            margin-bottom: 90px;
-            margin-top: 120px;
             text-transform: capitalize;
         }
 
@@ -31,8 +32,6 @@
             font-weight: 600;
             gap: 30px;
             line-height: 1;
-            margin-bottom: 10px;
-            margin-top: 10px;
             text-transform: capitalize;
 
             .album {
@@ -47,7 +46,6 @@
             font-weight: bold;
             gap: 30px;
             line-height: 1;
-            margin-top: 10px;
             text-transform: capitalize;
 
             .artist {

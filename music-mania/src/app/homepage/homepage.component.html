@@ -1,1 +1,42 @@
 <app-navbar [isPlaying]="false" [displayTitle]="true"></app-navbar>
+<header>
+    <div class="container">
+        <div class="intro-text">
+            <div class="intro-lead-in">Welcome to the World of Soft M<span class='music'>us</span>
+                <span class='magic'>ag</span><span class='closing'>ic</span>
+            </div>
+        </div>
+        <div class="player">
+            <span class="material-icons" (click)="router.navigate(['/track'])"title="Play Songs Now!">
+                play_circle
+            </span>
+            <span class='intro-desc'>Listen to unlimted Soft Indian Melodies.</span>
+        </div>
+    </div>
+</header>
+<section>
+    <div class="container second">
+    <div class="intro-text">
+        <div class="intro-lead-in">Music can make heart, mind and soul <span class='music'>happy</span>
+        <span class='magic'>ecstatic</span><span class='closing'> .</span>
+        </div>
+    </div>
+    <div class="player">
+        <button class="login cta-button" title="Login/ SignUp">
+        <mat-icon>login</mat-icon>Login/ SignUp
+    </button><span class='intro-desc'>Get Access to create personal Playlists</span>
+    </div>
+</div>
+</section><section>
+    <div class="container third">
+        <div class="intro-text">
+            <div class="intro-lead-in">Music can heal an pain <span class='music'>within you</span>
+                <span class='magic'>in the world</span><span class='closing'> .</span>
+            </div>
+        </div>
+        <div class="player">
+            <button class="about cta-button" title="About"><mat-icon>info</mat-icon>About</button>
+            <span class='intro-desc'>Learn more about App and Developer.</span>
+        </div>
+    </div>
+</section>

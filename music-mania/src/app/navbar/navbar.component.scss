@@ -5,7 +5,7 @@
     display: flex;
     justify-content: space-between;
     padding: 10px 50px 0;
-    position: absolute;
+    position: fixed;
     width: -webkit-fill-available;
     z-index: 2000;
 
@@ -19,7 +19,7 @@
             background-color: $music-mania-black;
             border: 2px solid #fff;
             border-radius: 0 30px 30px 0;
-            color: $music-mania-golden;
+            color: $music-mania-pink;
             display: flex;
             font-size: 26px;
             font-weight: 800;
