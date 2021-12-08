@@ -1,0 +1,122 @@
+@import "/src/styles.scss";
+
+.parallax {
+    background-attachment: fixed;
+    background-image: url("/assets/musical-background.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 1050px;
+}
+
+
+.about {
+    background-color: $music-mania-black;
+    color: $music-mania-pink;
+    display: flex;
+    flex-direction: row;
+    font-size: 40px;
+    font-weight: bold;
+    height: 40px;
+    justify-content: center;
+    padding-bottom: 30px;
+    padding-top: 30px;
+}
+
+.tips-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    .side-container {
+        background: #373737;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        padding: 140px 20px 60px;
+        width: 50%;
+
+        .tip-card {
+            display: flex;
+            flex-direction: row;
+            padding-bottom: 70px;
+
+            .number-class {
+                align-items: center;
+                color: $music-mania-pink;
+                display: flex;
+                flex-direction: row;
+                font-size: 36px;
+                font-weight: 800;
+                justify-content: center;
+                padding: 0 20px 0 10px;
+            }
+
+            .text-class {
+                display: flex;
+                flex-direction: column;
+
+                .title {
+                    color: $music-mania-pink;
+                    font-size: 24px;
+                }
+
+                .description {
+                    font-size: 20px;
+                    line-height: 1.2;
+                    padding-bottom: 10px;
+                    padding-top: 10px;
+
+                    code {
+                        background: rgba(0, 0, 0, 0.3);
+                        font-size: 24px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.parallax-container {
+    align-items: center;
+    background-color: transparent;
+    display: flex;
+    flex-direction: column;
+    margin-top: -980px;
+    z-index: 500;
+
+    .card-container {
+        padding-left: 30%;
+        padding-right: 30%;
+
+        .parallax-card {
+            background-color: transparent;
+            color: $music-mania-pink;
+            display: flex;
+            flex-direction: column;
+            font-weight: bold;
+            justify-content: center;
+            padding-bottom: 50px;
+            width: 500px;
+
+            .mat-card-subtitle {
+                color: $music-mania-pink;
+                display: flex;
+                font-weight: 200;
+                justify-content: flex-end;
+            }
+
+            .mat-card-title {
+                color: $music-mania-pink;
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .mat-card-content {
+                font-size: 26px;
+                font-weight: 800;
+                line-height: 1.3;
+            }
+        }
+    }
+}

@@ -1,4 +1,4 @@
-import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW, X } from '@angular/cdk/keycodes';
+import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW, X, C } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
@@ -67,6 +67,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     }
     else if (event.keyCode === M) {
       this.muteAudio();
+    }
+    else if (event.keyCode === C) {
+      this.lock || (this.sidenav?.open() && (this.searchedPlaylist = this.currentPlaylist) && (this.isSearch = false) && (this.searchItem = ''))
+      
     }
     event.preventDefault();
   }

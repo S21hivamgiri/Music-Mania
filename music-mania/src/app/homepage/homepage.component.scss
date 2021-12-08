@@ -9,7 +9,6 @@
                 .closing {
                     margin-left: 150px;
                 }
-
             }
         }
 
@@ -18,7 +17,6 @@
                 .mat-icon {
                     color: #000000;
                 }
-
                 color: #000000;
             }
         }
@@ -38,17 +36,16 @@
                 .mat-icon {
                     color: #373737;
                 }
-
                 color: #373737;
             }
         }
     }
+
     align-items: center;
     background: #373737;
     background-size: cover;
     display: flex;
     flex-direction: column;
-
     height: 100vh;
     justify-content: center;
     margin-left: auto;
@@ -129,20 +126,26 @@
     }
 }
 
+.footer {
+    position: fixed;
+    bottom: 0;
+    width:100%;
+}
+
 @keyframes music {
     0% {
         margin-top: 0;
-        text-decoration: line-through red;
+        text-decoration: line-through $music-mania-pink;
     }
 
     40% {
         margin-top: 32px;
-        text-decoration: line-through red;
+        text-decoration: line-through $music-mania-pink;
     }
 
     70% {
         margin-top: 32px;
-        text-decoration: line-through red;
+        text-decoration: line-through $music-mania-pink;
     }
 
     100% {

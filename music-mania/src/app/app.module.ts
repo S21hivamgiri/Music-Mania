@@ -22,6 +22,9 @@ import { NextSongPreviewComponent } from './next-song-preview/next-song-preview.
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { PlayingAnimationComponent } from './playing-animation/playing-animation.component';
+import { FooterComponent } from './footer/footer.component';
+import { AboutComponent } from './about/about.component';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,8 @@ import { PlayingAnimationComponent } from './playing-animation/playing-animation
     NavbarComponent,
     HomepageComponent,
     PlayingAnimationComponent,
+    FooterComponent,
+    AboutComponent,
   ],
   imports: [
     HttpClientModule, FormsModule,
@@ -41,8 +46,8 @@ import { PlayingAnimationComponent } from './playing-animation/playing-animation
     MatSliderModule, MatListModule,
     BrowserModule, DragDropModule,
     AppRoutingModule, MatInputModule,
-    BrowserAnimationsModule, MatChipsModule, 
-    MatMenuModule
+    BrowserAnimationsModule, MatChipsModule,
+    MatMenuModule, MatCardModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

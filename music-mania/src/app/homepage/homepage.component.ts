@@ -12,6 +12,7 @@ export class HomepageComponent implements OnInit {
   constructor(readonly router: Router, private trackStore: TrackStore) { trackStore.loadAllTracks().subscribe(); }
 
   ngOnInit(): void {
+    window.scrollTo(0,0);
   }
 
 }

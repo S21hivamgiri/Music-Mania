@@ -14,14 +14,26 @@ export class NavbarComponent implements OnInit {
   constructor(readonly router: Router) { }
 
   ngOnInit(): void {
+    window.addEventListener('scroll', (e: Event) => {
 
-    window.addEventListener('scroll', (e: Event)=> {
-      if (document.body.scrollTop > 100 ||
-        document.documentElement.scrollTop > 100){
-        this.displayTitle=false;
-    }else{
-        this.displayTitle = true;
-    }
+      if (!this.isPlaying) {
+        if (document.body.scrollTop > 100 ||
+          document.documentElement.scrollTop > 100) {
+          this.displayTitle = false;
+        } else {
+          this.displayTitle = true;
+        }
+      }
+
+      if ((document.body.scrollTop > window.innerHeight * 0.7 && document.body.scrollTop < window.innerHeight) ||
+        (document.documentElement.scrollTop > window.innerHeight * 0.7 && document.documentElement.scrollTop < window.innerHeight)) {
+        window.scrollTo({ top: window.innerHeight });
+      } else {
+        if ((document.body.scrollTop > window.innerHeight * 1.7 && document.body.scrollTop < 2 * window.innerHeight) ||
+          (document.documentElement.scrollTop > window.innerHeight * 1.7 && document.documentElement.scrollTop < 2 * window.innerHeight)) {
+          window.scrollTo({ top: window.innerHeight * 2 });
+        }
+      }
     }, true);
 
   }

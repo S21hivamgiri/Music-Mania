@@ -7,10 +7,10 @@
             </div>
         </div>
         <div class="player">
-            <span class="material-icons" (click)="router.navigate(['/track'])"title="Play Songs Now!">
+            <span class="material-icons" (click)="router.navigate(['/track'])" title="Play Songs Now!">
                 play_circle
             </span>
-            <span class='intro-desc'>Listen to unlimted Soft Indian Melodies.</span>
+            <span class='intro-desc'>Listen to unlimited Soft Indian Melodies.</span>
         </div>
     </div>
 </header>
@@ -30,13 +30,16 @@
 </section><section>
     <div class="container third">
         <div class="intro-text">
-            <div class="intro-lead-in">Music can heal an pain <span class='music'>within you</span>
+            <div class="intro-lead-in">Music can heal any pain <span class='music'>within you</span>
                 <span class='magic'>in the world</span><span class='closing'> .</span>
             </div>
         </div>
         <div class="player">
-            <button class="about cta-button" title="About"><mat-icon>info</mat-icon>About</button>
+            <button class="about cta-button" title="About" (click)="router.navigate(['/about'])" ><mat-icon>info</mat-icon>About</button>
             <span class='intro-desc'>Learn more about App and Developer.</span>
         </div>
+    </div>
+    <div class="footer">
+        <app-footer></app-footer>
     </div>
 </section>
