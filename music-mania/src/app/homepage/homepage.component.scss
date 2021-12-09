@@ -13,11 +13,12 @@
         }
 
         .player {
+            color: #000000;
+
             .cta-button {
                 .mat-icon {
                     color: #000000;
                 }
-                color: #000000;
             }
         }
     }
@@ -36,6 +37,7 @@
                 .mat-icon {
                     color: #373737;
                 }
+
                 color: #373737;
             }
         }
@@ -96,6 +98,10 @@
             justify-content: center;
             padding: 10px 30px 10px 10px;
 
+            &:hover {
+                transform: scale(1.2);
+            }
+
             .mat-icon {
                 font-size: 40px;
                 font-size: 40px;
@@ -127,9 +133,9 @@
 }
 
 .footer {
-    position: fixed;
     bottom: 0;
-    width:100%;
+    position: fixed;
+    width: 100%;
 }
 
 @keyframes music {

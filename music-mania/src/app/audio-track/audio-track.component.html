@@ -100,7 +100,7 @@
         </mat-list>
     </mat-sidenav>
     <mat-sidenav-content>
-        <app-navbar *ngIf="!lock" [isPlaying]="audioStatus" [currentSong]="currentSong"></app-navbar>
+        <app-navbar *ngIf="!lock" [isPlaying]="audioStatus"  [isBackGroundVisible]="false" [displayTitle]="false"></app-navbar>
         <div class="page-wrapper">
             <div class="album-data" [style.background]="currentSong?.backgroundColor"
                 [style.color]="currentSong?.textColor"

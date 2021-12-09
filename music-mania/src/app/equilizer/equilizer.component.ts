@@ -22,7 +22,6 @@ export class EquilizerComponent implements OnInit {
   ngOnInit(): void {
     this.trackStore.currentSong.subscribe((data) => {
       this.currentSong = data;
-      console.log('Hi');
     });
   }
 }
