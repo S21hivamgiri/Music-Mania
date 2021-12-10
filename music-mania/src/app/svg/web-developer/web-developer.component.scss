@@ -1,0 +1,94 @@
+:host {
+    width: 400px;
+    padding: 25px 0;
+}
+
+.scale-animation {
+    animation: scale 6s ease-in-out infinite alternate;
+    transform-origin: 50% 50%;
+}
+
+.evaporate-animation {
+    stroke-dasharray: 100;
+    visibility: visible;
+    animation: dash 3s linear infinite forwards;
+
+    &.delay-1 {
+        visibility: hidden;
+        animation-delay: 1s;
+    }
+
+    &.delay-2 {
+        visibility: hidden;
+        animation-delay: 2s;
+    }
+}
+
+.unequal-animation {
+    opacity: 1;
+    animation: visible 3s ease-in-out infinite alternate;
+
+    &.out-1 {
+        animation-delay: 0.5s;
+    }
+
+    &.out-2 {
+        animation-delay: 1s;
+    }
+
+    &.out-3 {
+        animation-delay: 1.5s;
+    }
+
+    &.out-4 {
+        animation-delay: 2s;
+    }
+
+    &.out-5 {
+        animation-delay: 2.5s;
+    }
+}
+
+@keyframes visible {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes scale {
+    0% {
+        transform: scale(0);
+    }
+
+    25% {
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(1.0);
+    }
+
+    75% {
+        transform: scale(0.5);
+    }
+
+    100% {
+        transform: scale(0.0);
+    }
+}
+
+@keyframes dash {
+    to {
+        visibility: visible;
+        transform: scaleY(-1.2);
+        stroke-dashoffset: 100;
+    }
+}

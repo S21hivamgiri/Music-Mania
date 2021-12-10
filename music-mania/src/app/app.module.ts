@@ -25,6 +25,7 @@ import { PlayingAnimationComponent } from './playing-animation/playing-animation
 import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { MatCardModule } from '@angular/material/card';
+import { WebDeveloperComponent } from './svg/web-developer/web-developer.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { MatCardModule } from '@angular/material/card';
     PlayingAnimationComponent,
     FooterComponent,
     AboutComponent,
+    WebDeveloperComponent,
   ],
   imports: [
     HttpClientModule, FormsModule,
