@@ -28,32 +28,32 @@
 
     &.note-1 {
         animation-delay: 4s;
-        animation: popup-far-left 6s ease-in-out infinite;
+        animation: popup-far-left 5s ease-in-out infinite;
     }
 
     &.note-2 {
         animation-delay: 4s;
-        animation: popup-right 6s ease-in-out infinite;
+        animation: popup-right 5s ease-in-out infinite;
     }
 
     &.note-3 {
         animation-delay: 4s;
-        animation: popup-far-left 6s ease-in-out infinite;
+        animation: popup-far-left 5s ease-in-out infinite;
     }
 
     &.note-4 {
         animation-delay: 4s;
-        animation: popup-right 6s ease-in-out infinite;
+        animation: popup-right 5s ease-in-out infinite;
     }
 
     &.note-5 {
         animation-delay: 4s;
-        animation: popup-love 6s ease-in-out infinite;
+        animation: popup-love 5s ease-in-out infinite;
     }
 
     &.note-6 {
         animation-delay: 4s;
-        animation: popup 6s ease-in-out infinite;
+        animation: popup 5s ease-in-out infinite;
     }
 }
 
@@ -65,7 +65,7 @@
 
 
     100% {
-        transform: translate(-700px, -700px) scale(2, 2);
+        transform: translate(-1200px, -1100px) scale(3, 3);
         opacity: 1;
     }
 }

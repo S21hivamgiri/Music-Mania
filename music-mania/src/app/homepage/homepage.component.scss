@@ -124,9 +124,10 @@
             font-size: 150px;
             height: 150px;
             width: 150px;
+            animation: scale-play 5s ease-in-out infinite alternate-reverse;
 
             &:hover {
-                transform: scale(1.2);
+                animation-play-state: paused;
             }
         }
     }
@@ -187,5 +188,16 @@
     100% {
         margin-top: -32px;
         visibility: hidden;
+    }
+}
+
+
+@keyframes scale-play {
+    from {
+        transform: scale(0.8);
+    }
+
+    to {
+        -webkit-transform: scale(1.2);
     }
 }

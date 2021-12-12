@@ -399,6 +399,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     clearInterval(this.interval);
     clearTimeout(this.timeOut);
     this.textValueSubject.unsubscribe();
+    let sliderClass = document.getElementsByTagName('style')[0];
+    if ((sliderClass.classList.contains('audio-tag'))) {
+      sliderClass.innerText = sliderClass.innerText.replace(sliderClass.innerText, '');
+    }
     document.removeEventListener('fullscreenchange', () => {
     });
     document.removeEventListener('webkitfullscreenchange', () => {

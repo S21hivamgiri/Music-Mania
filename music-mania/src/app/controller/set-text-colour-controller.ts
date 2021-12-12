@@ -12,6 +12,10 @@ export function setTextColorOnHeader(e: any) {
                     .mat-form-field-label{
                       color: ${textColor}!important;
                     }
+                    ::-webkit-scrollbar-thumb {
+                        background:${textColor}!important;
+                        border-radius: 10px;
+                    }
                     `
   let sliderClass = document.getElementsByTagName('style')[0];
   if (!(sliderClass.classList.contains('audio-tag'))) {
