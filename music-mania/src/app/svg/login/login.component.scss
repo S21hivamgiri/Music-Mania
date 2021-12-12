@@ -1,0 +1,142 @@
+:host {
+    width: 800px;
+}
+
+.rotate-elm {
+    animation: rotate 2s linear infinite;
+    offset-path: path('M84.14, 224.43 m -14, 0 a 14, 14 0 1, 1 28, 0 a 14, 14 0 1, 1 -28, 0');
+    transform-box: fill-box;
+    transform-origin: center center;
+}
+
+.dancing {
+    animation: dance 2s linear infinite;
+    transform-origin: left left;
+}
+
+.waving {
+    opacity: 0;
+    animation: wave 10s linear infinite;
+    offset-path: path('M10.34,-10.5a239.85,239.85,0,0,0,30,2c34,.16,52.19-7,84-11,23-2.89,40-2.47,59-2,66.76,1.66,79.94,20.62,160,32,50.68,7.21,86.32,5.43,94,5a427.23,427.23,0,0,0,101-18');
+
+
+    &.note-2 {
+        animation-delay: 2s;
+    }
+
+    &.note-3 {
+        animation-delay: 4s;
+    }
+
+    &.note-4 {
+        animation-delay: 6s;
+    }
+
+    &.note-5 {
+        animation-delay: 8s;
+    }
+}
+
+.animate-opacity {
+    animation: hms 12s ease-in-out infinite;
+    opacity: 0;
+
+    &.brain {
+        animation-delay: 4s;
+    }
+
+    &.soul {
+        animation-delay: 8s;
+    }
+}
+
+@keyframes wave {
+    0% {
+        opacity: 0;
+        offset-distance: 0%;
+    }
+
+    25% {
+        opacity: 0.5;
+        offset-distance: 25%;
+    }
+
+    50% {
+        opacity: 1;
+        offset-distance: 50%;
+    }
+
+    75% {
+        opacity: 0.5;
+        offset-distance: 75%;
+    }
+
+    100% {
+        opacity: 0;
+        offset-distance: 100%;
+    }
+}
+
+@keyframes hms {
+    0% {
+        opacity: 0.5;
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    16% {
+        opacity: 0.5;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+
+    50% {
+        opacity: 0;
+    }
+
+    66% {
+        opacity: 0;
+    }
+
+    82% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+
+@keyframes rotate {
+    from {
+        offset-distance: 0;
+    }
+
+    to {
+        offset-distance: 100%;
+    }
+}
+
+@keyframes dance {
+    0% {
+        transform: rotate(3deg);
+    }
+
+    33% {
+        transform: rotate(0deg);
+    }
+
+    66% {
+        transform: rotate(-3deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}

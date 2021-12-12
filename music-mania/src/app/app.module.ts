@@ -26,6 +26,8 @@ import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
 import { MatCardModule } from '@angular/material/card';
 import { WebDeveloperComponent } from './svg/web-developer/web-developer.component';
+import { PlayerComponent } from './svg/player/player.component';
+import { LoginComponent } from './svg/login/login.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +42,8 @@ import { WebDeveloperComponent } from './svg/web-developer/web-developer.compone
     FooterComponent,
     AboutComponent,
     WebDeveloperComponent,
+    PlayerComponent,
+    LoginComponent,
   ],
   imports: [
     HttpClientModule, FormsModule,
