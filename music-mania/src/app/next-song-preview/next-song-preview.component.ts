@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { environment } from '../environments/environment';
+import { Settings } from '../model/settings.model';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
 
@@ -9,23 +10,33 @@ import { TrackStore } from '../services/track-store';
   styleUrls: ['./next-song-preview.component.scss']
 })
 export class NextSongPreviewComponent implements OnInit {
-  @Input() lock=false;
   @Output() nextAudioEvent = new EventEmitter();
-  @Input() nextSong?:Track;
-  constructor(private trackStore:TrackStore) { }
-  tracks:Track[]=[];
+  nextSong?: Track;
+  settings!: Settings;
+
+  constructor(private trackStore: TrackStore) { }
+
   ngOnInit(): void {
-    this.trackStore.loadAllTracks().subscribe((data) => {
-      this.tracks = data;
-  });
-}
+    this.trackStore.settings.subscribe((data) => {
+      this.settings = data;
+      this.nextSong = this.getNextSong();
+    });
+  }
+
+  getNextSong() {
+    if (this.settings.loop) return this.settings.currentPlaylist[this.settings.currentTrackIndex];
+    else {
+      if (this.settings.currentTrackIndex < this.settings.currentPlaylist.length - 1)
+        return this.settings.currentPlaylist[this.settings.currentTrackIndex + 1];
+      else return this.settings.currentPlaylist[0];
+    }
+  }
 
   getThumbNailSrc(title?: string) {
-    return this.tracks.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
+    return this.settings?.currentPlaylist.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
   }
 
-  nextAudio(){
+  nextAudio() {
     this.nextAudioEvent.emit();
   }
-
 }

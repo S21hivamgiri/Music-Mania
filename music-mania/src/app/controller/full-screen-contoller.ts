@@ -1,5 +1,5 @@
 export function fullScreenContoller(e:any){
-    if (e.fullScreen) {
+    if (e.settings.fullScreen) {
         if (e.elem.requestFullscreen) {
             e.elem.requestFullscreen();
         } else if (e.elem.mozRequestFullScreen) {

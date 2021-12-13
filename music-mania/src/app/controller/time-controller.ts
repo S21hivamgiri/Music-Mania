@@ -9,9 +9,9 @@ export function getFormattedTime(time: number) {
 
 export function getCurrentTimeInFormat(e: any) {
     let myAudio: HTMLMediaElement | null = e.getPlayer();
-    e.currentDuration = Math.floor(myAudio?.currentTime || 0);
-    let currentTime = getFormattedTime(e.currentDuration);
-    if (!e.lock) {
+    e.settings.currentDuration = Math.floor(myAudio?.currentTime || 0);
+    let currentTime = getFormattedTime(e.settings.currentDuration);
+    if (!e.settings.lock) {
         let durationDom = document.getElementById('duration-content');
         durationDom!.innerHTML = currentTime;
     } 
@@ -20,9 +20,9 @@ export function getCurrentTimeInFormat(e: any) {
 
 export function getDurationInFormat(e: any) {
     let myAudio: HTMLMediaElement | null = e.getPlayer();
-    e.duration = Math.floor(myAudio?.duration || 0);
-    let finaDuration = e.duration ? getFormattedTime(e.duration) : '00:00'
-    if (!e.lock) {
+    e.settings.duration = Math.floor(myAudio?.duration || 0);
+    let finaDuration = e.settings.duration ? getFormattedTime(e.settings.duration) : '00:00'
+    if (!e.settings.lock) {
         let durationDom = document.getElementById('total-duration-content');
         durationDom!.innerHTML = finaDuration;
     }

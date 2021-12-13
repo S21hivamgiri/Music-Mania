@@ -1,24 +1,3 @@
-::ng-deep {
-    ::-webkit-scrollbar-track {
-        box-shadow: inset 0 0 5px grey;
-        border-radius: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-        background: #000000;
-    }
-
-    ::-webkit-scrollbar {
-        width: 10px;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background: #000000;
-        border-radius: 10px;
-    }
-
-}
-
 .page-wrapper {
     display: flex;
     height: 100%;
@@ -29,12 +8,12 @@
     .album-data {
         display: flex;
         flex-direction: column;
-        padding: 50px;
-        width: 50%;
-        z-index: 100;
         justify-content: space-around;
+        padding: 50px;
         padding-bottom: 250px;
         padding-top: 150px;
+        width: 50%;
+        z-index: 100;
 
         .song-title {
             align-items: center;
@@ -94,29 +73,6 @@
         width: 50%;
         z-index: 50
     }
-}
-
-.search-bar {
-    @keyframes slide-left {
-        from {
-            margin-left: 10%;
-            width: 0vw;
-        }
-
-        to {
-            margin-left: 0%;
-            width: 23vw;
-        }
-    }
-
-    .search-input-wrapper {
-        animation: 0.5s slide-left;
-        width: 22vw
-    }
-
-    animation: 0.5s slide-left;
-    padding:0 10px 10px 20px;
-    z-index: 2000;
 }
 
 .audio-container {
@@ -190,6 +146,25 @@
 }
 
 ::ng-deep {
+
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+        box-shadow: inset 0 0 5px grey;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #000000;
+    }
+
+    ::-webkit-scrollbar {
+        width: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #000000;
+        border-radius: 10px;
+    }
+
     .playlist-sidenav {
         width: 25vw;
 

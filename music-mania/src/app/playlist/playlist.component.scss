@@ -1,0 +1,22 @@
+.search-bar {
+    @keyframes slide-left {
+        from {
+            margin-left: 10%;
+            width: 0vw;
+        }
+
+        to {
+            margin-left: 0%;
+            width: 23vw;
+        }
+    }
+
+    .search-input-wrapper {
+        animation: 0.5s slide-left;
+        width: 22vw
+    }
+
+    animation: 0.5s slide-left;
+    padding:0 10px 10px 20px;
+    z-index: 2000;
+}

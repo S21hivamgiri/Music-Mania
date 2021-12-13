@@ -2,18 +2,16 @@ import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, 
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { environment } from '../environments/environment';
 import { DOCUMENT } from '@angular/common';
 import { MatSidenav } from '@angular/material/sidenav';
 import { fullScreenContoller } from '../controller/full-screen-contoller';
 import { setTextColorOnHeader } from '../controller/set-text-colour-controller';
 import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '../controller/time-controller';
-import { filterSongs } from '../controller/filter-song-controller';
 import { shuffleAllSongs, sortSongsByProperty } from '../controller/sort-shuffle-controller';
-import { Subject } from 'rxjs';
-import { debounceTime } from 'rxjs/operators';
 import { Title } from '@angular/platform-browser';
+import { PlaylistComponent } from '../playlist/playlist.component';
+import { Settings } from '../model/settings.model';
 
 @Component({
   selector: 'app-audio-track',
@@ -27,66 +25,61 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.playAudio();
     }
     else if (event.keyCode === F11 || event.keyCode === F) {
-      this.lock || this.setFullScreen();
+      this.settings.lock || this.setFullScreen();
     }
     else if (event.keyCode === X) {
-      this.lock || this.setShuffle();
+      this.settings.lock || this.setShuffle();
     }
     else if (event.keyCode === LEFT_ARROW) {
-      this.lock || this.rewind();
+      this.settings.lock || this.rewind();
     }
     else if (event.keyCode === RIGHT_ARROW) {
-      this.lock || this.forward();
+      this.settings.lock || this.forward();
     }
     else if (event.keyCode === UP_ARROW) {
-      if (this.volume < 1) this.volume = this.volume + 0.1;
+      if (this.settings.volume < 1) this.settings.volume = this.settings.volume + 0.1;
       this.setVolume();
     }
     else if (event.keyCode === DOWN_ARROW) {
-      if (this.volume > 0) this.volume = this.volume - 0.1;
+      if (this.settings.volume > 0) this.settings.volume = this.settings.volume - 0.1;
       this.setVolume();
     }
     else if (event.keyCode === R) {
-      this.lock || (this.loop = !this.loop);
+      this.settings.lock || (this.settings.loop = !this.settings.loop);
     }
     else if (event.keyCode === P) {
-      this.lock || this.prevAudio();
+      this.settings.lock || this.prevAudio();
     }
     else if (event.keyCode === N) {
-      this.lock || this.nextAudio();
+      this.settings.lock || this.nextAudio();
     }
     else if (event.keyCode === Z) {
-      this.lock || this.sidenav?.toggle();
+      this.settings.lock || this.sidenav?.toggle();
     }
     else if (event.keyCode === L) {
-      this.lock = false;
       this.setLock();
     }
     else if (event.keyCode === S) {
-      this.lock || (this.sidenav?.open() && (this.isSearch = true) && this.setSearchBarFocus())
+      this.settings.lock || this.setSearchBar('');
     }
     else if (event.keyCode === M) {
       this.muteAudio();
     }
     else if (event.keyCode === C) {
-      this.lock || (this.sidenav?.open() && (this.searchedPlaylist = this.currentPlaylist) && (this.isSearch = false) && (this.searchItem = ''))
-      
+      this.settings.lock || (this.sidenav?.open() && 
+      (this.playlist!.searchedPlaylist =this.settings.currentPlaylist )&&
+      (this.settings.isSearch = false) && (this.searchItem = ''));
     }
     event.preventDefault();
   }
 
   @ViewChild('sidenav') sidenav?: MatSidenav;
-  @ViewChild('searchInput') searchTextInput?: ElementRef;
+  @ViewChild('playlist') playlist?: PlaylistComponent;
 
-  textValueSubject: Subject<any> = new Subject();
-  hotListItems = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
   tracks: Track[] = [];
-  searchedPlaylist: Track[] = [];
-  currentPlaylist: Track[] = [];
   elem: any;
-  searchItem = '';
   interval: any;
-  timeOut: any;
+  searchItem:string='';
   currentSong: Track = {
     backgroundColor: '',
     _id: '',
@@ -97,19 +90,21 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     picture: ''
   };
 
-  isSearch = false;
-  lock = false;
-  sort = 'title';
-  audioStatus = false;
-  audioSource = "";
-  duration = 1;
-  currentDuration = 0;
-  shuffle = true;
-  fullScreen = false;
-  currentTrackIndex = 0;
-  muted = false;
-  volume = 1;
-  loop = false;
+  settings: Settings = {
+    isSearch: false,
+    lock: false,
+    sort: 'title',
+    audioStatus: false,
+    duration: 1,
+    currentDuration: 0,
+    shuffle: true,
+    fullScreen: false,
+    currentTrackIndex: 0,
+    muted: false,
+    volume: 1,
+    loop: false,
+    currentPlaylist: [],
+  }
 
   constructor(private titleService: Title, private trackStore: TrackStore, readonly changeDetectionRef: ChangeDetectorRef, readonly sideNav: ElementRef, @Inject(DOCUMENT) private document: any) { }
 
@@ -117,14 +112,15 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.elem = document.documentElement;
     this.trackStore.loadAllTracks().subscribe((data) => {
       this.tracks = data;
-      this.currentPlaylist = this.tracks;
-      this.filterSong();
+      this.settings.currentPlaylist = this.tracks;
       this.sortAndShuffleSongs();
       this.setAudioPlayer();
     });
-
     this.trackStore.currentSong.subscribe((data) => {
-      this.currentSong= data;
+      this.currentSong = data;
+    });
+    this.trackStore.settings.subscribe((data) => {
+      this.settings = data;
     });
 
     this.interval = setInterval(() => {
@@ -132,71 +128,53 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.getCurrentTime();
     }, 500);
 
-    this.textValueSubject
-      .pipe(debounceTime(300))
-      .subscribe(() => {
-        this.filterSong();
-      });
-
     document.addEventListener('fullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('webkitfullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('mozfullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('MSFullscreenChange', () => { this.onFullScreen(this) });
   }
 
+  setAndPlayAudio() {
+    this.setAudioPlayer();
+    this.playAudio();
+  }
+
   playAudio() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
-    if (this.audioStatus) {
+    if (this.settings.audioStatus) {
       myAudio.pause();
-      this.audioStatus = false;
+      this.settings.audioStatus = false;
     }
     else {
       myAudio.play();
-      this.audioStatus = true;
+      this.settings.audioStatus = true;
     }
   }
 
   setLock() {
     this.searchItem = '';
-    this.isSearch = false;
+    this.settings.isSearch = false;
     this.sidenav?.close();
-    this.lock = !this.lock;
+    this.settings.lock = !this.settings.lock;
     this.setFullScreen();
   }
 
   setAudioPlayer() {
-    this.trackStore.currentSong.next(this.currentPlaylist[this.currentTrackIndex]);
+    this.trackStore.currentSong.next(this.settings.currentPlaylist[this.settings.currentTrackIndex]);
     this.titleService.setTitle('MusicMania | ' + this.currentSong.title);
-    this.audioSource = `${environment.apiAddress}track/stream/${this.currentSong._id}`;
+    let audioSource = `${environment.apiAddress}track/stream/${this.currentSong._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
-    myAudio.src = this.audioSource;
+    myAudio.src = audioSource;
     myAudio.onended = () => { this.nextAudio(); }
     this.getPicture();
     this.settextColor();
   }
 
-  isCurrentPlaylist() {
-    return this.currentPlaylist.length === this.searchedPlaylist.length &&
-      this.currentPlaylist.every((this_i, i) => { return this_i == this.searchedPlaylist[i] })
-  }
-
-  setSearch() {
-    this.isSearch = !this.isSearch;
-    this.setSearchBarFocus();
-  }
-
-  setSearchBarFocus() {
-    //The setTimOut is set because as soona s search bar opens focus cannot be attained 10ms timing for opening it after animation. 
-    this.timeOut = setTimeout(() => {
-      this.searchTextInput?.nativeElement.focus();
-    }, 10);
-  }
-
   setSearchBar(searchText?: string) {
     this.sidenav?.open();
-    this.isSearch = true;
+    this.settings.isSearch = true;
     this.searchItem = searchText || '';
-    this.filterSong();
+    this.playlist?.setSearchBarFocus();
   }
 
   getPicture() {
@@ -204,46 +182,11 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       `${environment.apiAddress}track/image/${this.currentSong?.picture}` : '/assets/music-image.jpg';
   }
 
-  getThumbNailSrc(title?: string) {
-    return this.tracks.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
-  }
-
   sortAndShuffleSongs() {
     let allTracks;
-    allTracks = sortSongsByProperty(this.currentPlaylist, this.sort);
-    if (this.shuffle) shuffleAllSongs(allTracks);
-    this.currentPlaylist = allTracks;
-  }
-
-  sortSongByTitle() {
-    this.sort = 'title';
-    this.sortSongByProperty();
-    //Set the current Index with respect to sorted list if current playlist === searched playlist
-    this.currentTrackIndex = this.getCurrentIndex();
-  }
-
-  sortSongByAlbum() {
-    this.sort = 'album';
-    this.sortSongByProperty();
-    this.currentTrackIndex = this.getCurrentIndex();
-  }
-
-  sortSongByProperty() {
-    if (!this.isCurrentPlaylist()) {
-      this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.sort);
-    } else {
-      this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.sort);
-      this.currentPlaylist = sortSongsByProperty(this.currentPlaylist, this.sort);
-    }
-  }
-
-  onKeyUp(event: KeyboardEvent) {
-    event.stopPropagation();
-    this.textValueSubject.next();
-  }
-
-  filterSong() {
-    filterSongs(this);
+    allTracks = sortSongsByProperty(this.settings.currentPlaylist, this.settings.sort);
+    if (this.settings.shuffle) shuffleAllSongs(allTracks);
+    this.settings.currentPlaylist = allTracks;
   }
 
   settextColor() {
@@ -267,119 +210,73 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   setShuffle() {
-    this.shuffle = !this.shuffle;
+    this.settings.shuffle = !this.settings.shuffle;
     this.sortAndShuffleSongs();
   }
 
   muteAudio() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
-    if (this.muted) {
-      this.muted = false;
-      myAudio.volume = this.volume;
+    if (this.settings.muted) {
+      this.settings.muted = false;
+      myAudio.volume = this.settings.volume;
     }
     else {
-      this.muted = true;
+      this.settings.muted = true;
       myAudio.volume = 0;
     }
   }
 
   setVolume() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
-    myAudio.volume = this.volume;
+    myAudio.volume = this.settings.volume;
   }
 
   prevAudio() {
-    this.audioStatus = !this.audioStatus;
-    if (this.loop) this.currentTrackIndex;
+    this.settings.audioStatus = !this.settings.audioStatus;
+    if (this.settings.loop) this.settings.currentTrackIndex;
     else {
-      if (this.currentTrackIndex === 0) this.currentTrackIndex = this.currentPlaylist.length - 1;
-      else --this.currentTrackIndex;
+      if (this.settings.currentTrackIndex === 0) this.settings.currentTrackIndex = this.settings.currentPlaylist.length - 1;
+      else --this.settings.currentTrackIndex;
     }
-    this.setAudioPlayer();
-    this.playAudio();
-  }
-
-  getCurrentIndex() {
-    if (!this.isCurrentPlaylist()) {
-      return this.currentTrackIndex;
-    } else {
-      let currentTrackId = this.currentSong._id
-      let data = this.currentPlaylist.findIndex((data) => { return data._id === currentTrackId })
-      return data;
-    }
-  }
-
-  setCurrentIndex(i: number, id: string) {
-    const isSamePlayList = this.isCurrentPlaylist();
-    if (isSamePlayList && (this.currentSong._id === id))
-      return;
-    if (this.currentSong._id === id && !isSamePlayList) {
-      this.currentPlaylist = this.searchedPlaylist;
-      this.currentTrackIndex = i;
-      return;
-    }
-    if (!isSamePlayList) this.currentPlaylist = this.searchedPlaylist;
-
-    this.audioStatus = false;
-    this.currentTrackIndex = i;
-    this.setAudioPlayer();
-    this.playAudio();
+    this.setAndPlayAudio();
   }
 
   nextAudio() {
-    this.audioStatus = !this.audioStatus;
-    if (this.loop) this.currentTrackIndex;
+    this.settings.audioStatus = !this.settings.audioStatus;
+    if (this.settings.loop) this.settings.currentTrackIndex;
     else {
-      if (this.currentTrackIndex < this.currentPlaylist.length - 1) ++this.currentTrackIndex;
-      else this.currentTrackIndex = 0;
+      if (this.settings.currentTrackIndex < this.settings.currentPlaylist.length - 1) ++this.settings.currentTrackIndex;
+      else this.settings.currentTrackIndex = 0;
     }
-    this.setAudioPlayer();
-    this.playAudio();
-  }
-
-  getNextSong() {
-    if (this.loop) return this.currentSong;
-    else {
-      if (this.currentTrackIndex < this.currentPlaylist.length - 1) return this.currentPlaylist[this.currentTrackIndex + 1];
-      else return this.currentPlaylist[0];
-    }
+    this.setAndPlayAudio(); 
   }
 
   onPlayerInputChange(e: any) {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.currentTime = e.value;
-    this.currentDuration = e.value;
+    this.settings.currentDuration = e.value;
   }
 
   forward() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     let currentTime = Math.round(myAudio.currentTime) + 10;
     myAudio.currentTime = currentTime;
-    this.currentDuration = currentTime;
+    this.settings.currentDuration = currentTime;
   }
 
   rewind() {
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     let currentTime = Math.round(myAudio.currentTime) - 10;
     myAudio.currentTime = currentTime;
-    this.currentDuration = currentTime;
-  }
-
-  drop(event: CdkDragDrop<Track[]>) {
-    if (event.previousIndex === this.currentTrackIndex) this.currentTrackIndex = event.currentIndex;
-    else if (event.previousIndex < this.currentTrackIndex && event.currentIndex >= this.currentTrackIndex)
-      --this.currentTrackIndex;
-    else if (event.previousIndex >= this.currentTrackIndex && event.currentIndex <= this.currentTrackIndex)
-      ++this.currentTrackIndex;
-    moveItemInArray(this.currentPlaylist, event.previousIndex, event.currentIndex);
+    this.settings.currentDuration = currentTime;
   }
 
   delete(index: number) {
-    this.currentPlaylist.splice(index, 1);
+    this.settings.currentPlaylist.splice(index, 1);
   }
 
   setFullScreen() {
-    this.fullScreen = !this.fullScreen;
+    this.settings.fullScreen = !this.settings.fullScreen;
     fullScreenContoller(this);
   }
 
@@ -392,13 +289,12 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   ngAfterContentChecked() {
+    this.trackStore.settings.next(this.settings);
     this.changeDetectionRef.detectChanges();
   }
 
   ngOnDestroy() {
     clearInterval(this.interval);
-    clearTimeout(this.timeOut);
-    this.textValueSubject.unsubscribe();
     let sliderClass = document.getElementsByTagName('style')[0];
     if ((sliderClass.classList.contains('audio-tag'))) {
       sliderClass.innerText = sliderClass.innerText.replace(sliderClass.innerText, '');
