@@ -4,6 +4,7 @@ import { Track } from '../model/track.model';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
+import { Settings } from '../model/settings.model';
 
 
 @Injectable({
@@ -39,6 +40,22 @@ export class TrackStore {
         artist: [],
         album: '',
         picture: ''
+    });
+
+    settings: BehaviorSubject<Settings> = new BehaviorSubject(<Settings>{
+        isSearch: false,
+        lock: false,
+        sort: 'title',
+        audioStatus: false,
+        duration: 1,
+        currentDuration: 0,
+        shuffle: true,
+        fullScreen: false,
+        currentTrackIndex: 0,
+        muted: false,
+        currentPlaylist:[],
+        volume: 1,
+        loop: false,
     });
 
     // saveTrack(trackId: string, changes: Partial<Track>): Observable<any> {

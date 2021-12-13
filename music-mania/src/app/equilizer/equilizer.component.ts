@@ -8,15 +8,7 @@ import { TrackStore } from '../services/track-store';
   styleUrls: ['./equilizer.component.scss']
 })
 export class EquilizerComponent implements OnInit {
-  currentSong: Track = {
-    backgroundColor: '',
-    _id: '',
-    textColor: '',
-    title: '',
-    artist: [],
-    album: '',
-    picture: ''
-  };
+  currentSong?: Track;
   constructor(readonly trackStore:TrackStore) { }
 
   ngOnInit(): void {

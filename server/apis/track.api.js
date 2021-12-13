@@ -18,7 +18,7 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     let obj = req.body;
     let title = obj.title
-    jsmediatags.read(__dirname + '/../data/songs/' + obj.title +".mp3", {
+    jsmediatags.read(__dirname + '/../data/songs/' + title +".mp3", {
         onSuccess: function (tag) {
             let album = tag.tags.album;
             let artist = tag.tags.artist.split(',');

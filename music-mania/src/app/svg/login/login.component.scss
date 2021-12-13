@@ -15,9 +15,9 @@
 }
 
 .waving {
-    opacity: 0;
     animation: wave 10s linear infinite;
     offset-path: path('M10.34,-10.5a239.85,239.85,0,0,0,30,2c34,.16,52.19-7,84-11,23-2.89,40-2.47,59-2,66.76,1.66,79.94,20.62,160,32,50.68,7.21,86.32,5.43,94,5a427.23,427.23,0,0,0,101-18');
+    opacity: 0;
 
 
     &.note-2 {
@@ -52,28 +52,28 @@
 
 @keyframes wave {
     0% {
-        opacity: 0;
         offset-distance: 0%;
+        opacity: 0;
     }
 
     25% {
-        opacity: 0.5;
         offset-distance: 25%;
+        opacity: 0.5;
     }
 
     50% {
-        opacity: 1;
         offset-distance: 50%;
+        opacity: 1;
     }
 
     75% {
-        opacity: 0.5;
         offset-distance: 75%;
+        opacity: 0.5;
     }
 
     100% {
-        opacity: 0;
         offset-distance: 100%;
+        opacity: 0;
     }
 }
 

@@ -23,115 +23,115 @@
 }
 
 .surprise {
-    transform-origin: 0 0;
     opacity: 0;
+    transform-origin: 0 0;
 
     &.note-1 {
-        animation-delay: 4s;
         animation: popup-far-left 5s ease-in-out infinite;
+        animation-delay: 4s;
     }
 
     &.note-2 {
-        animation-delay: 4s;
         animation: popup-right 5s ease-in-out infinite;
+        animation-delay: 4s;
     }
 
     &.note-3 {
-        animation-delay: 4s;
         animation: popup-far-left 5s ease-in-out infinite;
+        animation-delay: 4s;
     }
 
     &.note-4 {
-        animation-delay: 4s;
         animation: popup-right 5s ease-in-out infinite;
+        animation-delay: 4s;
     }
 
     &.note-5 {
-        animation-delay: 4s;
         animation: popup-love 5s ease-in-out infinite;
+        animation-delay: 4s;
     }
 
     &.note-6 {
-        animation-delay: 4s;
         animation: popup 5s ease-in-out infinite;
+        animation-delay: 4s;
     }
 }
 
 @keyframes popup-love {
     0% {
-        transform: translateY(0px) translateX(0px);
         opacity: 0;
+        transform: translateY(0px) translateX(0px);
     }
 
 
     100% {
-        transform: translate(-1200px, -1100px) scale(3, 3);
         opacity: 1;
+        transform: translate(-1200px, -1100px) scale(3, 3);
     }
 }
 
 @keyframes popup-far-left {
     0% {
-        transform: translateY(0px) translateX(0px);
         opacity: 0;
+        transform: translateY(0px) translateX(0px);
     }
 
 
     100% {
-        transform: translateY(-400px) translateX(300px);
         opacity: 1;
+        transform: translateY(-400px) translateX(300px);
     }
 }
 
 @keyframes popup-far-right {
     0% {
-        transform: translateY(0px) translateX(0px);
         opacity: 0;
+        transform: translateY(0px) translateX(0px);
     }
 
 
     100% {
-        transform: translateY(-400px) translateX(-300px);
         opacity: 1;
+        transform: translateY(-400px) translateX(-300px);
     }
 }
 
 @keyframes popup-right {
     0% {
-        transform: translateY(0px) translateX(0px);
         opacity: 0;
+        transform: translateY(0px) translateX(0px);
     }
 
 
     100% {
-        transform: translateY(-400px) translateX(-200px);
         opacity: 1;
+        transform: translateY(-400px) translateX(-200px);
     }
 }
 
 @keyframes popup-left {
     0% {
-        transform: translateY(0px) translateX(0px);
         opacity: 0;
+        transform: translateY(0px) translateX(0px);
     }
 
 
     100% {
-        transform: translateY(-400px) translateX(200px);
         opacity: 1;
+        transform: translateY(-400px) translateX(200px);
     }
 }
 
 @keyframes popup {
     0% {
-        transform: translateY(0px);
         opacity: 0;
+        transform: translateY(0px);
     }
 
 
     100% {
-        transform: translateY(-400px);
         opacity: 1;
+        transform: translateY(-400px);
     }
 }
 

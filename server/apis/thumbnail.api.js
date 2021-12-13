@@ -26,6 +26,7 @@ router.route("/register-all").get((req, res) => {
                 
             });
         });
+        res.send('Succcessful');
     });
 
 });
