@@ -28,7 +28,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   currentSong!: Track;
   settings!: Settings;
   tracks: Track[] = [];
-  searchedPlaylist: Track[] = []; 
+  searchedPlaylist: Track[] = [];
   textValueSubject: Subject<any> = new Subject();
   timeOut: any;
 
@@ -58,7 +58,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     this.trackStore.settings.subscribe((data) => {
       this.settings = data;
     });
-    
+
     this.trackStore.loadAllTracks().subscribe((data) => {
       this.tracks = data;
       this.filterSong();
@@ -71,6 +71,11 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       });
   }
 
+  isCurrentPlaylist() {
+    return (this.settings.currentPlaylist.length === this.searchedPlaylist.length) && (
+      this.settings.currentPlaylist.every((this_i, i) => { return this.searchedPlaylist.some(e => this_i._id === e._id) }));
+  }
+
   getCurrentIndex() {
     if (!this.isCurrentPlaylist()) {
       return this.settings.currentTrackIndex;
@@ -79,6 +84,10 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       let data = this.settings.currentPlaylist.findIndex((data) => { return data._id === currentTrackId })
       return data;
     }
+  }
+
+  getPlayList(){
+  return this.isCurrentPlaylist() ? this.settings.currentPlaylist : this.searchedPlaylist;
   }
 
   onKeyUp(event: Event) {
@@ -95,9 +104,10 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       this.settings.currentTrackIndex = i;
       return;
     }
-    if (!isSamePlayList){ this.settings.currentPlaylist = this.searchedPlaylist;
+    if (!isSamePlayList) {
+      this.settings.currentPlaylist = this.searchedPlaylist;
     }
-    
+
     this.settings.audioStatus = false;
     this.settings.currentTrackIndex = i;
     this.trackStore.settings.next(this.settings);
@@ -106,11 +116,6 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 
   getThumbNailSrc(title?: string) {
     return this.settings.currentPlaylist.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
-  }
-
-  isCurrentPlaylist() {
-    return (this.settings.currentPlaylist.length === this.searchedPlaylist.length) &&(
-      this.settings.currentPlaylist.every((this_i, i) => { return this_i._id === this.searchedPlaylist[i]._id }));
   }
 
   sortSongByProperty() {

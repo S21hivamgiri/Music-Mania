@@ -56,7 +56,7 @@
 </div>
 <mat-list role="list">
     <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let track of searchedPlaylist;let i=index;" cdkDrag>
+        <div *ngFor="let track of getPlayList();let i=index;" cdkDrag>
             <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i, track._id)">
                 <div class="utiity-box">
                     <div class="drag-handle mr-3" [style.color]="currentSong?.textColor" cdkDragHandle

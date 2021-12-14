@@ -187,6 +187,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     allTracks = sortSongsByProperty(this.settings.currentPlaylist, this.settings.sort);
     if (this.settings.shuffle) shuffleAllSongs(allTracks);
     this.settings.currentPlaylist = allTracks;
+    this.trackStore.settings.next(this.settings);
   }
 
   settextColor() {
@@ -289,7 +290,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   ngAfterContentChecked() {
-    this.trackStore.settings.next(this.settings);
     this.changeDetectionRef.detectChanges();
   }
 

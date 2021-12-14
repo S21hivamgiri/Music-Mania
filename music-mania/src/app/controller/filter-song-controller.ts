@@ -1,15 +1,9 @@
 export function filterSongs(e: any) {
     let searchedValue = e.searchItem.toLowerCase().trim();
     if (!searchedValue) {
-        if (e.tracks.length === e.settings.currentPlaylist.length)
-        {
-            e.searchedPlaylist = e.settings.currentPlaylist;
-
-        }else
         e.searchedPlaylist = e.tracks;
         return;
     }
-
     e.searchedPlaylist = e.tracks;
     let allTracks = [];
     for (let j = 0; j < e.searchedPlaylist.length; ++j) {
