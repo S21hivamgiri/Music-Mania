@@ -66,9 +66,9 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.muteAudio();
     }
     else if (event.keyCode === C) {
-      this.settings.lock || (this.sidenav?.open() && 
-      (this.playlist!.searchedPlaylist =this.settings.currentPlaylist )&&
-      (this.settings.isSearch = false) && (this.searchItem = ''));
+      this.settings.lock || (this.sidenav?.open() &&
+        (this.playlist!.searchedPlaylist = this.settings.currentPlaylist) &&
+        (this.settings.isSearch = false) && (this.searchItem = ''));
     }
     event.preventDefault();
   }
@@ -79,7 +79,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   tracks: Track[] = [];
   elem: any;
   interval: any;
-  searchItem:string='';
+  searchItem: string = '';
   currentSong: Track = {
     backgroundColor: '',
     _id: '',
@@ -110,14 +110,14 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   ngOnInit() {
     this.elem = document.documentElement;
+    this.trackStore.currentSong.subscribe((data) => {
+      this.currentSong = data;
+    });
     this.trackStore.loadAllTracks().subscribe((data) => {
       this.tracks = data;
       this.settings.currentPlaylist = this.tracks;
       this.sortAndShuffleSongs();
       this.setAudioPlayer();
-    });
-    this.trackStore.currentSong.subscribe((data) => {
-      this.currentSong = data;
     });
     this.trackStore.settings.subscribe((data) => {
       this.settings = data;
@@ -187,6 +187,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     allTracks = sortSongsByProperty(this.settings.currentPlaylist, this.settings.sort);
     if (this.settings.shuffle) shuffleAllSongs(allTracks);
     this.settings.currentPlaylist = allTracks;
+    if(this.currentSong._id)
+    this.settings.currentTrackIndex = this.settings.currentPlaylist.findIndex(i => i._id === this.currentSong._id);
     this.trackStore.settings.next(this.settings);
   }
 
@@ -249,7 +251,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       if (this.settings.currentTrackIndex < this.settings.currentPlaylist.length - 1) ++this.settings.currentTrackIndex;
       else this.settings.currentTrackIndex = 0;
     }
-    this.setAndPlayAudio(); 
+    this.setAndPlayAudio();
   }
 
   onPlayerInputChange(e: any) {
