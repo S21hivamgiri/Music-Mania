@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   @Input() isBackGroundVisible?: boolean = true;
   currentSong?: Track;
 
-  constructor(readonly router: Router, private trackStore: TrackStore) { }
+  constructor(readonly router: Router, readonly trackStore: TrackStore) { }
 
   ngOnInit(): void {
 

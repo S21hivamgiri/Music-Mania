@@ -80,31 +80,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   elem: any;
   interval: any;
   searchItem: string = '';
-  currentSong: Track = {
-    backgroundColor: '',
-    _id: '',
-    textColor: '',
-    title: '',
-    artist: [],
-    album: '',
-    picture: ''
-  };
-
-  settings: Settings = {
-    isSearch: false,
-    lock: false,
-    sort: 'title',
-    audioStatus: false,
-    duration: 1,
-    currentDuration: 0,
-    shuffle: true,
-    fullScreen: false,
-    currentTrackIndex: 0,
-    muted: false,
-    volume: 1,
-    loop: false,
-    currentPlaylist: [],
-  }
+  currentSong!: Track;
+  settings!: Settings;
 
   constructor(private titleService: Title, private trackStore: TrackStore, readonly changeDetectionRef: ChangeDetectorRef, readonly sideNav: ElementRef, @Inject(DOCUMENT) private document: any) { }
 
@@ -113,19 +90,26 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.trackStore.currentSong.subscribe((data) => {
       this.currentSong = data;
     });
+
+    this.trackStore.settings.subscribe((data) => {
+      this.settings = data;
+    });
+
     this.trackStore.loadAllTracks().subscribe((data) => {
       this.tracks = data;
       this.settings.currentPlaylist = this.tracks;
       this.sortAndShuffleSongs();
       this.setAudioPlayer();
-    });
-    this.trackStore.settings.subscribe((data) => {
-      this.settings = data;
+      if (this.settings.audioStatus) {
+        this.settings.audioStatus = !this.settings.audioStatus;
+        this.playAudio();
+      }
     });
 
     this.interval = setInterval(() => {
       this.getDuration();
       this.getCurrentTime();
+      this.trackStore.settings.next(this.settings);
     }, 500);
 
     document.addEventListener('fullscreenchange', () => { this.onFullScreen(this) });
@@ -149,14 +133,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       myAudio.play();
       this.settings.audioStatus = true;
     }
-  }
-
-  setLock() {
-    this.searchItem = '';
-    this.settings.isSearch = false;
-    this.sidenav?.close();
-    this.settings.lock = !this.settings.lock;
-    this.setFullScreen();
+    myAudio.currentTime = this.settings.currentDuration;
+    this.trackStore.settings.next(this.settings);
   }
 
   setAudioPlayer() {
@@ -175,6 +153,17 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.settings.isSearch = true;
     this.searchItem = searchText || '';
     this.playlist?.setSearchBarFocus();
+    this.trackStore.settings.next(this.settings);
+  }
+
+  setLock() {
+    this.searchItem = '';
+    this.settings.isSearch = false;
+    this.sidenav?.close();
+    this.settings.lock = !this.settings.lock;
+    this.settings.fullScreen = !this.settings.lock;
+    this.setFullScreen();
+    this.trackStore.settings.next(this.settings);
   }
 
   getPicture() {
@@ -187,8 +176,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     allTracks = sortSongsByProperty(this.settings.currentPlaylist, this.settings.sort);
     if (this.settings.shuffle) shuffleAllSongs(allTracks);
     this.settings.currentPlaylist = allTracks;
-    if(this.currentSong._id)
-    this.settings.currentTrackIndex = this.settings.currentPlaylist.findIndex(i => i._id === this.currentSong._id);
+    if (this.currentSong._id)
+      this.settings.currentTrackIndex = this.settings.currentPlaylist.findIndex(i => i._id === this.currentSong._id);
     this.trackStore.settings.next(this.settings);
   }
 
@@ -201,11 +190,13 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   getDuration() {
-    getDurationInFormat(this);
+    getDurationInFormat(this, true);
+    this.trackStore.settings.next(this.settings);
   }
 
   getCurrentTime() {
-    getCurrentTimeInFormat(this);
+    getCurrentTimeInFormat(this, true);
+    this.trackStore.settings.next(this.settings);
   }
 
   formatTimeLabel(value: number) {
@@ -235,6 +226,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   prevAudio() {
+    this.settings.currentDuration = 0;
     this.settings.audioStatus = !this.settings.audioStatus;
     if (this.settings.loop) this.settings.currentTrackIndex;
     else {
@@ -245,6 +237,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   nextAudio() {
+    this.settings.currentDuration = 0;
     this.settings.audioStatus = !this.settings.audioStatus;
     if (this.settings.loop) this.settings.currentTrackIndex;
     else {
@@ -274,10 +267,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.settings.currentDuration = currentTime;
   }
 
-  delete(index: number) {
-    this.settings.currentPlaylist.splice(index, 1);
-  }
-
   setFullScreen() {
     this.settings.fullScreen = !this.settings.fullScreen;
     fullScreenContoller(this);
@@ -285,10 +274,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   onFullScreen(event: any) {
     if (!this.document.fullScreen && !this.document.webkitIsFullScreen && !this.document.mozFullScreen && !this.document.msFullscreenElement) {
-      event.fullScreen = false;
-      event.lock = false;
+      event.settings.fullScreen = false;
+      event.settings.lock = false;
     }
-    else event.fullScreen = true;
+    else event.settings.fullScreen = true;
   }
 
   ngAfterContentChecked() {

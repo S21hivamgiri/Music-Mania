@@ -15,6 +15,9 @@
             <app-playing-animation [audioStatus]="true" color="#F75660"></app-playing-animation>
         </div>
     </div>
+    <div class="present-play" *ngIf="(router.url !== '/track') && (trackStore.currentSong|async)?._id">
+        <app-present-song></app-present-song>
+    </div>
     <button class="user-wrapper" [matMenuTriggerFor]="menu"  [style.backgroundColor]="!displayTitle||'#ffffff'"
                     [style.animationPlayState]="isPlaying?'running':'paused'">?</button>
     <mat-menu #menu="matMenu">

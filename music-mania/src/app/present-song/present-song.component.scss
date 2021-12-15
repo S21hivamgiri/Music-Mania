@@ -1,0 +1,38 @@
+.track-list-data {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.3);
+    border: 2px solid;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    font-weight: bold;
+    line-height: initial;
+    padding: 0 2px;
+
+    .open-player {
+        padding-left: 10px;
+    }
+
+    .track-text {
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 10vw;
+    }
+
+    .thumbnail {
+        margin: 0 10px;
+    }
+
+    .marquee {
+        .track-artist {
+            font-size: 12px;
+        }
+
+        .track-album {
+            font-size: 12px;
+        }
+    }
+}

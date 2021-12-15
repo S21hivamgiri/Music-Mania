@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
@@ -16,10 +16,9 @@ export class TrackStore {
 
     tracks$: Observable<Track[]> = this.subject.asObservable();
 
-    constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) { }
 
     loadAllTracks() {
-
         const loadTracks$ = this.http.get<Track[]>(environment.apiAddress + 'track/')
             .pipe(
                 map(response => response),
@@ -31,7 +30,6 @@ export class TrackStore {
             );
         return loadTracks$;
     }
-    
     currentSong: BehaviorSubject<Track> = new BehaviorSubject(<Track>{
         backgroundColor: '',
         _id: '',
@@ -53,11 +51,10 @@ export class TrackStore {
         fullScreen: false,
         currentTrackIndex: 0,
         muted: false,
-        currentPlaylist:[],
+        currentPlaylist: [],
         volume: 1,
         loop: false,
     });
-
     // saveTrack(trackId: string, changes: Partial<Track>): Observable<any> {
 
     //     const tracks = this.subject.getValue();

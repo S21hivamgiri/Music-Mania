@@ -11,6 +11,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatListModule } from '@angular/material/list';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatInputModule } from '@angular/material/input';
@@ -28,6 +29,7 @@ import { MatCardModule } from '@angular/material/card';
 import { WebDeveloperComponent } from './svg/web-developer/web-developer.component';
 import { PlayerComponent } from './svg/player/player.component';
 import { LoginComponent } from './svg/login/login.component';
+import { PresentSongComponent } from './present-song/present-song.component';
 
 @NgModule({
   declarations: [
@@ -44,16 +46,26 @@ import { LoginComponent } from './svg/login/login.component';
     WebDeveloperComponent,
     PlayerComponent,
     LoginComponent,
+    PresentSongComponent,
   ],
   imports: [
-    HttpClientModule, FormsModule,
-    MatIconModule, MatSidenavModule,
-    MatButtonModule, MatDividerModule,
-    MatSliderModule, MatListModule,
-    BrowserModule, DragDropModule,
-    AppRoutingModule, MatInputModule,
-    BrowserAnimationsModule, MatChipsModule,
-    MatMenuModule, MatCardModule
+    HttpClientModule,
+    FormsModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatSliderModule,
+    MatListModule,
+    BrowserModule,
+    DragDropModule,
+    AppRoutingModule,
+    MatInputModule,
+    BrowserAnimationsModule,
+    MatChipsModule,
+    MatMenuModule,
+    MatCardModule,
+    MatDialogModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

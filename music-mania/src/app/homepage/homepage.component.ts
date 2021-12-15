@@ -11,7 +11,7 @@ export class HomepageComponent implements OnInit {
   displayTitle: boolean = true;
   isBackGroundVisible: boolean = true;
 
-  constructor(readonly router: Router, private trackStore: TrackStore) { trackStore.loadAllTracks().subscribe(); }
+  constructor(readonly router: Router, readonly trackStore: TrackStore) { trackStore.loadAllTracks().subscribe(); }
 
   ngOnInit(): void {
     window.scrollTo(0, 0);
