@@ -1,4 +1,4 @@
-import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW, X, C } from '@angular/cdk/keycodes';
+import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW, X, C, Q } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
@@ -20,7 +20,17 @@ import { Settings } from '../model/settings.model';
 })
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
   @HostListener('document:keydown', ['$event'])
-  handleDeleteKeyboardEvent(event: KeyboardEvent) {
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.keyCode === P) {
+      this.settings.lock || this.prevAudio(20);
+    }
+    else if (event.keyCode === Q) {
+      this.prevAudio(5);
+    }
+    else if (event.keyCode === N) {
+      this.settings.lock || this.nextAudio();
+    }
+    else
     if (event.keyCode === SPACE) {
       this.playAudio();
     }
@@ -47,13 +57,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     else if (event.keyCode === R) {
       this.settings.lock || (this.settings.loop = !this.settings.loop);
     }
-    else if (event.keyCode === P) {
-      this.settings.lock || this.prevAudio();
-    }
-    else if (event.keyCode === N) {
-      this.settings.lock || this.nextAudio();
-    }
-    else if (event.keyCode === Z) {
+    else  if (event.keyCode === Z) {
       this.settings.lock || this.sidenav?.toggle();
     }
     else if (event.keyCode === L) {
@@ -225,13 +229,17 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     myAudio.volume = this.settings.volume;
   }
 
-  prevAudio() {
+  prevAudio(data:number) {
     this.settings.currentDuration = 0;
-    this.settings.audioStatus = !this.settings.audioStatus;
-    if (this.settings.loop) this.settings.currentTrackIndex;
-    else {
-      if (this.settings.currentTrackIndex === 0) this.settings.currentTrackIndex = this.settings.currentPlaylist.length - 1;
-      else --this.settings.currentTrackIndex;
+    if (data > 10 || data==0)  {
+      this.settings.audioStatus = !this.settings.audioStatus;
+      if (this.settings.loop) this.settings.currentTrackIndex;
+      else {
+        if (this.settings.currentTrackIndex === 0) this.settings.currentTrackIndex = this.settings.currentPlaylist.length - 1;
+        else --this.settings.currentTrackIndex;
+      }
+    }else{
+      this.settings.audioStatus=!this.settings.audioStatus
     }
     this.setAndPlayAudio();
   }

@@ -109,6 +109,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     }
 
     this.settings.audioStatus = false;
+    this.settings.currentDuration = 0;
     this.settings.currentTrackIndex = i;
     this.trackStore.settings.next(this.settings);
     this.playAudio.emit();

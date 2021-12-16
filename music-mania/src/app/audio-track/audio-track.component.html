@@ -100,10 +100,10 @@
                             </button>
                         </div>
 
-                        <div class="skip-previous-button" title="Previous (P)">
+                        <div class="skip-previous-button" [title]="!settings.currentDuration || settings.currentDuration>10?'Previous (P)':'Restart(Q)'">
                             <button [disabled]="settings.loop" mat-icon-button [style.color]="currentSong?.textColor"
-                                (click)="prevAudio()">
-                                <mat-icon>skip_previous</mat-icon>
+                                (click)="prevAudio(settings.currentDuration)">
+                                <mat-icon>{{!settings.currentDuration || settings.currentDuration>10?'skip_previous':'restart_alt'}}</mat-icon>
                             </button>
                         </div>
 
