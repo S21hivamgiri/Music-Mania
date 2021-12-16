@@ -6,7 +6,7 @@
             <mat-icon>close</mat-icon>
         </button>
     </div>
-    <img [src]="getThumbNailSrc(currentSong?.title)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
+    <img [src]="getThumbNailSrc(currentSong?._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
         [title]="currentSong?.album">
     <div class="track-text marquee">
         <span class="track-title" [style.color]="currentSong?.textColor">

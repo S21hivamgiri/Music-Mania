@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var objectId = mongoose.Types.ObjectId;
 var userSchema = new Schema({
-    _id: { type: objectId, auto: true },
+    _id: { type: objectId, auto: false },
     backgroundColor: { type: String, required: true },
     title: { type: String, required: true },
     textColor: { type: String, required: true },

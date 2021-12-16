@@ -32,8 +32,8 @@ export class NextSongPreviewComponent implements OnInit {
     }
   }
 
-  getThumbNailSrc(title?: string) {
-    return this.settings?.currentPlaylist.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
+  getThumbNailSrc(_id?: string) {
+    return this.settings?.currentPlaylist.length && _id ? `${environment.apiAddress}track/thumbnail/${_id}.png` : '/assets/music-thumbnail.png';
   }
 
   nextAudio() {

@@ -9,6 +9,7 @@ var userSchema = new Schema({
     password: { type: String, required: true },
     country: { type: String, required: true },
     loginTime: { type: Date, required: true },
+    playlist: { type: Array, required: true },
     initials: { type: String, required: true },
     roles: [{
         type: mongoose.Schema.Types.ObjectId,

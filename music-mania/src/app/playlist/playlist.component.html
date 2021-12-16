@@ -68,7 +68,7 @@
                         </div>
                     </div>
                     <div class="track-list-data" [title]="track?.title">
-                        <img [src]="getThumbNailSrc(track?.title)" onerror="this.src='/assets/music-thumbnail.png'"
+                        <img [src]="getThumbNailSrc(track?._id)" onerror="this.src='/assets/music-thumbnail.png'"
                             class="thumbnail" [title]="track?.album">
                         <div class="track-text" class="marquee">
                             <span class="track-title" [style.color]="currentSong?.textColor">

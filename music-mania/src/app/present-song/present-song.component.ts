@@ -44,6 +44,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
           }
     event.preventDefault();
   }
+  
   ngOnInit(): void {
     this.trackStore.currentSong.pipe(takeUntil(this.destroy)).subscribe((data) => {
       this.currentSong = data;
@@ -53,8 +54,8 @@ export class PresentSongComponent implements OnInit, OnDestroy {
     });
   }
 
-  getThumbNailSrc(title?: string) {
-    return this.settings?.currentPlaylist.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
+  getThumbNailSrc(id?: string) {
+    return this.settings?.currentPlaylist.length && id ? `${environment.apiAddress}track/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
   playSong() {

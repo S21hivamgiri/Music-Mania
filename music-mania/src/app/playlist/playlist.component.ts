@@ -115,8 +115,8 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     this.playAudio.emit();
   }
 
-  getThumbNailSrc(title?: string) {
-    return this.settings.currentPlaylist.length && title ? `${environment.apiAddress}track/thumbnail/${title}.png` : '/assets/music-thumbnail.png';
+  getThumbNailSrc(id?: string) {
+    return this.settings.currentPlaylist.length && id ? `${environment.apiAddress}track/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
   sortSongByProperty() {

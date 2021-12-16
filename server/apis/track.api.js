@@ -4,6 +4,8 @@ var router = express.Router();
 var path = require('path');
 var jsmediatags = require("jsmediatags");
 var fs = require('fs');
+const sharp = require('sharp');
+var mongoose = require('mongoose')
 
 const Track = require('../model/track.model');
 
@@ -18,30 +20,47 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
     let obj = req.body;
     let title = obj.title
+    var id = new mongoose.Types.ObjectId();
     jsmediatags.read(__dirname + '/../data/songs/' + title +".mp3", {
         onSuccess: function (tag) {
             let album = tag.tags.album;
             let artist = tag.tags.artist.split(',');
             let image = tag.tags.picture.data;
             let format = tag.tags.picture.format;
-            let fileName = obj.title + '.' + format.split('/')[1]
+            let fileName = id + '.' + format.split('/')[1]
             obj.album = album;
             obj.artist = artist;
             obj.picture = fileName;
+            obj._id=id;
+
+            let base64String = "";
+            for (var i = 0; i < image.length; i++) {
+                base64String += String.fromCharCode(image[i]);
+            }
+            const initialFolder = __dirname + '/../data/pictures/';
+            let base64 = Buffer.from(base64String,'binary').toString('base64');
+            fs.writeFileSync(initialFolder + fileName, base64,'base64' , function (err) {
+                console.log(err); // writes out file without error, but it's not a valid image
+            });
+
+            const finalFolder = __dirname + '/../data/thumbnail/';
+            fs.readFile(initialFolder + fileName, 'utf-8', function (err, content) {
+                if (err) {
+                    onError(err);
+                    return;
+                }
+                sharp(initialFolder + fileName)
+                    .resize(50)
+                    .toFormat("png")
+                    .toFile(finalFolder + fileName.split('.')[0] + '.png')
+                    .catch(err => { console.log(err) });
+            });
+
             Track.create(obj).then(docs => {
                 res.status(httpStatus.StatusCodes.CREATED).send(obj);
             }).catch(err => {
                 res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
             });
-            let base64String = "";
-            for (var i = 0; i < image.length; i++) {
-                base64String += String.fromCharCode(image[i]);
-            }
-            let base64 = Buffer.from(base64String,'binary').toString('base64');
-            fs.writeFileSync(__dirname + '/../data/pictures/' + fileName, base64,'base64' , function (err) {
-                console.log(err); // writes out file without error, but it's not a valid image
-            });
-
         },
         onError: function (error) {
             console.log(':(', error.type, error.info);
