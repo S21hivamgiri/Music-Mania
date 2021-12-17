@@ -9,9 +9,16 @@ var Role = require('../model/role.model');
 router.post('/signup', function (req, res) {
     var body = req.body;
     var obj = new User(body);
+
+    if (!req.body.email || !req.body.password || !req.body.firstName || !req.body.country || !req.body.contact) {
+        res.json({
+            success: false,
+            message: 'Data not sufficient'
+        });
+        return;
+    }
     let salt = bcrypt.genSaltSync(10);
     let password = md5(obj['password'])
-    console.log(password);
     obj['password'] = bcrypt.hashSync(password, salt);
 
     User.find({
@@ -39,13 +46,12 @@ router.post('/signup', function (req, res) {
                 obj.roles.push(id);
                 obj.save(function (err) {
                     if (err) {
-                        return res.status(500).json({
+                        return res.json({
                             success: false,
-                            message: 'Unable to create User',
-                            error: err
+                            message: 'Unable to create User'
                         });
                     }
-                    return res.status(201).json({
+                    return res.json({
                         success: true,
                         message: 'User created Successfully'
                     });
@@ -55,6 +61,12 @@ router.post('/signup', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
+    if (!req.body.email || !req.body.password) {
+        res.json({
+            success: false,
+            message: 'Data not sufficient'
+        });
+    }
     User.findOne({
         email: req.body.email
     }).populate('roles').exec(function (err, loginData) {
@@ -95,7 +107,7 @@ router.post('/login', function (req, res) {
                 }
                 else {
                     // response is OutgoingMessage object that server response http request
-                    res.json({ success: false, message: 'passwords do not match' });
+                    res.json({ success: false, message: 'Passwords do not match' });
                 }
             });
         } else {

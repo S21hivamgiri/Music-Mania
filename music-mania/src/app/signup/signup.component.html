@@ -1,1 +1,98 @@
-<p>signup works!</p>
+<h2 mat-dialog-title>Sign Up for personalized Playlist</h2>
+<form class="signup-form" [formGroup]="signUpForm" (ngSubmit)="save(signUpForm)">
+    <div class="signup-name">
+        <mat-form-field class="name-width" appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input type="text" matInput formControlName="firstNameFormControl" (keydown)="onKeyDown($event)"
+                autocomplete="off" placeholder="Enter Your First Name">
+            <mat-error *ngIf="signUpForm.get('firstNameFormControl')?.hasError('required')">
+                First Name is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="name-width" appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input type="text" matInput formControlName="lastNameFormControl" (keydown)="onKeyDown($event)"
+                autocomplete="off" placeholder="Enter Your Last Name">
+        </mat-form-field>
+    </div>
+    <mat-form-field class="signup-width" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="emailFormControl" (keydown)="onKeyDown($event)" autocomplete="off"
+            placeholder="Ex. pat@example.com">
+        <mat-hint>Music is a step ahead.</mat-hint>
+        <mat-error
+            *ngIf="signUpForm.get('emailFormControl')?.hasError('email') && !signUpForm.get('emailFormControl')?.hasError('required')">
+            Please enter a valid email address.
+        </mat-error>
+        <mat-error *ngIf="signUpForm.get('emailFormControl')?.hasError('required')">
+            Email is <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+    <div class="signup-name">
+        <mat-form-field class="name-width" appearance="fill">
+            <mat-label>Password</mat-label>
+            <input [type]="passwordType" matInput formControlName="passwordFormControl" (keydown)="onKeyDown($event)"
+                autocomplete="off" placeholder="Enter your password.">
+            <mat-icon (click)="passwordType=passwordType==='password'?'text':'password'" matSuffix>
+                {{passwordType==='password'?'visibility':'visibility_off'}}
+            </mat-icon>
+            <mat-error
+                *ngIf="signUpForm.get('passwordFormControl')?.hasError('minlength') && !signUpForm.get('passwordFormControl')?.hasError('required')">
+                Please enter minimum 8 character password
+            </mat-error>
+            <mat-error
+                *ngIf="signUpForm.get('passwordFormControl')?.hasError('pattern') && !signUpForm.get('passwordFormControl')?.hasError('required') && !signUpForm.get('passwordFormControl')?.hasError('minlength')">
+                Please enter atleast 1 digit in password
+            </mat-error>
+            <mat-error *ngIf="signUpForm.get('passwordFormControl')?.hasError('required')">
+                Password is <strong>required</strong>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="name-width" appearance="fill">
+            <mat-label>Confirm Password</mat-label>
+            <input [type]="passwordType" matInput formControlName="confirmPasswordFormControl" (keydown)="onKeyDown($event)"
+                autocomplete="off" placeholder="Enter your password." [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>
+                password
+            </mat-icon>
+            <mat-error *ngIf="signUpForm?.hasError('notSame') ">
+                Password does not <strong>match.</strong>
+            </mat-error>
+        </mat-form-field>
+    </div>
+    <div class="signup-name">
+        <mat-form-field class="name-width" appearance="fill">
+            <mat-label>Enter Contact Number</mat-label>
+            <input type="tel" matInput formControlName="phoneFormControl" (keydown)="onKeyDown($event)"
+                autocomplete="off" placeholder="Ex. pat@example.com">
+            <mat-error *ngIf="signUpForm.get('phoneFormControl')?.hasError('required')">
+                Contact Number is <strong>required</strong>
+            </mat-error>
+            <mat-error
+                *ngIf="signUpForm.get('phoneFormControl')?.hasError('minlength') && !signUpForm.get('phoneFormControl')?.hasError('required')">
+                Contact Number shoul be valid 10 digit.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="name-width" appearance="fill">
+            <mat-label>Choose Nationality</mat-label>
+            <mat-select formControlName="nationalityFormControl" required>
+                <mat-option value=''>--Select a country--</mat-option>
+                <mat-option *ngFor="let country of countries" [value]="country.name" class='row'>
+                    <span class='dropdown-country'><img class="flag-image" height='20px' [src]='country.asset'>
+                        <span class=''>{{country.name}} &nbsp;(<span class="code">{{country.code}}</span>)</span>
+                    </span>
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="signUpForm.get('nationalityFormControl')?.hasError('required')">
+                Contact Number is <strong>required</strong>
+            </mat-error>
+            <mat-hint>Choose your Country</mat-hint>
+        </mat-form-field>
+    </div>
+    <span style="color:red;" *ngIf="errorMessage">{{errorMessage}}</span>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button cdkFocusInitial type="submit">SignUp</button>
+    </mat-dialog-actions>
+</form>

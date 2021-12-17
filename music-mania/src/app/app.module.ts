@@ -33,6 +33,8 @@ import { LoginSvgComponent } from './svg/login-svg/login-svg.component';
 import { PresentSongComponent } from './present-song/present-song.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -62,6 +64,7 @@ import { SignupComponent } from './signup/signup.component';
     ReactiveFormsModule,
     MatDividerModule,
     MatSliderModule,
+    MatSnackBarModule,
     MatListModule,
     BrowserModule,
     DragDropModule,
@@ -72,7 +75,7 @@ import { SignupComponent } from './signup/signup.component';
     MatChipsModule,
     MatMenuModule,
     MatCardModule,
-    MatDialogModule
+    MatDialogModule, MatSelectModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

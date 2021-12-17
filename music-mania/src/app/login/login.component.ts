@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = fb.group({
       emailFormControl: ['', [Validators.required, Validators.email]],
       passwordFormControl: ['', [Validators.required, Validators.minLength(8), Validators.pattern('.*[0-9].*')]]
-    })
+    });
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
           this.dialogRef.close(user);
         }
         if(res.body.success===false){
-          this.errorMessage="Login Unsuccesful. Either of Email or password is incorrect."
+          this.errorMessage=res.body.message;
         }
       });
     }

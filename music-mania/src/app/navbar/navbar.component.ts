@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
       hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.openLoginDialog();
+      if (result) this.openLoginDialog();
     });
   }
 
