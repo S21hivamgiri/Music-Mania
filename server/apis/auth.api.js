@@ -32,17 +32,18 @@ router.post('/signup', function (req, res) {
                 obj.roles = [];
                 obj.playlist = [];
                 obj.loginTime = new Date();
-                obj.initials = obj.name.charAt(0);
+                obj.initials = obj.firstName.charAt(0);
                 const id = mongoose.Types.ObjectId(data._id);
                 obj.roles.push(id);
                 obj.save(function (err) {
                     if (err) {
-                        return res.json({
+                        return res.status(500).json({
                             success: false,
-                            message: 'Unable to create User'
+                            message: 'Unable to create User',
+                            error: err
                         });
                     }
-                    return res.json({
+                    return res.status(201).json({
                         success: true,
                         message: 'User created Successfully'
                     });
@@ -52,24 +53,25 @@ router.post('/signup', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
+    let salt = bcrypt.genSaltSync(10);
+    let password = bcrypt.hashSync(md5(req.body.password), salt);
     User.findOne({
-        email: req.body.email,
-        password: req.body.password
-    })
-        .populate('roles').exec(function (err, loginData) {
+        email: req.body.email
+    }).populate('roles').exec(function (err, loginData) {
             if (err) {
                 res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
             }
             if (loginData) {
                 let roles = [];
-                const validPassword = bcrypt.compare(req.body.password, loginData.password);
+                const validPassword = bcrypt.compare(password, loginData.password);
                 if (validPassword) {
                     for (let i = 0; i < loginData.roles.length; i++) {
-                        roles.push(loginData.roles[i].name);
+                        roles.push(loginData.roles[i].firstName);
                     }
                     const authObj = {
                         userId: loginData._id,
-                        name: loginData.name,
+                        firstName: loginData.firstName,
+                        lastName: loginData.lastName,
                         loginTime: loginData.loginTime,
                         contact: loginData.contact,
                         initials: loginData.initials,
@@ -77,11 +79,11 @@ router.post('/login', function (req, res) {
                         email: req.body.email,
                         playlist: req.body.playlist
                     };
+                    User.findByIdAndUpdate(authObj.userId, { loginTime: new Date() });
                     res.json({
                         success: true,
                         user: authObj
                     });
-                    User.findByIdAndUpdate(authObj.userId, { loginTime: new Date() });
                     return;
                 }
 
@@ -90,9 +92,9 @@ router.post('/login', function (req, res) {
                     message: 'Authentication failed. Not Entitled for the access.'
                 });
             } else {
-                res.json({
+                res.status(500).json({
                     success: false,
-                    message: 'Authentication failed. Not Entitled for the access.'
+                    message: 'Authentication failed.  Login Unsuccessful'
                 });
             }
         });

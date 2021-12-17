@@ -23,8 +23,7 @@ router.route('/:id').get((req, res) => {
 router.put('/edit/:id', (req, res) => {
     let id = req.params.id;
     const obj = req.body;
-    console.log(obj)
-    User.findByIdAndUpdate(id, { name: obj.name, email: obj.email, country: obj.country, code: obj.code, user: obj.user, address: obj.address, emergency: obj.emergency }, (err, doc) => {
+    User.findByIdAndUpdate(id, { lastName: obj.lastName, email: obj.email, country: obj.country, code: obj.code, user: obj.user, address: obj.address, emergency: obj.emergency }, (err, doc) => {
         if (err) {
             res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
         } else

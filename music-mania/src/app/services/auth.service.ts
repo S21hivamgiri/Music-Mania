@@ -14,14 +14,14 @@ export class AuthService {
     }
 
     signUp(user: User): Observable<HttpResponse<any>> {
-        return this.client.post<User>(env.apiAddress + '/signup', JSON.stringify(user), { headers: this.headers, observe: 'response' });
+        return this.client.post<User>(env.apiAddress + 'signup', JSON.stringify(user), { headers: this.headers, observe: 'response' });
     }
 
-    login(user: User): Observable<HttpResponse<any>> {
-        return this.client.post<User>(env.apiAddress + '/login', JSON.stringify(user), { headers: this.headers, observe: 'response' });
+    login(user:{email:string, password:string}): Observable<HttpResponse<any>> {
+        return this.client.post<User>(env.apiAddress + 'login', JSON.stringify(user), { headers: this.headers, observe: 'response' });
     }
 
-    logout() {
+    logOut() {
         sessionStorage.removeItem('user');
     }
 
@@ -51,7 +51,7 @@ export class AuthService {
         sessionStorage.setItem("user", JSON.stringify(user));
     }
 
-    setCurrentUserData(user: User, isSet=false) {
+    setCurrentUserData(user:{}, isSet=false) {
         if (isSet) {
             localStorage.setItem("user", JSON.stringify(user));
         } else {
@@ -59,19 +59,21 @@ export class AuthService {
         }
     }
 
-    getCurrentUserDetails(): Observable<User | null> {
+    getCurrentUserDetails(): Observable<User | undefined> {
+        let data = sessionStorage.getItem('user');
+        if (data !== undefined && data !== null) {
+            const user: User = JSON.parse(data);
+            return of(user)
+        }
+        return of(undefined);
+    } 
+    
+    getCurrentLoginDetails(): Observable<User | undefined> {
         let data = localStorage.getItem('user');
         if (data !== undefined && data !== null) {
             const user: User = JSON.parse(data);
-            return of(user);
+            return of(user)
         }
-        else {
-            data = sessionStorage.getItem('user');
-            if (data !== undefined && data !== null) {
-                const user: User = JSON.parse(data);
-                return of(user)
-            }
-        }
-        return of(null);
+        return of(undefined);
     }
 }

@@ -3,7 +3,8 @@ var Schema = mongoose.Schema;
 var objectId = mongoose.Schema.Types.ObjectId;
 var userSchema = new Schema({
     _id: { type: objectId, auto: true },
-    name: { type: String, required: true },
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: false },
     contact: { type: String, required: true },
     email: { type: String, required: true },
     password: { type: String, required: true },
