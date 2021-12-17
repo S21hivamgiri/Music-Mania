@@ -30,6 +30,7 @@
             Password is <strong>required</strong>
         </mat-error>
     </mat-form-field>
+    <span style="color:red;" *ngIf="errorMessage">{{errorMessage}}</span>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancel</button>
         <button mat-button cdkFocusInitial type="submit">Login</button>

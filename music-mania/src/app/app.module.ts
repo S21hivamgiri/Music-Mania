@@ -32,6 +32,7 @@ import { PlayerComponent } from './svg/player/player.component';
 import { LoginSvgComponent } from './svg/login-svg/login-svg.component';
 import { PresentSongComponent } from './present-song/present-song.component';
 import { LoginComponent } from './login/login.component';
+import { SignupComponent } from './signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { LoginComponent } from './login/login.component';
     PlayerComponent,
     LoginSvgComponent,
     PresentSongComponent,
+    SignupComponent,
   ],
   imports: [
     HttpClientModule,

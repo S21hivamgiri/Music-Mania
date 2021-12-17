@@ -7,6 +7,7 @@ import { LoginComponent } from '../login/login.component';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 import { filter } from 'rxjs/operators';
+import { SignupComponent } from '../signup/signup.component';
 
 @Component({
   selector: 'app-navbar',
@@ -31,7 +32,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     return this.user?.initials || '?';
   }
 
-  openDialog() {
+  openLoginDialog() {
     const dialogRef = this.dialog.open(LoginComponent, {
       hasBackdrop: false
     });
@@ -40,6 +41,14 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     });
   }
 
+  openSignUpDialog() {
+    const dialogRef = this.dialog.open(SignupComponent, {
+      hasBackdrop: false
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.openLoginDialog();
+    });
+  }
 
   ngAfterContentChecked() {
     this.authService.getCurrentUserDetails().subscribe((userData?: User) => {

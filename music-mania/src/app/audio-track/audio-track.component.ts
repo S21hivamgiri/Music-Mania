@@ -31,49 +31,49 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.settings.lock || this.nextAudio();
     }
     else
-    if (event.keyCode === SPACE) {
-      this.playAudio();
-    }
-    else if (event.keyCode === F11 || event.keyCode === F) {
-      this.settings.lock || this.setFullScreen();
-    }
-    else if (event.keyCode === X) {
-      this.settings.lock || this.setShuffle();
-    }
-    else if (event.keyCode === LEFT_ARROW) {
-      this.settings.lock || this.rewind();
-    }
-    else if (event.keyCode === RIGHT_ARROW) {
-      this.settings.lock || this.forward();
-    }
-    else if (event.keyCode === UP_ARROW) {
-      if (this.settings.volume < 1) this.settings.volume = this.settings.volume + 0.1;
-      this.setVolume();
-    }
-    else if (event.keyCode === DOWN_ARROW) {
-      if (this.settings.volume > 0) this.settings.volume = this.settings.volume - 0.1;
-      this.setVolume();
-    }
-    else if (event.keyCode === R) {
-      this.settings.lock || (this.settings.loop = !this.settings.loop);
-    }
-    else  if (event.keyCode === Z) {
-      this.settings.lock || this.sidenav?.toggle();
-    }
-    else if (event.keyCode === L) {
-      this.setLock();
-    }
-    else if (event.keyCode === S) {
-      this.settings.lock || this.setSearchBar('');
-    }
-    else if (event.keyCode === M) {
-      this.muteAudio();
-    }
-    else if (event.keyCode === C) {
-      this.settings.lock || (this.sidenav?.open() &&
-        (this.playlist!.searchedPlaylist = this.settings.currentPlaylist) &&
-        (this.settings.isSearch = false) && (this.searchItem = ''));
-    }
+      if (event.keyCode === SPACE) {
+        this.playAudio();
+      }
+      else if (event.keyCode === F11 || event.keyCode === F) {
+        this.settings.lock || this.setFullScreen();
+      }
+      else if (event.keyCode === X) {
+        this.settings.lock || this.setShuffle();
+      }
+      else if (event.keyCode === LEFT_ARROW) {
+        this.settings.lock || this.rewind();
+      }
+      else if (event.keyCode === RIGHT_ARROW) {
+        this.settings.lock || this.forward();
+      }
+      else if (event.keyCode === UP_ARROW) {
+        if (this.settings.volume < 1) this.settings.volume = this.settings.volume + 0.1;
+        this.setVolume();
+      }
+      else if (event.keyCode === DOWN_ARROW) {
+        if (this.settings.volume > 0) this.settings.volume = this.settings.volume - 0.1;
+        this.setVolume();
+      }
+      else if (event.keyCode === R) {
+        this.settings.lock || (this.settings.loop = !this.settings.loop);
+      }
+      else if (event.keyCode === Z) {
+        this.settings.lock || this.sidenav?.toggle();
+      }
+      else if (event.keyCode === L) {
+        this.setLock();
+      }
+      else if (event.keyCode === S) {
+        this.settings.lock || this.setSearchBar('');
+      }
+      else if (event.keyCode === M) {
+        this.muteAudio();
+      }
+      else if (event.keyCode === C) {
+        this.settings.lock || (this.sidenav?.open() &&
+          (this.playlist!.searchedPlaylist = this.settings.currentPlaylist) &&
+          (this.settings.isSearch = false) && (this.searchItem = ''));
+      }
     event.preventDefault();
   }
 
@@ -229,17 +229,17 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     myAudio.volume = this.settings.volume;
   }
 
-  prevAudio(data:number) {
+  prevAudio(data: number) {
     this.settings.currentDuration = 0;
-    if (data > 10 || data==0)  {
+    if (data > 10 || data == 0) {
       this.settings.audioStatus = !this.settings.audioStatus;
       if (this.settings.loop) this.settings.currentTrackIndex;
       else {
         if (this.settings.currentTrackIndex === 0) this.settings.currentTrackIndex = this.settings.currentPlaylist.length - 1;
         else --this.settings.currentTrackIndex;
       }
-    }else{
-      this.settings.audioStatus=!this.settings.audioStatus
+    } else {
+      this.settings.audioStatus = !this.settings.audioStatus
     }
     this.setAndPlayAudio();
   }

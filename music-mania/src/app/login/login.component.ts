@@ -12,7 +12,8 @@ import { AuthService } from '../services/auth.service';
 export class LoginComponent implements OnInit {
   loginForm: FormGroup
   isSet = false;
-  passwordType = 'password'
+  passwordType = 'password';
+  errorMessage='';
 
   constructor(private authService: AuthService, fb: FormBuilder,
     @Optional() public dialogRef: MatDialogRef<LoginComponent>) {
@@ -41,11 +42,12 @@ export class LoginComponent implements OnInit {
   }
 
   save(form: FormGroup) {
+    let finalData = { email: this.loginForm.get('emailFormControl')?.value, password: this.loginForm.get('passwordFormControl')?.value }
     if (form.valid) {
-      this.authService.login({ email: this.loginForm.get('emailFormControl')?.value, password: this.loginForm.get('passwordFormControl')?.value }).subscribe(res => {
+      this.authService.login(finalData).subscribe((res) => {
         if (res.body.success == true) {
           const user = res.body.user;
-          this.authService.setCurrentUserData({ email: this.loginForm.get('emailFormControl')?.value, password: this.loginForm.get('passwordFormControl')?.value }, this.isSet);
+          this.authService.setCurrentUserData(finalData, this.isSet);
           sessionStorage.setItem("user", JSON.stringify(user));
 
           if (user.roles.indexOf("Admin") > -1) {
@@ -56,6 +58,9 @@ export class LoginComponent implements OnInit {
             this.authService.setCurentRole('User');
           }
           this.dialogRef.close(user);
+        }
+        if(res.body.success===false){
+          this.errorMessage="Login Unsuccesful. Either of Email or password is incorrect."
         }
       });
     }

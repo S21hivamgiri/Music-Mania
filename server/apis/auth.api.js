@@ -10,7 +10,9 @@ router.post('/signup', function (req, res) {
     var body = req.body;
     var obj = new User(body);
     let salt = bcrypt.genSaltSync(10);
-    obj['password'] = bcrypt.hashSync(md5(obj['password']), salt);
+    let password = md5(obj['password'])
+    console.log(password);
+    obj['password'] = bcrypt.hashSync(password, salt);
 
     User.find({
         email: obj.email
@@ -53,20 +55,25 @@ router.post('/signup', function (req, res) {
 });
 
 router.post('/login', function (req, res) {
-    let salt = bcrypt.genSaltSync(10);
-    let password = bcrypt.hashSync(md5(req.body.password), salt);
     User.findOne({
         email: req.body.email
     }).populate('roles').exec(function (err, loginData) {
-            if (err) {
-                res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
-            }
-            if (loginData) {
-                let roles = [];
-                const validPassword = bcrypt.compare(password, loginData.password);
-                if (validPassword) {
+        if (err) {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        if (loginData) {
+            let roles = [];
+            let password = md5(req.body.password);
+            bcrypt.compare(password, loginData.password, function (err, data) {
+                if (err) {
+                    res.json({
+                        success: false,
+                        message: 'Authentication failed. Not Entitled for the access.'
+                    });
+                }
+                if (data) {
                     for (let i = 0; i < loginData.roles.length; i++) {
-                        roles.push(loginData.roles[i].firstName);
+                        roles.push(loginData.roles[i].name);
                     }
                     const authObj = {
                         userId: loginData._id,
@@ -86,20 +93,18 @@ router.post('/login', function (req, res) {
                     });
                     return;
                 }
-
-                res.status(500).json({
-                    success: false,
-                    message: 'Authentication failed. Not Entitled for the access.'
-                });
-            } else {
-                res.status(500).json({
-                    success: false,
-                    message: 'Authentication failed.  Login Unsuccessful'
-                });
-            }
-        });
+                else {
+                    // response is OutgoingMessage object that server response http request
+                    res.json({ success: false, message: 'passwords do not match' });
+                }
+            });
+        } else {
+            res.json({
+                success: false,
+                message: 'Authentication failed.  Login Unsuccessful'
+            });
+        }
+    });
 });
-
-
 
 module.exports = router;

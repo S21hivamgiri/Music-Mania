@@ -23,7 +23,7 @@
         {{getInitials()}}
     </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)="openDialog()" *ngIf="!(authService.isLoggedIn() |async)">
+        <button mat-menu-item (click)="openLoginDialog()" *ngIf="!(authService.isLoggedIn() |async)">
             <mat-icon [style.color]="currentSong?.textColor">login</mat-icon>
             <span [style.color]="currentSong?.textColor">Log In</span>
         </button>
@@ -31,7 +31,7 @@
             <mat-icon [style.color]="currentSong?.textColor">logout</mat-icon>
             <span [style.color]="currentSong?.textColor">Log Out</span>
         </button>
-        <button mat-menu-item *ngIf="!(authService.isLoggedIn() |async)">
+        <button mat-menu-item (click)="openSignUpDialog()" *ngIf="!(authService.isLoggedIn() |async)">
             <mat-icon [style.color]="currentSong?.textColor">person_add_alt_1</mat-icon>
             <span [style.color]="currentSong?.textColor">Sign Up!</span>
         </button>
