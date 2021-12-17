@@ -90,7 +90,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   return this.isCurrentPlaylist() ? this.settings.currentPlaylist : this.searchedPlaylist;
   }
 
-  onKeyUp(event: Event) {
+  onKeyDown(event: Event) {
     event.stopPropagation();
     this.textValueSubject.next();
   }

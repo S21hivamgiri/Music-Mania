@@ -12,6 +12,9 @@ export function setTextColorOnHeader(e: any) {
                     .mat-form-field-label{
                       color: ${textColor}!important;
                     }
+                    .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+                      background: ${textColor}!important;
+                    }
                     ::-webkit-scrollbar-thumb {
                         background:${textColor}!important;
                         border-radius: 10px;

@@ -1,0 +1,14 @@
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-width {
+    width: 500px;
+}
+
+::ng-deep {
+    .cdk-global-overlay-wrapper {
+        justify-content: flex-end !important;
+    }
+}

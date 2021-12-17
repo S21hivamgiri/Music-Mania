@@ -24,7 +24,7 @@
     <div class="search-bar" [style.background]="currentSong?.backgroundColor"
         *ngIf="settings.isSearch && matOpened">
         <mat-form-field class="search-input-wrapper">
-            <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyUp($event)" autocomplete="off">
+            <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyDown($event)" autocomplete="off">
             <mat-label>Enter Artists, Albums or Songs</mat-label>
             <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
                 (click)="searchItem='';filterSong();">
@@ -81,6 +81,7 @@
                         </div>
                     </div>
                 </div>
+                
                 <ng-container *ngIf="currentSong?._id===track?._id">
                     <app-playing-animation [audioStatus]="settings.audioStatus" [color]="currentSong?.textColor">
                     </app-playing-animation>

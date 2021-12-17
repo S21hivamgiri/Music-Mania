@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Login</h2>
+<form class="login-form" [formGroup]="loginForm" (ngSubmit)="save(loginForm)">
+    <mat-form-field class="login-width" appearance="fill">
+        <mat-label>Email</mat-label>
+        <input type="email" matInput formControlName="emailFormControl"
+            (keydown)="onKeyDown($event)" autocomplete="off" placeholder="Ex. pat@example.com">
+        <mat-hint>Your music is a step ahead.</mat-hint>
+        <mat-error *ngIf="loginForm.get('emailFormControl')?.hasError('email') && !loginForm.get('emailFormControl')?.hasError('required')">
+            Please enter a valid email address.
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('emailFormControl')?.hasError('required')">
+            Email is <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+    <mat-form-field class="login-width" appearance="fill">
+        <mat-label>Password</mat-label>
+        <input [type]="passwordType" matInput formControlName="passwordFormControl"
+            (keydown)="onKeyDown($event)" autocomplete="off" placeholder="Enter your password.">
+        <mat-icon (click)="passwordType=passwordType==='password'?'text':'password'" matSuffix>
+            {{passwordType==='password'?'visibility':'visibility_off'}}</mat-icon>
+        <mat-hint>Have a melodious Journey ahead</mat-hint>
+        <mat-error *ngIf="loginForm.get('passwordFormControl')?.hasError('minlength') && !loginForm.get('passwordFormControl')?.hasError('required')">
+            Please enter minimum 8 character password
+        </mat-error>
+        <mat-error
+            *ngIf="loginForm.get('passwordFormControl')?.hasError('pattern') && !loginForm.get('passwordFormControl')?.hasError('required') && !loginForm.get('passwordFormControl')?.hasError('minlength')">
+            Please enter atleast 1 digit in password
+        </mat-error>
+        <mat-error *ngIf="loginForm.get('passwordFormControl')?.hasError('required')">
+            Password is <strong>required</strong>
+        </mat-error>
+    </mat-form-field>
+    <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button cdkFocusInitial type="submit">Login</button>
+    </mat-dialog-actions>
+</form>
+<mat-checkbox class="example-margin" [(ngModel)]="isSet">Remember me!</mat-checkbox>

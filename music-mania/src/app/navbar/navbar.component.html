@@ -9,8 +9,8 @@
         </div>
         <div class="title-name" *ngIf="displayTitle">
             <span class="title-name-container">
-                MUS<img src="/assets/music-mania-i.png" class="title-i">C MAN<img src="/assets/music-mania-i.png"
-                    class="title-i">A
+                MUS<img src="/assets/music-mania-i.png" class="title-i">C MAN
+                <img src="/assets/music-mania-i.png" class="title-i">A
             </span>
             <app-playing-animation [audioStatus]="true" color="#F75660"></app-playing-animation>
         </div>
@@ -18,22 +18,20 @@
     <div class="present-play" *ngIf="(router.url !== '/track') && (trackStore.currentSong|async)?._id">
         <app-present-song></app-present-song>
     </div>
-    <button class="user-wrapper" [matMenuTriggerFor]="menu"  [style.backgroundColor]="!displayTitle||'#ffffff'"
-                    [style.animationPlayState]="isPlaying?'running':'paused'">?</button>
+    <button class="user-wrapper" [matMenuTriggerFor]="menu" [style.backgroundColor]="!displayTitle||'#ffffff'"
+        [style.animationPlayState]="isPlaying?'running':'paused'">
+        {{getInitials()}}
+    </button>
     <mat-menu #menu="matMenu">
-        <button mat-menu-item>
-            <mat-icon  [style.color]="currentSong?.textColor">login</mat-icon>
-            <span  [style.color]="currentSong?.textColor">Log In</span>
+        <button mat-menu-item (click)="openDialog()" *ngIf="!(authService.isLoggedIn() |async)">
+            <mat-icon [style.color]="currentSong?.textColor">login</mat-icon>
+            <span [style.color]="currentSong?.textColor">Log In</span>
         </button>
-        <button mat-menu-item>
-            <mat-icon  [style.color]="currentSong?.textColor">logout</mat-icon>
-            <span  [style.color]="currentSong?.textColor">Log Out</span>
+        <button mat-menu-item (click)="authService.logOut();user=undefined" *ngIf="(authService.isLoggedIn() |async)">
+            <mat-icon [style.color]="currentSong?.textColor">logout</mat-icon>
+            <span [style.color]="currentSong?.textColor">Log Out</span>
         </button>
-        <button mat-menu-item>
-            <mat-icon  [style.color]="currentSong?.textColor">app_registration</mat-icon>
-            <span  [style.color]="currentSong?.textColor">Edit User</span>
-        </button>
-        <button mat-menu-item>
+        <button mat-menu-item *ngIf="!(authService.isLoggedIn() |async)">
             <mat-icon [style.color]="currentSong?.textColor">person_add_alt_1</mat-icon>
             <span [style.color]="currentSong?.textColor">Sign Up!</span>
         </button>
