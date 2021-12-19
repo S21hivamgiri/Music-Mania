@@ -19,9 +19,8 @@
         <mat-label>Email</mat-label>
         <input type="email" matInput formControlName="emailFormControl" (keydown)="onKeyDown($event)" autocomplete="off"
             placeholder="Ex. pat@example.com">
-        <mat-hint>Music is a step ahead.</mat-hint>
-        <mat-error
-            *ngIf="signUpForm.get('emailFormControl')?.hasError('email') && !signUpForm.get('emailFormControl')?.hasError('required')">
+        <mat-error *ngIf="signUpForm.get('emailFormControl')?.hasError('email') && 
+                  !signUpForm.get('emailFormControl')?.hasError('required')">
             Please enter a valid email address.
         </mat-error>
         <mat-error *ngIf="signUpForm.get('emailFormControl')?.hasError('required')">
@@ -36,12 +35,13 @@
             <mat-icon (click)="passwordType=passwordType==='password'?'text':'password'" matSuffix>
                 {{passwordType==='password'?'visibility':'visibility_off'}}
             </mat-icon>
-            <mat-error
-                *ngIf="signUpForm.get('passwordFormControl')?.hasError('minlength') && !signUpForm.get('passwordFormControl')?.hasError('required')">
+            <mat-error *ngIf="signUpForm.get('passwordFormControl')?.hasError('minlength') && 
+                       !signUpForm.get('passwordFormControl')?.hasError('required')">
                 Please enter minimum 8 character password
             </mat-error>
-            <mat-error
-                *ngIf="signUpForm.get('passwordFormControl')?.hasError('pattern') && !signUpForm.get('passwordFormControl')?.hasError('required') && !signUpForm.get('passwordFormControl')?.hasError('minlength')">
+            <mat-error *ngIf="signUpForm.get('passwordFormControl')?.hasError('pattern') && 
+                       !signUpForm.get('passwordFormControl')?.hasError('required') && 
+                       !signUpForm.get('passwordFormControl')?.hasError('minlength')">
                 Please enter atleast 1 digit in password
             </mat-error>
             <mat-error *ngIf="signUpForm.get('passwordFormControl')?.hasError('required')">
@@ -51,11 +51,20 @@
 
         <mat-form-field class="name-width" appearance="fill">
             <mat-label>Confirm Password</mat-label>
-            <input [type]="passwordType" matInput formControlName="confirmPasswordFormControl" (keydown)="onKeyDown($event)"
+            <input type="password" matInput formControlName="confirmPasswordFormControl" (keydown)="onKeyDown($event)"
                 autocomplete="off" placeholder="Enter your password." [errorStateMatcher]="matcher">
             <mat-icon matSuffix>
-                password
+                {{ !signUpForm?.hasError('notSame') &&
+                !signUpForm.get('passwordFormControl')?.hasError('pattern') &&
+                !signUpForm.get('passwordFormControl')?.hasError('required') &&
+                !signUpForm.get('passwordFormControl')?.hasError('minlength') ? 'check' : 'password'}}
             </mat-icon>
+            <mat-hint *ngIf="!signUpForm?.hasError('notSame')  && 
+                             !signUpForm.get('passwordFormControl')?.hasError('pattern') &&
+                             !signUpForm.get('passwordFormControl')?.hasError('required') &&
+                             !signUpForm.get('passwordFormControl')?.hasError('minlength')">
+                Your password is matched.
+            </mat-hint>
             <mat-error *ngIf="signUpForm?.hasError('notSame') ">
                 Password does not <strong>match.</strong>
             </mat-error>
@@ -69,8 +78,8 @@
             <mat-error *ngIf="signUpForm.get('phoneFormControl')?.hasError('required')">
                 Contact Number is <strong>required</strong>
             </mat-error>
-            <mat-error
-                *ngIf="signUpForm.get('phoneFormControl')?.hasError('minlength') && !signUpForm.get('phoneFormControl')?.hasError('required')">
+            <mat-error *ngIf="signUpForm.get('phoneFormControl')?.hasError('minlength') && 
+                       !signUpForm.get('phoneFormControl')?.hasError('required')">
                 Contact Number shoul be valid 10 digit.
             </mat-error>
         </mat-form-field>
@@ -93,6 +102,7 @@
     <span style="color:red;" *ngIf="errorMessage">{{errorMessage}}</span>
     <mat-dialog-actions align="end">
         <button mat-button mat-dialog-close>Cancel</button>
-        <button mat-button cdkFocusInitial type="submit">SignUp</button>
+        <button mat-raised-button color="primary" cdkFocusInitial type="submit"
+            [disabled]="!signUpForm.valid">SignUp</button>
     </mat-dialog-actions>
 </form>

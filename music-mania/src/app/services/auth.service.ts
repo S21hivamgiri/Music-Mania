@@ -17,8 +17,16 @@ export class AuthService {
         return this.client.post<User>(env.apiAddress + 'signup', JSON.stringify(user), { headers: this.headers, observe: 'response' });
     }
 
-    login(user:{email:string, password:string}): Observable<HttpResponse<any>> {
+    login(user: { email: string, password: string }): Observable<HttpResponse<any>> {
         return this.client.post<User>(env.apiAddress + 'login', JSON.stringify(user), { headers: this.headers, observe: 'response' });
+    }
+
+    forgetPassword(user: { email: string }): Observable<HttpResponse<any>> {
+        return this.client.post<User>(env.apiAddress + 'forget-password', JSON.stringify(user), { headers: this.headers, observe: 'response' });
+    }
+
+    updatePassword(user: { email: string, contact: string, password: string }): Observable<HttpResponse<any>> {
+        return this.client.post<User>(env.apiAddress + 'update-password', JSON.stringify(user), { headers: this.headers, observe: 'response' });
     }
 
     logOut() {
@@ -39,7 +47,7 @@ export class AuthService {
     setCurentRole(data: string) {
         sessionStorage.setItem('role', data);
     }
-    
+
     // Check if user data is saved and remebered before login 
     isRemembered(): Observable<Boolean> {
         const data = localStorage.getItem('user');
@@ -47,11 +55,11 @@ export class AuthService {
         return of(false);
     }
 
-    setCurrentSessionData(user:User) {
+    setCurrentSessionData(user: User) {
         sessionStorage.setItem("user", JSON.stringify(user));
     }
 
-    setCurrentUserData(user:{}, isSet=false) {
+    setCurrentUserData(user: {}, isSet = false) {
         if (isSet) {
             localStorage.setItem("user", JSON.stringify(user));
         } else {
@@ -66,8 +74,8 @@ export class AuthService {
             return of(user)
         }
         return of(undefined);
-    } 
-    
+    }
+
     getCurrentLoginDetails(): Observable<User | undefined> {
         let data = localStorage.getItem('user');
         if (data !== undefined && data !== null) {

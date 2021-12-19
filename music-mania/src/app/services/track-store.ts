@@ -13,7 +13,6 @@ import { Settings } from '../model/settings.model';
 export class TrackStore {
 
     private subject = new BehaviorSubject<Track[]>([]);
-
     tracks$: Observable<Track[]> = this.subject.asObservable();
 
     constructor(private http: HttpClient) { }
@@ -55,6 +54,7 @@ export class TrackStore {
         volume: 1,
         loop: false,
     });
+    
     // saveTrack(trackId: string, changes: Partial<Track>): Observable<any> {
 
     //     const tracks = this.subject.getValue();

@@ -5,6 +5,7 @@ let md5 = require('md5')
 var bcrypt = require('bcryptjs');
 var User = require('../model/user.model');
 var Role = require('../model/role.model');
+const user = require('../model/user.model');
 
 router.post('/signup', function (req, res) {
     var body = req.body;
@@ -114,6 +115,85 @@ router.post('/login', function (req, res) {
             res.json({
                 success: false,
                 message: 'Authentication failed.  Login Unsuccessful'
+            });
+        }
+    });
+});
+
+router.post('/update-password', function (req, res) {
+    if (!req.body.email||!req.body.contact||!user.body.password) {
+        res.json({
+            success: false,
+            message: 'Data not sufficient'
+        });
+    }
+    User.findOne({
+        email: req.body.email,
+        contact: req.body.contact
+    }, function (err, loginData) {
+        if (err) {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        if (loginData) {
+
+            let salt = bcrypt.genSaltSync(10);
+            let password = md5(req.body.password)
+            let finalPassWord = bcrypt.hashSync(password, salt);
+            User.findByIdAndUpdate(loginData._id, { password: finalPassWord }, function (err, updateData) {
+                if(updateData){
+                    res.json({
+                        success: true,
+                        message: 'Password Updated Successfully'
+                    });
+                }
+            });
+
+
+        } else {
+            res.json({
+                success: false,
+                message: 'Invalid User Credentials'
+            });
+        }
+    });
+});
+
+router.post('/forget-password', function (req, res) {
+    if (!req.body.email) {
+        res.json({
+            success: false,
+            message: 'Data not sufficient'
+        });
+    }
+    User.findOne({
+        email: req.body.email
+    }, function (err, loginData) {
+        if (err) {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        if (loginData) {
+            let split = loginData.contact.split('');
+            let contactLength = split.length;
+
+            let contact = {
+                "1": split[1],
+                "4": split[4],
+                "-2": split[contactLength-2],
+                "-3": split[contactLength-3],
+                "-1": split[contactLength-1],
+            }
+            res.json({
+                success: true,
+                user: {
+                    email: loginData.email,
+                    contact: contact,
+                    length: contactLength
+                }
+            });
+        } else {
+            res.json({
+                success: false,
+                message: 'Email Not found'
             });
         }
     });
