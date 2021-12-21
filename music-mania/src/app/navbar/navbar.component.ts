@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
       hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result === 'forget') this.forgetPasswordDialog();
+      if (result?.type === 'forget') this.forgetPasswordDialog(result?.email);
       else if (result) this.user = result;
     });
   }
@@ -52,8 +52,9 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  forgetPasswordDialog() {
+  forgetPasswordDialog(email: string) {
     const dialogRef = this.dialog.open(ForgetPasswordComponent, {
+      data: { email: email},
       hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe(() => {

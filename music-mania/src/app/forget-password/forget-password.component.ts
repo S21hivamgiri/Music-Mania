@@ -1,6 +1,6 @@
-import { Component, Optional } from '@angular/core';
+import { Component, Inject, Optional } from '@angular/core';
 import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from '../services/auth.service';
 import { MyErrorStateMatcher } from '../signup/signup.component';
 
@@ -25,10 +25,11 @@ export class ForgetPasswordComponent {
   updateError = "";
   forgetError = "";
 
-  constructor(private _formBuilder: FormBuilder, private authService: AuthService,
-    @Optional() public dialogRef: MatDialogRef<ForgetPasswordComponent>) {
+  constructor(private _formBuilder: FormBuilder, private authService: AuthService, 
+    @Optional() public dialogRef: MatDialogRef<ForgetPasswordComponent>, 
+    @Inject(MAT_DIALOG_DATA) public data: {email:string}) {
     this.emailFormGroup = this._formBuilder.group({
-      emailFormControl: ['', [Validators.required, Validators.email]],
+      emailFormControl: [data.email||'', [Validators.required, Validators.email]],
     });
 
     this.contactFormGroup = this._formBuilder.group({
@@ -38,7 +39,7 @@ export class ForgetPasswordComponent {
     this.passwordFormGroup = this._formBuilder.group({
       passwordFormControl: ['', [Validators.required, Validators.minLength(8), Validators.pattern('.*[0-9].*')]],
       confirmPasswordFormControl: ['', Validators.required],
-    },{ validators: this.validateAreEqual });
+    }, { validators: this.validateAreEqual });
   }
 
   public validateAreEqual: ValidatorFn = (group: AbstractControl): ValidationErrors | null => {
@@ -52,7 +53,7 @@ export class ForgetPasswordComponent {
       if (data.body.success) {
         let result: ForgetPasswordResult = data.body.user;
         let length = result.length;
-        this.contact = Object.entries(result.contact).reduce((ini, [k, v]) => (ini.splice(k as unknown as number, 1, v), ini), new Array(length).fill(undefined))
+        this.contact = Object.entries(result.contact).reduce((ini, [k, v]) => (ini.splice(k as unknown as number, 1, v), ini), new Array(length).fill(null))
         this.setContact();
         this.forgetError = "";
       }
@@ -81,7 +82,7 @@ export class ForgetPasswordComponent {
   setContact() {
     for (let i = 0; i < this.contact.length; ++i) {
       if (this.contact.length !== this.contactFormGroup.get('contacts')?.value?.length) {
-        const control = new FormControl(this.contact[i] || '', [Validators.required]);
+        const control = new FormControl(this.contactFormGroup.get('contacts')?.value[i] || this.contact[i] || null, [Validators.required]);
         (<FormArray>this.contactFormGroup.get('contacts')).push(control);
       }
     }
@@ -95,7 +96,7 @@ export class ForgetPasswordComponent {
     if (e.keyCode === 8) {
       let currValue = document.getElementById("array-" + i);
       if (isFiredNow) {
-        (<FormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue('');
+        (<FormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue(null);
       }
       if (i >= 0) {
         let prevValue = document.getElementById("array-" + (i - 1));
@@ -104,7 +105,7 @@ export class ForgetPasswordComponent {
         } else {
           setTimeout((index = i - 1) => {
             document.getElementById("array-" + (index))?.focus();
-          }, 100);
+          }, 10);
         }
       }
       if (i === 0)
@@ -116,15 +117,21 @@ export class ForgetPasswordComponent {
       if (isFiredNow) {
         (<FormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue(String.fromCharCode(e.keyCode));
       }
+
       if (i < this.contact.length - 1) {
         let nextValue = document.getElementById("array-" + (i + 1));
 
         if (nextValue?.hasAttribute("readonly")) {
           this.onContactKeyDown(i + 1, e, false);
         } else {
-          setTimeout((index = i + 1) => {
+          setTimeout((index = i + 1, contact = this.contact) => {
+            for (let j = index; j < contact.length; ++j) {
+              if (!contact[j]) {
+                (document.getElementById("array-" + j) as HTMLInputElement)!.value = '';
+              }
+            }
             document.getElementById("array-" + (index))?.focus();
-          }, 100);
+          }, 10);
         }
         currValue?.blur();
       }
@@ -134,9 +141,8 @@ export class ForgetPasswordComponent {
 
   isValidFormArray() {
     let result = true;
-
     for (let j = 0; j < (<FormArray>this.contactFormGroup.get('contacts')).value.length; ++j) {
-      result = result && ((<FormArray>this.contactFormGroup.get('contacts')).value[j] !== '');
+      result = result && ((<FormArray>this.contactFormGroup.get('contacts')).value[j] !== null);
     }
     return result;
   }

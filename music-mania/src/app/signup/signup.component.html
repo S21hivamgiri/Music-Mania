@@ -88,7 +88,8 @@
             <mat-select formControlName="nationalityFormControl" required>
                 <mat-option value=''>--Select a country--</mat-option>
                 <mat-option *ngFor="let country of countries" [value]="country.name" class='row'>
-                    <span class='dropdown-country'><img class="flag-image" height='20px' [src]='country.asset'>
+                    <span class='dropdown-country'>
+                        <img class="flag-image" height='20px' [src]="'/assets/flags/'+country.code+'.svg'">
                         <span class=''>{{country.name}} &nbsp;(<span class="code">{{country.code}}</span>)</span>
                     </span>
                 </mat-option>
