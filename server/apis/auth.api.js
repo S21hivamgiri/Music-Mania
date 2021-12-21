@@ -121,7 +121,7 @@ router.post('/login', function (req, res) {
 });
 
 router.post('/update-password', function (req, res) {
-    if (!req.body.email||!req.body.contact||!user.body.password) {
+    if (!req.body.email || !req.body.contact || !req.body.password) {
         res.json({
             success: false,
             message: 'Data not sufficient'
@@ -140,21 +140,19 @@ router.post('/update-password', function (req, res) {
             let password = md5(req.body.password)
             let finalPassWord = bcrypt.hashSync(password, salt);
             User.findByIdAndUpdate(loginData._id, { password: finalPassWord }, function (err, updateData) {
-                if(updateData){
+                if (updateData) {
                     res.json({
                         success: true,
                         message: 'Password Updated Successfully'
                     });
                 }
             });
-
-
-        } else {
-            res.json({
-                success: false,
-                message: 'Invalid User Credentials'
-            });
+            return;
         }
+        res.json({
+            success: false,
+            message: 'Invalid User Credentials, Please Recheck Contact Info.'
+        });
     });
 });
 
@@ -178,9 +176,9 @@ router.post('/forget-password', function (req, res) {
             let contact = {
                 "1": split[1],
                 "4": split[4],
-                "-2": split[contactLength-2],
-                "-3": split[contactLength-3],
-                "-1": split[contactLength-1],
+                "-2": split[contactLength - 2],
+                "-3": split[contactLength - 3],
+                "-1": split[contactLength - 1],
             }
             res.json({
                 success: true,

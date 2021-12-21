@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onKeyDown(event: Event) {
+  onKeyDown(event: KeyboardEvent) {
     event.stopPropagation();
   }
 
@@ -64,5 +64,9 @@ export class LoginComponent implements OnInit {
         }
       });
     }
+  }
+
+  forgetPassword() {
+    this.dialogRef.close('forget');
   }
 }

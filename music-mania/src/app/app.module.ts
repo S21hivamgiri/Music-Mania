@@ -35,6 +35,9 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
+import { ForgetPasswordComponent } from './forget-password/forget-password.component';
+import { MatStepperModule } from '@angular/material/stepper';
+
 
 @NgModule({
   declarations: [
@@ -54,6 +57,7 @@ import { MatSelectModule } from '@angular/material/select';
     LoginSvgComponent,
     PresentSongComponent,
     SignupComponent,
+    ForgetPasswordComponent,
   ],
   imports: [
     HttpClientModule,
@@ -70,12 +74,14 @@ import { MatSelectModule } from '@angular/material/select';
     DragDropModule,
     AppRoutingModule,
     MatCheckboxModule,
-    MatInputModule,
+    MatInputModule, 
+    MatStepperModule,
     BrowserAnimationsModule,
     MatChipsModule,
     MatMenuModule,
     MatCardModule,
-    MatDialogModule, MatSelectModule
+    MatDialogModule, 
+    MatSelectModule
   ],
   providers: [HttpClientModule],
   bootstrap: [AppComponent]

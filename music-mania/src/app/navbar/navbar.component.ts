@@ -8,6 +8,7 @@ import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 import { filter } from 'rxjs/operators';
 import { SignupComponent } from '../signup/signup.component';
+import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
 
 @Component({
   selector: 'app-navbar',
@@ -37,7 +38,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
       hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.user = result;
+      if (result === 'forget') this.forgetPasswordDialog();
+      else if (result) this.user = result;
     });
   }
 
@@ -46,7 +48,16 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
       hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result) this.openLoginDialog();
+      if (result === 'success') this.openLoginDialog();
+    });
+  }
+
+  forgetPasswordDialog() {
+    const dialogRef = this.dialog.open(ForgetPasswordComponent, {
+      hasBackdrop: false
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.openLoginDialog();
     });
   }
 
