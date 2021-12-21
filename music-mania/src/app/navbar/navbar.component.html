@@ -18,11 +18,12 @@
     <div class="present-play" *ngIf="(router.url !== '/track') && (trackStore.currentSong|async)?._id">
         <app-present-song></app-present-song>
     </div>
-    <button class="user-wrapper" [matMenuTriggerFor]="menu" [style.backgroundColor]="!displayTitle||'#ffffff'"
-        [style.animationPlayState]="isPlaying?'running':'paused'">
+    <button class="user-wrapper" [matMenuTriggerFor]="contextMenu" #contextMenuTrigger="matMenuTrigger"
+        [style.backgroundColor]="!displayTitle||'#ffffff'" [style.animationPlayState]="isPlaying?'running':'paused'"
+        [title]="getTitle()">
         {{getInitials()}}
     </button>
-    <mat-menu #menu="matMenu">
+    <mat-menu #contextMenu="matMenu">
         <button mat-menu-item (click)="openLoginDialog()" *ngIf="!(authService.isLoggedIn() |async)">
             <mat-icon [style.color]="currentSong?.textColor">login</mat-icon>
             <span [style.color]="currentSong?.textColor">Log In</span>

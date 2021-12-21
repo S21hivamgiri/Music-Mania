@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { AuthService } from '../services/auth.service';
 import { TrackStore } from '../services/track-store';
 
 @Component({
@@ -10,8 +12,9 @@ import { TrackStore } from '../services/track-store';
 export class HomepageComponent implements OnInit {
   displayTitle: boolean = true;
   isBackGroundVisible: boolean = true;
+  @ViewChild('navBar') navBarInput?: NavbarComponent;
 
-  constructor(readonly router: Router, readonly trackStore: TrackStore) { trackStore.loadAllTracks().subscribe(); }
+  constructor(readonly router: Router, readonly trackStore: TrackStore, readonly authService: AuthService) { trackStore.loadAllTracks().subscribe(); }
 
   ngOnInit(): void {
     window.scrollTo(0, 0);

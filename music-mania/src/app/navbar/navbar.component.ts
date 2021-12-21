@@ -1,14 +1,14 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
-import { Router, RouterEvent, Event } from '@angular/router';
+import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
-import { filter } from 'rxjs/operators';
 import { SignupComponent } from '../signup/signup.component';
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-navbar',
@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   @Input() isPlaying: boolean = false;
   @Input() displayTitle: boolean = true;
   @Input() isBackGroundVisible?: boolean = true;
+  @ViewChild('contextMenuTrigger', { read: MatMenuTrigger }) contextMenuTrigger?: MatMenuTrigger;
+
   currentSong?: Track;
   user?: User;
   constructor(readonly authService: AuthService, readonly router: Router, private changeDetectionRef: ChangeDetectorRef, readonly trackStore: TrackStore, public dialog: MatDialog) { }
@@ -31,6 +33,10 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
 
   getInitials(): string {
     return this.user?.initials || '?';
+  }
+
+  getTitle(): string {
+    return `${this.user?.firstName} ${this.user?.lastName}` || 'Please Login';
   }
 
   openLoginDialog() {
@@ -52,9 +58,14 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     });
   }
 
+  openContextMenu(e: Event) {
+    e.stopPropagation();
+    this.contextMenuTrigger?.openMenu();
+  }
+
   forgetPasswordDialog(email: string) {
     const dialogRef = this.dialog.open(ForgetPasswordComponent, {
-      data: { email: email},
+      data: { email: email },
       hasBackdrop: false
     });
     dialogRef.afterClosed().subscribe(() => {

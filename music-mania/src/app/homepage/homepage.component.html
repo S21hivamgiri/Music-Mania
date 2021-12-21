@@ -1,4 +1,5 @@
-<app-navbar [isPlaying]="false" [displayTitle]="displayTitle" [isBackGroundVisible]="isBackGroundVisible"></app-navbar>
+<app-navbar #navBar [isPlaying]="false" [displayTitle]="displayTitle" [isBackGroundVisible]="isBackGroundVisible">
+</app-navbar>
 <header>
     <div class="container">
         <div class="intro-text">
@@ -15,23 +16,24 @@
         </div>
     </div>
 </header>
-<section>
+<section *ngIf="!(authService.isLoggedIn()|async)">
     <div class="container second">
-    <div class="intro-text">
-        <div class="intro-lead-in">Music can make heart, mind and soul <span class='music'>happy</span>
-        <span class='magic'>ecstatic</span><span class='closing'> .</span>
+        <div class="intro-text">
+            <div class="intro-lead-in">Music can make heart, mind and soul <span class='music'>happy</span>
+                <span class='magic'>ecstatic</span><span class='closing'> .</span>
+            </div>
+        </div>
+        <app-login-svg></app-login-svg>
+        <div class="player">
+            <button class="login cta-button" title="Login/ SignUp" (click)="navBarInput?.openContextMenu($event);">
+                <mat-icon>login</mat-icon>Login/ SignUp
+            </button>
+            <span class='intro-desc'>Get Access to create personal Playlists</span>
         </div>
     </div>
-    <app-login></app-login>
-    <div class="player">
-        <button class="login cta-button" title="Login/ SignUp">
-        <mat-icon>login</mat-icon>Login/ SignUp
-    </button><span class='intro-desc'>Get Access to create personal Playlists</span>
-    </div>
-</div>
 </section>
 <section>
-    <div class="container third">
+    <div class="container third" [class]="(authService.isLoggedIn()|async)? 'second':'third'">
         <div class="intro-text">
             <div class="intro-lead-in">Music can heal any pain <span class='music'>within you</span>
                 <span class='magic'>in the world</span><span class='closing'> .</span>
@@ -39,7 +41,9 @@
         </div>
         <app-web-developer></app-web-developer>
         <div class="player">
-            <button class="about cta-button" title="About" (click)="router.navigate(['/about'])" ><mat-icon>info</mat-icon>About</button>
+            <button class="about cta-button" title="About" (click)="router.navigate(['/about'])">
+                <mat-icon>info</mat-icon>About
+            </button>
             <span class='intro-desc'>Learn more about App and Developer.</span>
         </div>
     </div>
