@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { sortSongsByProperty } from '../controller/sort-shuffle-controller';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
@@ -116,7 +116,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   getThumbNailSrc(id?: string) {
-    return this.settings.currentPlaylist.length && id ? `${environment.apiAddress}track/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
+    return this.settings.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
   sortSongByProperty() {

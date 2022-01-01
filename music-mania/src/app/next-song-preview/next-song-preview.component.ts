@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
@@ -33,7 +33,7 @@ export class NextSongPreviewComponent implements OnInit {
   }
 
   getThumbNailSrc(_id?: string) {
-    return this.settings?.currentPlaylist.length && _id ? `${environment.apiAddress}track/thumbnail/${_id}.png` : '/assets/music-thumbnail.png';
+    return this.settings?.currentPlaylist.length && _id ? `${environment.streamAddress}images/thumbnail/${_id}.png` : '/assets/music-thumbnail.png';
   }
 
   nextAudio() {

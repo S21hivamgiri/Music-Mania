@@ -2,7 +2,7 @@ import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, 
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
 import { TrackStore } from '../services/track-store';
 import { Track } from '../model/track.model';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { DOCUMENT } from '@angular/common';
 import { MatSidenav } from '@angular/material/sidenav';
 import { fullScreenContoller } from '../controller/full-screen-contoller';
@@ -144,7 +144,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   setAudioPlayer() {
     this.trackStore.currentSong.next(this.settings.currentPlaylist[this.settings.currentTrackIndex]);
     this.titleService.setTitle('MusicMania | ' + this.currentSong.title);
-    let audioSource = `${environment.apiAddress}track/stream/${this.currentSong._id}`;
+    let audioSource = `${environment.streamAddress}songs/${this.currentSong._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.src = audioSource;
     myAudio.onended = () => { this.nextAudio(); }
@@ -172,7 +172,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   getPicture() {
     return this.tracks.length ?
-      `${environment.apiAddress}track/image/${this.currentSong?.picture}` : '/assets/music-image.jpg';
+      `${environment.streamAddress}images/album/${this.currentSong?.picture}` : '/assets/music-image.jpg';
   }
 
   sortAndShuffleSongs() {

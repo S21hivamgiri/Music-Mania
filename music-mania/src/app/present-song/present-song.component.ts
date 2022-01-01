@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { getCurrentTimeInFormat } from '../controller/time-controller';
-import { environment } from '../environments/environment';
+import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
@@ -55,7 +55,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
   }
 
   getThumbNailSrc(id?: string) {
-    return this.settings?.currentPlaylist.length && id ? `${environment.apiAddress}track/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
+    return this.settings?.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
   playSong() {
@@ -82,7 +82,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
 
   setAudioPlayer() {
     this.trackStore.currentSong.next(this.settings.currentPlaylist[this.settings.currentTrackIndex]);
-    let audioSource = `${environment.apiAddress}track/stream/${this.currentSong._id}`;
+    let audioSource = `${environment.streamAddress}songs/${this.currentSong._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.src = audioSource;
     myAudio.onended = () => { this.nextAudio(); }

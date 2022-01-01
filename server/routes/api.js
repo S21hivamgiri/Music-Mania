@@ -6,5 +6,4 @@ router.use('/user', require('../apis/user.api'));
 router.use('/role', require('../apis/role.api'));
 router.use('/track', require('../apis/track.api'));
 
-
 module.exports = router;
