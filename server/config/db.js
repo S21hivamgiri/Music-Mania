@@ -4,6 +4,7 @@ const connection = mongoose.connect('mongodb://localhost:27017/musicmania', { us
 mongoose.connection.on('error', err => {
     console.log(err);
 });
+
 mongoose.connection.on('connected', res => {
     console.log('connected!');
 })

@@ -11,8 +11,7 @@ router.route('/').get((req, res) => {
     });
 });
 
-
-router.post('/', function(req, res) {
+router.post('/', function (req, res) {
     const obj = req.body;
     Role.create(obj).then(docs => {
         res.status(201).send("Role for " + docs.name + " created sucessfully.");

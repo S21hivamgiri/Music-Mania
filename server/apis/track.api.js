@@ -5,38 +5,23 @@ var path = require('path');
 var jsmediatags = require("jsmediatags");
 var fs = require('fs');
 const sharp = require('sharp');
-var mongoose = require('mongoose')
+var mongoose = require('mongoose');
+let multer = require("multer");
 
+var storage = multer.diskStorage({
+    destination: __dirname + '/../data/songs/',
+    filename: function (req, file, callback) {
+        callback(null, file.originalname);
+    }
+});
+
+var upload = multer({ storage: storage });
 const Track = require('../model/track.model');
 
-router.route('/').get((req, res) => {
-    Track.find({}).then(docs => {
-        res.send(docs);
-    }).catch(err => {
-        res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
-    });
-});
-
-router.route('/add-color/:id').put((req, res) => {
-    let id = req.params.id;
-    let obj = req.body;
-    Track.findByIdAndUpdate(id, { backgroundColor: obj.backgroundColor, textColor: obj.textColor }, (err, doc) => {
-        if (err) {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
-        }
-        else {
-            doc.backgroundColor = obj.backgroundColor;
-            doc.textColor = obj.textColor;
-            res.status(httpStatus.OK).send(doc);
-        }
-    });
-});
-
-router.route('/add').post((req, res) => {
-    let obj = req.body;
-    let filename = obj.filename
+router.route('/add').post(upload.single("music"), (req, res) => {
     var id = new mongoose.Types.ObjectId();
-    jsmediatags.read(__dirname + '/../data/songs/' + filename + ".mp3", {
+    let filename = req.file.originalname;
+    jsmediatags.read(__dirname + '/../data/songs/' + filename, {
         onSuccess: function (tag) {
             let album = tag.tags.album;
             let artist = tag.tags.artist.split(',');
@@ -44,6 +29,12 @@ router.route('/add').post((req, res) => {
             let format = tag.tags.picture.format;
             let title = tag.tags.title;
             let fileName = id + '.' + format.split('/')[1];
+            let obj = {};
+            let base64String = "";
+
+            fs.rename(__dirname + '/../data/songs/' + filename, __dirname + '/../data/songs/' + id + '.mp3', function (err) {
+                if (err) console.log('ERROR: ' + err);
+            });
 
             obj.title = title
             obj.album = album;
@@ -51,10 +42,10 @@ router.route('/add').post((req, res) => {
             obj.picture = fileName;
             obj._id = id;
 
-            let base64String = "";
             for (var i = 0; i < image.length; i++) {
                 base64String += String.fromCharCode(image[i]);
             }
+
             const initialFolder = __dirname + '/../data/pictures/';
             let base64 = Buffer.from(base64String, 'binary').toString('base64');
             fs.writeFileSync(initialFolder + fileName, base64, 'base64', function (err) {
@@ -86,6 +77,43 @@ router.route('/add').post((req, res) => {
     });
 });
 
+
+router.route('/').get((req, res) => {
+    Track.find({}).then(docs => {
+        res.send(docs);
+    }).catch(err => {
+        res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
+    });
+});
+
+router.route('/add-color/:id').put((req, res) => {
+    let id = req.params.id;
+    let obj = req.body;
+    Track.findByIdAndUpdate(id, { backgroundColor: obj.backgroundColor, textColor: obj.textColor }, (err, doc) => {
+        if (err) {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        else {
+            doc.backgroundColor = obj.backgroundColor;
+            doc.textColor = obj.textColor;
+            res.status(httpStatus.OK).send(doc);
+        }
+    });
+});
+
+router.route('/update/:id').put((req, res) => {
+    let id = req.params.id;
+    let obj = req.body;
+    Track.findByIdAndUpdate(id, obj, (err, doc) => {
+        if (err) {
+            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
+        }
+        else {
+            res.status(httpStatus.OK).send(doc);
+        }
+    });
+});
+
 router.route('/:id').get((req, res) => {
     let id = req.params.id;
     Track.findById(id).then(docs => {
@@ -94,7 +122,6 @@ router.route('/:id').get((req, res) => {
         res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
     });
 });
-
 
 router.route('/search/:id').get((req, res) => {
     let id = req.params.id;

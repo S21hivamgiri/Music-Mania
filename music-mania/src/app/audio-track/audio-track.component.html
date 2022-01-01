@@ -1,6 +1,8 @@
 <mat-sidenav-container class="container" hasBackdrop="false">
     <mat-sidenav #sidenav class="playlist-sidenav" mode="side">
-      <app-playlist #playlist [searchItem]="searchItem" [matOpened]="sidenav.opened" (playAudio)="setAndPlayAudio()" (closeSideBar)="sidenav.close();"></app-playlist> 
+        <app-playlist #playlist [searchItem]="searchItem" [matOpened]="sidenav.opened" (playAudio)="setAndPlayAudio()"
+            (closeSideBar)="sidenav.close();">
+        </app-playlist>
     </mat-sidenav>
     <mat-sidenav-content>
         <app-navbar *ngIf="!settings.lock" [isPlaying]="settings.audioStatus" [isBackGroundVisible]="false"
@@ -65,8 +67,7 @@
                     <div class="next-audio-wrapper">
                         <div class='next-song-preview'
                             *ngIf="settings.lock||settings.currentDuration>settings.duration-60">
-                            <app-next-song-preview (nextAudioEvent)='nextAudio()'>
-                            </app-next-song-preview>
+                            <app-next-song-preview (nextAudioEvent)='nextAudio()'></app-next-song-preview>
                         </div>
                     </div>
                     <div class="duration-slider" *ngIf="!settings.lock">
@@ -78,7 +79,8 @@
                     <div class="duration-wrapper" *ngIf="!settings.lock">
                         <div class="current-duration">
                             <span class="current-duration" id="duration-content"
-                                [style.color]="currentSong?.textColor">00:00</span>
+                                [style.color]="currentSong?.textColor">00:00
+                            </span>
                         </div>
                         <div class="total-duration">
                             <span class="total-duration" id="total-duration-content"
@@ -100,10 +102,14 @@
                             </button>
                         </div>
 
-                        <div class="skip-previous-button" [title]="!settings.currentDuration || settings.currentDuration>10?'Previous (P)':'Restart(Q)'">
+                        <div class="skip-previous-button"
+                            [title]="!settings.currentDuration || settings.currentDuration>10?'Previous (P)':'Restart(Q)'">
                             <button [disabled]="settings.loop" mat-icon-button [style.color]="currentSong?.textColor"
                                 (click)="prevAudio(settings.currentDuration)">
-                                <mat-icon>{{!settings.currentDuration || settings.currentDuration>10?'skip_previous':'restart_alt'}}</mat-icon>
+                                <mat-icon>
+                                    {{!settings.currentDuration ||
+                                    settings.currentDuration>10?'skip_previous':'restart_alt'}}
+                                </mat-icon>
                             </button>
                         </div>
 

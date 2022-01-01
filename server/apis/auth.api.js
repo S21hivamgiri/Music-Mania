@@ -5,7 +5,6 @@ let md5 = require('md5')
 var bcrypt = require('bcryptjs');
 var User = require('../model/user.model');
 var Role = require('../model/role.model');
-const user = require('../model/user.model');
 
 router.post('/signup', function (req, res) {
     var body = req.body;

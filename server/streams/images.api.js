@@ -3,8 +3,6 @@ var router = express.Router();
 var path = require('path');
 var fs = require('fs');
 
-const Track = require('../model/track.model');
-
 router.route('/album/:picture').get((req, res) => {
     let picture = req.params.picture;
     const file = __dirname + '/../data/pictures/' + picture;
