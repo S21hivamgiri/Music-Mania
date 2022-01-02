@@ -30,7 +30,8 @@ export class AuthService {
     }
 
     logOut() {
-        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('user'); 
+        sessionStorage.removeItem('role')
     }
 
     // Check is user is logged in current session.

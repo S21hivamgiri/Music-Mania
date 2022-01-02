@@ -52,9 +52,8 @@ export class LoginComponent implements OnInit {
 
           if (user.roles.indexOf("Admin") > -1) {
             this.authService.setCurentRole('Admin')
-          }
-
-          else if (user.roles.indexOf("User") > -1) {
+          } else 
+          if (user.roles.indexOf("User") > -1) {
             this.authService.setCurentRole('User');
           }
           this.dialogRef.close(user);

@@ -1,0 +1,82 @@
+<mat-stepper linear #stepper>
+    <mat-step [stepControl]="audioFormGroup" editable="false" *ngIf="displayAdd">
+        <form [formGroup]="audioFormGroup">
+            <ng-template matStepLabel>Add Your Song</ng-template>
+            <div class="drag-drop" fileDragDrop>
+                <input class="input" accept=".mp3" type="file" #fileDropRef id="fileDropRef"
+                    (change)="handleFileDrop($event)" />
+                <mat-icon class="upload-icon">upload_file</mat-icon>
+                <span>Drag and Drop Your file here.</span>
+                <span class="or">Or</span>
+                <button class="upload-button" mat-raised-button color="warn">Browse for File</button>
+            </div>
+            <div class="file-name" *ngIf="file">
+                <div class="file-loaded">
+                    <mat-icon class="upload-icon">description</mat-icon>{{file.name}}
+                </div>
+                <button mat-icon-button (click)="removeFile()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <mat-dialog-actions align="end">
+                <button mat-button mat-dialog-close>Cancel</button>
+                <button mat-raised-button color="primary" matStepperNext cdkFocusInitial [disabled]="!file"
+                    (click)="sendSong()">
+                    Upload and Next.
+                </button>
+            </mat-dialog-actions>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="colorFormGroup" editable="true">
+        <form [formGroup]="colorFormGroup">
+            <ng-template matStepLabel>Select BackGround and Text Color</ng-template>
+            <div class="color-container">
+                <div class="inner-bar">
+                    <div class="color-picker">
+                        <span>Background Color:</span>
+                        <button mat-icon-button>
+                            <mat-icon [style.color]="colorFormGroup.get('backgroundColor')?.value "
+                                class="color-pallete">
+                                square
+                            </mat-icon>
+                            <input type='color' formControlName="backgroundColor" class='color-class' name="favcolor">
+                        </button>
+                        <div *ngIf="isImagePickingAvailable()">
+                            or
+                            <button mat-button color="primary" (click)="pickFromImage('backgroundColor')">Pick from Image</button>
+                        </div>
+                    </div>
+                    <div class="color-picker">
+                        <span>Text Color:</span>
+                        <button mat-icon-button>
+                            <mat-icon [style.color]="colorFormGroup.get('textColor')?.value " class="color-pallete">
+                                square
+                            </mat-icon>
+                            <input type='color' formControlName="textColor" class='color-class' name="favcolor">
+                        </button>
+                        <div *ngIf="isImagePickingAvailable()">or
+                            <button mat-button color="primary" (click)="pickFromImage('textColor')">Pick from Image</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <img *ngIf="image" [src]="getPicture(track?.picture)" height="250px" />
+                </div>
+            </div>
+        </form>
+        <mat-dialog-actions align="end">
+            <button mat-raised-button cdkFocusInitial color="primary" matStepperNext>
+                Confirm Color
+            </button>
+        </mat-dialog-actions>
+    </mat-step>
+    <mat-step [stepControl]="dataFormGroup" editable="true">
+        <form [formGroup]="dataFormGroup">
+            <ng-template matStepLabel>Verify Meta Data</ng-template>
+            <mat-dialog-actions align="end">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-raised-button cdkFocusInitial color="primary" (click)="submitData()">Done</button>
+            </mat-dialog-actions>
+        </form>
+    </mat-step>
+</mat-stepper>

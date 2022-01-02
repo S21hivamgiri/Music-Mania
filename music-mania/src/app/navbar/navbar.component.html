@@ -32,6 +32,10 @@
             <mat-icon [style.color]="currentSong?.textColor">logout</mat-icon>
             <span [style.color]="currentSong?.textColor">Log Out</span>
         </button>
+        <button mat-menu-item (click)="openAddNewSongDialog()" *ngIf="(authService.getCurentRole()|async) ==='Admin' ">
+            <mat-icon [style.color]="currentSong?.textColor">audiotrack</mat-icon>
+            <span [style.color]="currentSong?.textColor">Add New Song</span>
+        </button>
         <button mat-menu-item (click)="openSignUpDialog()" *ngIf="!(authService.isLoggedIn() |async)">
             <mat-icon [style.color]="currentSong?.textColor">person_add_alt_1</mat-icon>
             <span [style.color]="currentSong?.textColor">Sign Up!</span>

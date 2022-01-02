@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
-import { catchError, map, shareReplay, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { catchError, map, tap } from 'rxjs/operators';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
 
@@ -11,7 +11,6 @@ import { Settings } from '../model/settings.model';
     providedIn: 'root'
 })
 export class TrackStore {
-
     private subject = new BehaviorSubject<Track[]>([]);
     tracks$: Observable<Track[]> = this.subject.asObservable();
 
@@ -29,6 +28,7 @@ export class TrackStore {
             );
         return loadTracks$;
     }
+
     currentSong: BehaviorSubject<Track> = new BehaviorSubject(<Track>{
         backgroundColor: '',
         _id: '',
@@ -55,6 +55,22 @@ export class TrackStore {
         loop: false,
     });
     
+    uploadNewTrack(file: File): Observable<HttpResponse<Object>>{
+        var formData = new FormData();
+        formData.append('music', file);
+        return this.http.post(environment.apiAddress+'track/add/', formData, {
+            reportProgress: true,
+            observe: 'response'
+        });
+        // return of({body:{
+        //     _id: "61a31134c1bfc89754e6577a",
+        //     album:"MunnaBhai MBBS",
+        //     artist: ["Vinod Rathod","Shreya Ghosal"],
+        //     picture: "61a31134c1bfc89754e6577a.jpeg",
+        //     title: "Chann Chann"
+        // }});
+    }
+
     // saveTrack(trackId: string, changes: Partial<Track>): Observable<any> {
 
     //     const tracks = this.subject.getValue();

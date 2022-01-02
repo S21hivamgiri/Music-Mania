@@ -7,7 +7,7 @@
                 <span class='magic'>ag</span><span class='closing'>ic</span>
             </div>
         </div>
-        <app-player></app-player>
+        <app-player *ngIf="(trackStore.currentSong|async)?._id"></app-player>
         <div class="player" *ngIf="!((trackStore.currentSong|async)?._id)">
             <span class="material-icons" (click)="router.navigate(['/track'])" title="Play Songs Now!">
                 play_circle

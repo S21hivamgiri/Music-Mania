@@ -37,6 +37,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { MatStepperModule } from '@angular/material/stepper';
+import { AddNewComponent } from './add-new/add-new.component';
 
 
 @NgModule({
@@ -58,6 +59,7 @@ import { MatStepperModule } from '@angular/material/stepper';
     PresentSongComponent,
     SignupComponent,
     ForgetPasswordComponent,
+    AddNewComponent,
   ],
   imports: [
     HttpClientModule,

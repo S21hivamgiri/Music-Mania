@@ -1,10 +1,9 @@
 export interface Track {
-    backgroundColor: string;
+    backgroundColor?: string;
     _id: string;
-    textColor: string;
+    textColor?: string;
     title: string;
     artist: Array<string>;
     album: string;
     picture: string;
-
 }

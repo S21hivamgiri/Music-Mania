@@ -9,6 +9,7 @@ import { AuthService } from '../services/auth.service';
 import { SignupComponent } from '../signup/signup.component';
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { AddNewComponent } from '../add-new/add-new.component';
 
 @Component({
   selector: 'app-navbar',
@@ -37,6 +38,12 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
 
   getTitle(): string {
     return `${this.user?.firstName} ${this.user?.lastName}` || 'Please Login';
+  }
+  
+  openAddNewSongDialog() {
+    this.dialog.open(AddNewComponent, {
+      hasBackdrop: false
+    });
   }
 
   openLoginDialog() {

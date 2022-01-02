@@ -23,11 +23,11 @@ router.route('/add').post(upload.single("music"), (req, res) => {
     let filename = req.file.originalname;
     jsmediatags.read(__dirname + '/../data/songs/' + filename, {
         onSuccess: function (tag) {
-            let album = tag.tags.album;
-            let artist = tag.tags.artist.split(',');
+            let album = tag.tags.album||'';
+            let artist = (tag.tags.artist||'').split(',');
             let image = tag.tags.picture.data;
             let format = tag.tags.picture.format;
-            let title = tag.tags.title;
+            let title = tag.tags.title||'';
             let fileName = id + '.' + format.split('/')[1];
             let obj = {};
             let base64String = "";
@@ -36,7 +36,7 @@ router.route('/add').post(upload.single("music"), (req, res) => {
                 if (err) console.log('ERROR: ' + err);
             });
 
-            obj.title = title
+            obj.title = title;
             obj.album = album;
             obj.artist = artist;
             obj.picture = fileName;
@@ -83,21 +83,6 @@ router.route('/').get((req, res) => {
         res.send(docs);
     }).catch(err => {
         res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
-    });
-});
-
-router.route('/add-color/:id').put((req, res) => {
-    let id = req.params.id;
-    let obj = req.body;
-    Track.findByIdAndUpdate(id, { backgroundColor: obj.backgroundColor, textColor: obj.textColor }, (err, doc) => {
-        if (err) {
-            res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err);
-        }
-        else {
-            doc.backgroundColor = obj.backgroundColor;
-            doc.textColor = obj.textColor;
-            res.status(httpStatus.OK).send(doc);
-        }
     });
 });
 

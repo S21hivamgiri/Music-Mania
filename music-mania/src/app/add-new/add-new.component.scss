@@ -1,0 +1,74 @@
+::ng-deep {
+    .cdk-global-overlay-wrapper {
+        justify-content: flex-end !important;
+    }
+}
+
+.file-name {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+
+    .file-loaded {
+        align-items: center;
+        display: flex;
+    }
+}
+
+.drag-drop {
+    align-items: center;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    height: 250px;
+    justify-content: center;
+    position: relative;
+
+    .input {
+        height: 250px;
+        left: 0;
+        opacity: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 2;
+    }
+
+    .or {
+        padding: 30px;
+    }
+
+    .upload-icon {
+        margin-top: 40px;
+    }
+
+    .upload-button {
+        margin-bottom: 20px;
+    }
+}
+
+.color-container {
+    align-items: center;
+    display: flex;
+
+    .inner-bar {
+        padding: 10px;
+
+        .color-picker {
+            display: flex;
+            align-items: center;
+            .color-pallete {
+                border: 1px solid black;
+            }
+
+            .color-class {
+                height: 50px;
+                margin: -4px 0 0 -43px;
+                opacity: 0;
+                position: absolute;
+                width: 50px;
+                z-index: 4;
+            }
+        }
+    }
+}
