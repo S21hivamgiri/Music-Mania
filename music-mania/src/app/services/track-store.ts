@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
@@ -54,49 +54,53 @@ export class TrackStore {
         volume: 1,
         loop: false,
     });
+
+    updateTrack(obj: Track) {
+        let id = obj._id;
+        const tracks = this.subject.getValue();
+        let flag=-1;
+        tracks.some((data,i)=>{
+            let res = (data._id === id);
+            if(res){
+                flag=i;
+            }
+            return res;
+        });
+        if(flag===-1){
+            tracks.push(obj);
+        }
+        else{
+            tracks[flag] = { ...tracks[flag], ...obj }
+        }
     
-    uploadNewTrack(file: File): Observable<HttpResponse<Object>>{
+        this.subject.next(tracks);
+        return this.http.put(environment.apiAddress + `/track/update/${id}`, obj)
+            .pipe(
+                catchError(err => {
+                    const message = "Could not save track";
+                    console.log(message, err);
+                    return throwError(err);
+                }),
+                shareReplay()
+            );
+    }
+
+    uploadNewTrack(file: File): Observable<HttpResponse<Object>> {
         var formData = new FormData();
         formData.append('music', file);
-        return this.http.post(environment.apiAddress+'track/add/', formData, {
+        return this.http.post(environment.apiAddress + 'track/add/', formData, {
             reportProgress: true,
             observe: 'response'
         });
-        // return of({body:{
-        //     _id: "61a31134c1bfc89754e6577a",
-        //     album:"MunnaBhai MBBS",
-        //     artist: ["Vinod Rathod","Shreya Ghosal"],
-        //     picture: "61a31134c1bfc89754e6577a.jpeg",
-        //     title: "Chann Chann"
-        // }});
     }
 
-    // saveTrack(trackId: string, changes: Partial<Track>): Observable<any> {
+    uploadNewPicture(file: File, id?: string): Observable<HttpResponse<Object>> {
+        var formData = new FormData();
+        formData.append('picture', file);
 
-    //     const tracks = this.subject.getValue();
-
-    //     const index = tracks.findIndex(track => track._id == trackId);
-
-    //     const newTrack: Track = {
-    //         ...tracks[index],
-    //         ...changes
-    //     };
-
-    //     const newTracks: Track[] = tracks.slice(0);
-
-    //     newTracks[index] = newTrack;
-
-    //     this.subject.next(newTracks);
-
-    //     return this.http.put(`/api/track/${trackId}`, changes)
-    //         .pipe(
-    //             catchError(err => {
-    //                 const message = "Could not save track";
-    //                 console.log(message, err);
-    //                 return throwError(err);
-    //             }),
-    //             shareReplay()
-    //         );
-    // }
-
+        return this.http.post(environment.apiAddress + 'track/replace-picture/' + id, formData, {
+            reportProgress: true,
+            observe: 'response'
+        });
+    }
 }

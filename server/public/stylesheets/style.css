@@ -3,6 +3,15 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+.top-heading {
+  display: flex;
+  align-items: center;
+}
+
+.top-heading .image {
+  margin-right: 10px;
+}
+
+.top-heading .bold {
+  font-weight: bold;
 }

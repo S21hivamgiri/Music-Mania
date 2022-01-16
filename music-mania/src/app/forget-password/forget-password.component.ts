@@ -92,6 +92,10 @@ export class ForgetPasswordComponent {
     event.stopPropagation();
   }
 
+  getControls(){
+    return (this.contactFormGroup.get('contacts') as FormArray).controls;
+  }
+
   onContactKeyDown(i: number, e: KeyboardEvent, isFiredNow: boolean = true) {
     if (e.keyCode === 8) {
       let currValue = document.getElementById("array-" + i);
@@ -124,12 +128,7 @@ export class ForgetPasswordComponent {
         if (nextValue?.hasAttribute("readonly")) {
           this.onContactKeyDown(i + 1, e, false);
         } else {
-          setTimeout((index = i + 1, contact = this.contact) => {
-            for (let j = index; j < contact.length; ++j) {
-              if (!contact[j]) {
-                (document.getElementById("array-" + j) as HTMLInputElement)!.value = '';
-              }
-            }
+          setTimeout((index = i + 1) => {
             document.getElementById("array-" + (index))?.focus();
           }, 10);
         }

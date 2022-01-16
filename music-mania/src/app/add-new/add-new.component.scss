@@ -20,12 +20,11 @@
     border: 1px solid black;
     display: flex;
     flex-direction: column;
-    height: 250px;
     justify-content: center;
     position: relative;
 
     .input {
-        height: 250px;
+        height: 100%;
         left: 0;
         opacity: 0;
         position: absolute;
@@ -47,6 +46,15 @@
     }
 }
 
+.image-container {
+    display: flex;
+    align-items: center;
+
+    .input-picture {
+        width: 100%;
+    }
+}
+
 .color-container {
     align-items: center;
     display: flex;
@@ -54,9 +62,15 @@
     .inner-bar {
         padding: 10px;
 
+        .color-title {
+            display: block;
+            font-weight: bold;
+        }
+
         .color-picker {
-            display: flex;
             align-items: center;
+            display: flex;
+
             .color-pallete {
                 border: 1px solid black;
             }
@@ -70,5 +84,16 @@
                 z-index: 4;
             }
         }
+    }
+}
+
+.track-container {
+    .artist-title {
+        display: block;
+        font-weight: bold;
+    }
+    .artist-form{
+        display: flex;
+        flex-direction: column;
     }
 }

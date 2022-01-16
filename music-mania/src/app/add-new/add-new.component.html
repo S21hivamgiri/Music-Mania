@@ -27,13 +27,74 @@
             </mat-dialog-actions>
         </form>
     </mat-step>
+    <mat-step [stepControl]="pictureFormGroup" editable="true">
+        <form [formGroup]="pictureFormGroup">
+            <ng-template matStepLabel>Customize Track Album</ng-template>
+            <div class="image-container">
+                <div>
+                    <img *ngIf="!pictureFile" [src]="getPicture(track?.picture)" height="250px" />
+                    <img *ngIf="pictureFile" [src]="pictureUrl" height="250px" />
+                </div>
+                <div class="input-picture">
+                    <div class="drag-drop" fileDragDrop>
+                        <input class="input" accept=".jpg, .png, .jpeg" type="file" #pictureDropRef id="pictureDropRef"
+                            (change)="handlePictureDrop($event)" />
+                        <mat-icon class="upload-icon">upload_file</mat-icon>
+                        <span>Wish to change the picture.</span>
+                        <span>Drag and Drop Your file here.</span>
+                        <span class="or">Or</span>
+                        <button class="upload-button" mat-raised-button color="warn">Browse for File</button>
+                    </div>
+                    <div class="file-name" *ngIf="pictureFile">
+                        <div class="file-loaded">
+                            <mat-icon class="upload-icon">description</mat-icon>{{pictureFile.name}}
+                        </div>
+                        <button mat-icon-button (click)="removePictureFile()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <mat-dialog-actions align="end">
+                <button mat-button mat-dialog-close>Cancel</button>
+                <button mat-raised-button color="primary" matStepperNext cdkFocusInitial (click)="sendPicture()">
+                    {{pictureFile?'Upload and Next':'Next'}}
+                </button>
+            </mat-dialog-actions>
+        </form>
+    </mat-step>
     <mat-step [stepControl]="colorFormGroup" editable="true">
         <form [formGroup]="colorFormGroup">
             <ng-template matStepLabel>Select BackGround and Text Color</ng-template>
             <div class="color-container">
                 <div class="inner-bar">
+                    <div class="color-title">Text Color:</div>
                     <div class="color-picker">
-                        <span>Background Color:</span>
+                        <mat-form-field class="example-full-width" appearance="fill">
+                            <mat-label>Text Color</mat-label>
+                            <input matInput formControlName="textColor"   (keydown)="$event.stopPropagation()"
+                                [value]="colorFormGroup.get('textColor')?.value">
+                        </mat-form-field>
+                        <button mat-icon-button>
+                            <mat-icon [style.color]="colorFormGroup.get('textColor')?.value " class="color-pallete">
+                                square
+                            </mat-icon>
+                            <input type='color' formControlName="textColor" class='color-class' name="favcolor">
+                        </button>
+                        <div *ngIf="isImagePickingAvailable()">or
+                            <button mat-button color="primary" (click)="pickFromImage('textColor')">
+                                Pick from Image
+                            </button>
+                        </div>
+                    </div>
+                    <div class="color-title">Background Color:</div>
+                    <div class="color-picker">
+                        <mat-form-field class="example-full-width" appearance="fill">
+                            <mat-label>Background Color</mat-label>
+                            <input matInput formControlName="backgroundColor"  (keydown)="$event.stopPropagation()"
+                                [value]="colorFormGroup.get('backgroundColor')?.value">
+                        </mat-form-field>
                         <button mat-icon-button>
                             <mat-icon [style.color]="colorFormGroup.get('backgroundColor')?.value "
                                 class="color-pallete">
@@ -43,19 +104,9 @@
                         </button>
                         <div *ngIf="isImagePickingAvailable()">
                             or
-                            <button mat-button color="primary" (click)="pickFromImage('backgroundColor')">Pick from Image</button>
-                        </div>
-                    </div>
-                    <div class="color-picker">
-                        <span>Text Color:</span>
-                        <button mat-icon-button>
-                            <mat-icon [style.color]="colorFormGroup.get('textColor')?.value " class="color-pallete">
-                                square
-                            </mat-icon>
-                            <input type='color' formControlName="textColor" class='color-class' name="favcolor">
-                        </button>
-                        <div *ngIf="isImagePickingAvailable()">or
-                            <button mat-button color="primary" (click)="pickFromImage('textColor')">Pick from Image</button>
+                            <button mat-button color="primary" (click)="pickFromImage('backgroundColor')">
+                                Pick from Image
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -65,7 +116,8 @@
             </div>
         </form>
         <mat-dialog-actions align="end">
-            <button mat-raised-button cdkFocusInitial color="primary" matStepperNext>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-raised-button cdkFocusInitial color="primary" [disabled]="!colorFormGroup.valid" matStepperNext>
                 Confirm Color
             </button>
         </mat-dialog-actions>
@@ -73,9 +125,37 @@
     <mat-step [stepControl]="dataFormGroup" editable="true">
         <form [formGroup]="dataFormGroup">
             <ng-template matStepLabel>Verify Meta Data</ng-template>
+            <div class="track-container">
+                <div class="artist-title">Track Title:</div>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Track Title</mat-label>
+                    <input matInput formControlName="title" (keydown)="$event.stopPropagation()">
+                </mat-form-field>
+                <div class="artist-title">Album Title:</div>
+                <mat-form-field class="example-full-width">
+                    <mat-label>Album Title</mat-label>
+                    <input matInput formControlName="album" (keydown)="$event.stopPropagation()">
+                </mat-form-field>
+                <div class="artist-title">Artists:</div>
+                <div formArrayName="artist" class="artist-form">
+                    <ng-container *ngFor="let arr of getControls(); let ind=index">
+                        <mat-form-field class="artist-width">
+                            <mat-label>Artists {{ind+1}}</mat-label>
+                            <input matInput [id]="'array-'+ind" (keydown)="$event.stopPropagation();"
+                                 [formControlName]="ind">
+                            <button matSuffix mat-icon-button aria-label="Delete" (click)="deleteFormArray(ind)">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        </mat-form-field>
+                    </ng-container>
+                    <button color="warn" mat-stroked-button aria-label="Add" (click)="addFormArray()">
+                        Add Artist<mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
             <mat-dialog-actions align="end">
                 <button mat-button matStepperPrevious>Back</button>
-                <button mat-raised-button cdkFocusInitial color="primary" (click)="submitData()">Done</button>
+                <button mat-raised-button cdkFocusInitial color="primary" [disabled]="!dataFormGroup.valid" (click)="submitData()">Done</button>
             </mat-dialog-actions>
         </form>
     </mat-step>
