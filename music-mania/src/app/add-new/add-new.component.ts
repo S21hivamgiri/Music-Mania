@@ -23,6 +23,7 @@ export class AddNewComponent {
   pictureFile?: File;
   picture = "";
   image = false;
+  songUploaded = false;
   track?: Track;
   constructor(private trackStore: TrackStore,
     private _formBuilder: FormBuilder,
@@ -81,6 +82,7 @@ export class AddNewComponent {
   sendSong() {
     if (this.file) {
       this.trackStore.uploadNewTrack(this.file!).subscribe((res) => {
+        this.songUploaded = true;
         let data = <Track>(res.body);
         this.track = {
           _id: data?._id || "",

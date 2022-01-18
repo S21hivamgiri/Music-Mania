@@ -1,5 +1,5 @@
-<mat-stepper linear #stepper>
-    <mat-step [stepControl]="audioFormGroup" editable="false" *ngIf="displayAdd">
+<mat-stepper linear="true" #stepper>
+    <mat-step [stepControl]="audioFormGroup" [editable]="!songUploaded" *ngIf="displayAdd">
         <form [formGroup]="audioFormGroup">
             <ng-template matStepLabel>Add Your Song</ng-template>
             <div class="drag-drop" fileDragDrop>
@@ -27,10 +27,10 @@
             </mat-dialog-actions>
         </form>
     </mat-step>
-    <mat-step [stepControl]="pictureFormGroup" editable="true">
+    <mat-step [stepControl]="pictureFormGroup" [editable]="true">
         <form [formGroup]="pictureFormGroup">
             <ng-template matStepLabel>Customize Track Album</ng-template>
-            <div class="image-container">
+            <div class="image-container" *ngIf="songUploaded">
                 <div>
                     <img *ngIf="!pictureFile" [src]="getPicture(track?.picture)" height="250px" />
                     <img *ngIf="pictureFile" [src]="pictureUrl" height="250px" />
@@ -57,17 +57,17 @@
             </div>
 
             <mat-dialog-actions align="end">
-                <button mat-button mat-dialog-close>Cancel</button>
+                <button mat-button matStepperPrevious *ngIf="!songUploaded">Back</button>
                 <button mat-raised-button color="primary" matStepperNext cdkFocusInitial (click)="sendPicture()">
                     {{pictureFile?'Upload and Next':'Next'}}
                 </button>
             </mat-dialog-actions>
         </form>
     </mat-step>
-    <mat-step [stepControl]="colorFormGroup" editable="true">
+    <mat-step [stepControl]="colorFormGroup" [editable]="true">
         <form [formGroup]="colorFormGroup">
             <ng-template matStepLabel>Select BackGround and Text Color</ng-template>
-            <div class="color-container">
+            <div class="color-container" *ngIf="songUploaded">
                 <div class="inner-bar">
                     <div class="color-title">Text Color:</div>
                     <div class="color-picker">
@@ -122,10 +122,10 @@
             </button>
         </mat-dialog-actions>
     </mat-step>
-    <mat-step [stepControl]="dataFormGroup" editable="true">
+    <mat-step [stepControl]="dataFormGroup" [editable]="true">
         <form [formGroup]="dataFormGroup">
             <ng-template matStepLabel>Verify Meta Data</ng-template>
-            <div class="track-container">
+            <div class="track-container" *ngIf="songUploaded">
                 <div class="artist-title">Track Title:</div>
                 <mat-form-field class="example-full-width">
                     <mat-label>Track Title</mat-label>
