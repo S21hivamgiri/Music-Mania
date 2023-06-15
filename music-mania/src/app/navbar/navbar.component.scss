@@ -1,10 +1,10 @@
 @import "/src/styles.scss";
 
-.present-play{
-    position:fixed;
-    bottom:0;
-    left:0;
-} 
+.present-play {
+    bottom: 0;
+    left: 0;
+    position: fixed;
+}
 
 .navbar {
     align-items: center;
@@ -51,6 +51,7 @@
                 border: 2px solid #fff;
                 border-radius: 100%;
                 height: auto;
+                user-select: none;
                 width: 80px;
             }
         }
@@ -58,17 +59,18 @@
 
     .user-wrapper {
         align-items: center;
+        animation: spin 8s infinite linear;
         border: 2px solid #000;
         border-radius: 100%;
         color: #000;
-        display: flex;
         cursor: pointer;
+        display: flex;
         font-size: 36px;
         font-weight: 500;
         height: 60px;
         justify-content: center;
+        user-select: none;
         width: 60px;
-        animation: spin 8s infinite linear;
     }
 }
 

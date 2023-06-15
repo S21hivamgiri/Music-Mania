@@ -8,6 +8,7 @@
     font-weight: bold;
     line-height: initial;
     padding: 0 2px;
+    user-select: none;
 
     .thumbnail {
         margin: 0 10px;
@@ -17,6 +18,7 @@
         .track-artist {
             font-size: 12px;
         }
+
         .track-album {
             font-size: 12px;
         }

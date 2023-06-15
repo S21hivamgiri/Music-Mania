@@ -1,8 +1,9 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
+import { Component, ViewChild, OnInit, Optional, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
+import { MatSelect } from '@angular/material/select';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +11,12 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
+  @ViewChild('passwordField') passwordField?: ElementRef;
   loginForm: FormGroup
   isSet = false;
   passwordType = 'password';
   errorMessage='';
+  
 
   constructor(private authService: AuthService, fb: FormBuilder,
     @Optional() public dialogRef: MatDialogRef<LoginComponent>) {
@@ -39,6 +42,14 @@ export class LoginComponent implements OnInit {
 
   onKeyDown(event: KeyboardEvent) {
     event.stopPropagation();
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      if (this.loginForm.valid){
+      this.save(this.loginForm);
+      return;
+    }
+          this.passwordField?.nativeElement.querySelector('input').focus();
+    }
   }
 
   save(form: FormGroup) {

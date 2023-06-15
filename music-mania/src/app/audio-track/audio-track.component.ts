@@ -12,6 +12,8 @@ import { shuffleAllSongs, sortSongsByProperty } from '../controller/sort-shuffle
 import { Title } from '@angular/platform-browser';
 import { PlaylistComponent } from '../playlist/playlist.component';
 import { Settings } from '../model/settings.model';
+import { combineLatest } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-audio-track',
@@ -19,6 +21,16 @@ import { Settings } from '../model/settings.model';
   styleUrls: ['./audio-track.component.scss']
 })
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
+  @ViewChild('sidenav') sidenav?: MatSidenav;
+  @ViewChild('playlist') playlist?: PlaylistComponent;
+
+  tracks: Track[] = [];
+  elem?: HTMLElement;
+  interval?: ReturnType<typeof setTimeout>;
+  searchItem: string = '';
+  currentSong!: Track;
+  settings!: Settings;
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.keyCode === P) {
@@ -77,29 +89,22 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     event.preventDefault();
   }
 
-  @ViewChild('sidenav') sidenav?: MatSidenav;
-  @ViewChild('playlist') playlist?: PlaylistComponent;
-
-  tracks: Track[] = [];
-  elem: any;
-  interval: any;
-  searchItem: string = '';
-  currentSong!: Track;
-  settings!: Settings;
-
-  constructor(private titleService: Title, private trackStore: TrackStore, readonly changeDetectionRef: ChangeDetectorRef, readonly sideNav: ElementRef, @Inject(DOCUMENT) private document: any) { }
+  constructor(private titleService: Title,
+    private trackStore: TrackStore,
+    readonly changeDetectionRef: ChangeDetectorRef,
+    readonly sideNav: ElementRef,
+    @Inject(DOCUMENT) private document: any,) {}
 
   ngOnInit() {
     this.elem = document.documentElement;
-    this.trackStore.currentSong.subscribe((data) => {
-      this.currentSong = data;
-    });
+    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).subscribe(
+      ([currentSong, settings])=>
+      {
+        this.currentSong = currentSong;
+        this.settings = settings;
+      });
 
-    this.trackStore.settings.subscribe((data) => {
-      this.settings = data;
-    });
-
-    this.trackStore.loadAllTracks().subscribe((data) => {
+    this.trackStore.loadAllTracks().pipe(take(1)).subscribe((data) => {
       this.tracks = data;
       this.settings.currentPlaylist = this.tracks;
       this.sortAndShuffleSongs();
@@ -171,7 +176,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   favourite() {
-    
+
   }
 
   getPicture() {
@@ -297,7 +302,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   ngOnDestroy() {
-    clearInterval(this.interval);
+    clearInterval(this.interval!);
     let sliderClass = document.getElementsByTagName('style')[0];
     if ((sliderClass.classList.contains('audio-tag'))) {
       sliderClass.innerText = sliderClass.innerText.replace(sliderClass.innerText, '');
