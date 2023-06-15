@@ -7,19 +7,17 @@ var User = require('../model/user.model');
 var Role = require('../model/role.model');
 
 router.post('/signup', function (req, res) {
-    var body = req.body;
-    var obj = new User(body);
+    let obj = new User(req.body);
+    let salt = bcrypt.genSaltSync(10);
 
-    if (!req.body.email || !req.body.password || !req.body.firstName || !req.body.country || !req.body.contact) {
+    if (!(obj.email && obj.password && obj.firstName && obj.country && obj.contact)) {
         res.json({
             success: false,
             message: 'Data not sufficient'
         });
         return;
     }
-    let salt = bcrypt.genSaltSync(10);
-    let password = md5(obj['password'])
-    obj['password'] = bcrypt.hashSync(password, salt);
+    obj['password'] = bcrypt.hashSync(md5(obj['password']), salt);
 
     User.find({
         email: obj.email

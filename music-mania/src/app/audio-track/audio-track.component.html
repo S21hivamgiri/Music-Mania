@@ -48,6 +48,11 @@
                             <mat-icon>queue_music</mat-icon>
                         </button>
                     </div>
+                    <div class="love" *ngIf="!settings.lock" title="Favourite (H)">
+                        <button mat-icon-button [style.color]="currentSong?.textColor" (click)="favourite()">
+                            <mat-icon> favorite_border </mat-icon>
+                        </button>
+                    </div>
                     <div class="lock" [title]="settings.lock?'Unlock (U)':'Lock (L)'">
                         <button mat-icon-button [style.color]="currentSong?.textColor" (click)="setLock()">
                             <mat-icon>{{settings.lock?'lock':'lock_open'}}</mat-icon>

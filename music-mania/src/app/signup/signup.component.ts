@@ -43,15 +43,16 @@ export class SignupComponent implements OnInit {
   }
 
   save(form: FormGroup) {
-    let finalData:User = { 
-      email: this.signUpForm.get('emailFormControl')?.value, 
+    let finalData: User = {
+      email: this.signUpForm.get('emailFormControl')?.value,
       password: this.signUpForm.get('passwordFormControl')?.value,
       contact: this.signUpForm.get('phoneFormControl')?.value,
       firstName: this.signUpForm.get('firstNameFormControl')?.value,
       lastName: this.signUpForm.get('lastNameFormControl')?.value,
-      country: this.signUpForm.get('nationalityFormControl')?.value
+      country: this.signUpForm.get('nationalityFormControl')?.value,
+      liked: []
     }
-      if (form.valid) {
+    if (form.valid) {
       this.authService.signUp(finalData).subscribe((res) => {
         if (res.body.success == true) {
           this.dialogRef.close('success');

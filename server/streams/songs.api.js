@@ -13,7 +13,6 @@ router.route('/:id').get((req, res) => {
         var parts = range.replace(/bytes=/, "").split("-");
         var partialstart = parts[0];
         var partialend = parts[1];
-
         var start = parseInt(partialstart, 10);
         var end = partialend ? parseInt(partialend, 10) : total - 1;
         var chunksize = (end - start) + 1;

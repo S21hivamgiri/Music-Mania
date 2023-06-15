@@ -1,5 +1,6 @@
 music-mania/.editorconfig
 music-mania/node_modules
+music-mania/package-lock.json
 server/node_modules
 music-mania/.browserslistrc
 server/data/songs/*

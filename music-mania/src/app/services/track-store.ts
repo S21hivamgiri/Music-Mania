@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
+import { AuthService } from './auth.service';
+import { User } from '../model/user.model';
 
 
 @Injectable({
@@ -14,7 +16,33 @@ export class TrackStore {
     private subject = new BehaviorSubject<Track[]>([]);
     tracks$: Observable<Track[]> = this.subject.asObservable();
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private authService: AuthService) { }
+
+    getFavourite(trackId: string) {
+        this.authService.getCurrentUserDetails().subscribe((data: User | undefined) => {
+            let id = data?.userId;
+            this.http.put(environment.apiAddress + `/playlist/like/${id}`, { track: trackId })
+                .pipe(
+                    catchError(err => {
+                        console.log("Could not save track", err);
+                        return throwError(err);
+                    }),
+                );
+        });
+    }
+
+    removeFavourite(trackId: string) {
+        this.authService.getCurrentUserDetails().subscribe((data: User | undefined) => {
+            let id = data?.userId;
+            this.http.put(environment.apiAddress + `/playlist/unlike/${id}`, { track: trackId })
+                .pipe(
+                    catchError(err => {
+                        console.log("Could not save track", err);
+                        return throwError(err);
+                    }),
+                );
+        });
+    }
 
     loadAllTracks() {
         const loadTracks$ = this.http.get<Track[]>(environment.apiAddress + 'track/')
@@ -53,27 +81,24 @@ export class TrackStore {
         currentPlaylist: [],
         volume: 1,
         loop: false,
+        liked: []
     });
 
     updateTrack(obj: Track) {
         let id = obj._id;
         const tracks = this.subject.getValue();
-        let flag=-1;
-        tracks.some((data,i)=>{
+        let flag = -1;
+        tracks.some((data, i) => {
             let res = (data._id === id);
-            if(res){
-                flag=i;
-            }
+            if (res) flag = i;
             return res;
         });
-        if(flag===-1){
-            tracks.push(obj);
-        }
-        else{
-            tracks[flag] = { ...tracks[flag], ...obj }
-        }
-    
+
+        if (flag === -1) tracks.push(obj);
+        else tracks[flag] = { ...tracks[flag], ...obj }
+
         this.subject.next(tracks);
+
         return this.http.put(environment.apiAddress + `/track/update/${id}`, obj)
             .pipe(
                 catchError(err => {
@@ -86,7 +111,7 @@ export class TrackStore {
     }
 
     uploadNewTrack(file: File): Observable<HttpResponse<Object>> {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('music', file);
         return this.http.post(environment.apiAddress + 'track/add/', formData, {
             reportProgress: true,
@@ -95,9 +120,8 @@ export class TrackStore {
     }
 
     uploadNewPicture(file: File, id?: string): Observable<HttpResponse<Object>> {
-        var formData = new FormData();
+        let formData = new FormData();
         formData.append('picture', file);
-
         return this.http.post(environment.apiAddress + 'track/replace-picture/' + id, formData, {
             reportProgress: true,
             observe: 'response'

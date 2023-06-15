@@ -7,27 +7,28 @@ var fs = require('fs');
 const sharp = require('sharp');
 var mongoose = require('mongoose');
 let multer = require("multer");
-
-var storage = multer.diskStorage({
-    destination: __dirname + '/../data/songs/',
-    filename: function (req, file, callback) {
-        callback(null, file.originalname);
-    }
-});
-
-var storeImage = multer.diskStorage({
-    destination: __dirname + '/../data/pictures/',
-    filename: function (req, file, callback) {
-        callback(null, req.params.id + '.' + file.originalname.split('.')[1]);
-    }
-});
-
-var uploadImage = multer({ storage: storeImage });
-var upload = multer({ storage: storage });
 const Track = require('../model/track.model');
 
+var uploadImage = multer({
+    storage: multer.diskStorage({
+        destination: __dirname + '/../data/pictures/',
+        filename: function (req, file, callback) {
+            callback(null, req.params.id + '.' + file.originalname.split('.')[1]);
+        }
+    })
+});
+
+var upload = multer({
+    storage: multer.diskStorage({
+        destination: __dirname + '/../data/songs/',
+        filename: function (req, file, callback) {
+            callback(null, file.originalname);
+        }
+    })
+});
+
 router.route('/add').post(upload.single("music"), (req, res) => {
-    var id = new mongoose.Types.ObjectId();
+    let id = new mongoose.Types.ObjectId();
     let uploadedFileName = req.file.originalname;
     jsmediatags.read(__dirname + '/../data/songs/' + uploadedFileName, {
         onSuccess: function (tag) {
@@ -40,9 +41,10 @@ router.route('/add').post(upload.single("music"), (req, res) => {
             let obj = {};
             let base64String = "";
 
-            fs.rename(__dirname + '/../data/songs/' + uploadedFileName, __dirname + '/../data/songs/' + id + '.mp3', function (err) {
-                if (err) console.log('ERROR: ' + err);
-            });
+            fs.rename(__dirname + '/../data/songs/' + uploadedFileName,
+                __dirname + '/../data/songs/' + id + '.mp3', function (err) {
+                    if (err) console.log('ERROR: ' + err);
+                });
 
             obj.title = title;
             obj.album = album;
@@ -50,7 +52,7 @@ router.route('/add').post(upload.single("music"), (req, res) => {
             obj.picture = fileName;
             obj._id = id;
 
-            for (var i = 0; i < image.length; i++) {
+            for (let i = 0; i < image.length; i++) {
                 base64String += String.fromCharCode(image[i]);
             }
 
@@ -63,7 +65,7 @@ router.route('/add').post(upload.single("music"), (req, res) => {
             const finalFolder = __dirname + '/../data/thumbnail/';
             fs.readFile(initialFolder + fileName, 'utf-8', function (err, content) {
                 if (err) {
-                    onError(err);
+                    console.log(err);
                     return;
                 }
                 sharp(initialFolder + fileName)
@@ -78,9 +80,6 @@ router.route('/add').post(upload.single("music"), (req, res) => {
             }).catch(err => {
                 res.status(httpStatus.StatusCodes.INTERNAL_SERVER_ERROR).send(err);
             });
-        },
-        onError: function (error) {
-            console.log(':(', error.type, error.info);
         }
     });
 });

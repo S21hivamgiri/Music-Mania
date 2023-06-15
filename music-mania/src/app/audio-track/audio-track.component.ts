@@ -170,6 +170,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     this.trackStore.settings.next(this.settings);
   }
 
+  favourite() {
+    
+  }
+
   getPicture() {
     return this.tracks.length ?
       `${environment.streamAddress}images/album/${this.currentSong?.picture}` : '/assets/music-image.jpg';

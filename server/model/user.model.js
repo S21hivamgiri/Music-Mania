@@ -11,6 +11,7 @@ var userSchema = new Schema({
     country: { type: String, required: true },
     loginTime: { type: Date, required: true },
     playlist: { type: Array, required: true },
+    liked: { type: Array, required: true },
     initials: { type: String, required: true },
     roles: [{
         type: mongoose.Schema.Types.ObjectId,

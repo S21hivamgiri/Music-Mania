@@ -3,6 +3,7 @@ export interface User {
   firstName: string;
   userId?: string;
   password: string;
+  liked: Array<string>;
   contact: string;
   email: string;
   country: string;
