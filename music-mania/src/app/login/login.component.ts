@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
   forgetPassword() {
     this.dialogRef.close({
       type: 'forget',
-      email: this.loginForm.get('emailFormControl')?.value
+      email: this.loginForm.get('emailFormControl')?.value,
     });
   }
 }

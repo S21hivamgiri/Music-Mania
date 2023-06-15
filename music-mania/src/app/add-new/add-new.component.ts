@@ -53,7 +53,6 @@ export class AddNewComponent {
 
   handlePictureDrop(event: Event) {
     this.pictureFile = (event?.target as HTMLInputElement)?.files?.[0];
-
     const readURL = (file?: File) => {
       return new Promise((res, rej) => {
         const reader = new FileReader();
