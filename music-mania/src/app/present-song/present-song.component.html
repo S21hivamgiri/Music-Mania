@@ -1,12 +1,12 @@
 <div class="track-list-data" (click)="settings?.lock" [title]="currentSong?.title"
     (click)="openPlayer()" [style.borderColor]="currentSong?.textColor"
     [style.background]="currentSong?.backgroundColor">
-    <div title="Close(W)">
+    <div title="Close (W)">
         <button mat-icon-button [style.color]="currentSong?.textColor" (click)="closeBar();$event.stopPropagation(); ">
             <mat-icon>close</mat-icon>
         </button>
     </div>
-    <img [src]="getThumbNailSrc(currentSong?._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
+    <img [src]="getThumbNailSrc(currentSong?._id)" onerror="  this.src='/assets/music-thumbnail.png'" class="thumbnail"
         [title]="currentSong?.album">
     <div class="track-text marquee">
         <span class="track-title" [style.color]="currentSong?.textColor">

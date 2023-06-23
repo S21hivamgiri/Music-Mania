@@ -43,24 +43,28 @@
         <div class="audio-container" [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
             <div class="control-panel-wrapper">
                 <div class="full-screen-wrapper">
-                    <div class="playlist" *ngIf="!settings.lock" title="Open PlayList (Z)">
-                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="sidenav.toggle()">
-                            <mat-icon>queue_music</mat-icon>
-                        </button>
-                    </div>
-                    <div class="love" *ngIf="!settings.lock" title="Favourite (H)">
-                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="favourite()">
+                    <div class="love" *ngIf="!settings.lock && (authService.isLoggedIn()|async)" title="Favourite (H)">
+                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                            (click)="favourite()">
                             <mat-icon> favorite_border </mat-icon>
                         </button>
                     </div>
+                    <div class="playlist" *ngIf="!settings.lock" title="Open PlayList (Z)">
+                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                            (click)="sidenav.toggle()">
+                            <mat-icon>queue_music</mat-icon>
+                        </button>
+                    </div>
                     <div class="lock" [title]="settings.lock?'Unlock (U)':'Lock (L)'">
-                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="setLock()">
+                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                            (click)="setLock()">
                             <mat-icon>{{settings.lock?'lock':'lock_open'}}</mat-icon>
                         </button>
                     </div>
                     <div class="full-screen" *ngIf="!settings.lock"
                         [title]="settings.fullScreen?'Exit Full Screen (F/F11/ ESC)':'Full Screen (F/F11)'">
-                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="setFullScreen()">
+                        <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                            (click)="setFullScreen()">
                             <mat-icon>{{settings.fullScreen?'fullscreen_exit':'fullscreen'}}</mat-icon>
                         </button>
                     </div>
@@ -95,22 +99,23 @@
                     </div>
                     <div class="controls-wrapper" *ngIf="!settings.lock">
                         <div class="rewind-button" title="Rewind 10s (Left Arrow)">
-                            <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="rewind()">
+                            <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                                (click)="rewind()">
                                 <mat-icon>replay_10</mat-icon>
                             </button>
                         </div>
 
                         <div class="shuffle" title="Shuffle/ Sort(X)">
-                            <button mat-icon-button class="player-icon" [disabled]="settings.loop" [style.color]="currentSong?.textColor"
-                                (click)="setShuffle()">
+                            <button mat-icon-button class="player-icon" [disabled]="settings.loop"
+                                [style.color]="currentSong?.textColor" (click)="setShuffle()">
                                 <mat-icon>{{settings.shuffle?"shuffle_on":"shuffle"}}</mat-icon>
                             </button>
                         </div>
 
                         <div class="skip-previous-button"
                             [title]="!settings.currentDuration || settings.currentDuration>10?'Previous (P)':'Restart(Q)'">
-                            <button [disabled]="settings.loop" mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
-                                (click)="prevAudio(settings.currentDuration)">
+                            <button [disabled]="settings.loop" mat-icon-button class="player-icon"
+                                [style.color]="currentSong?.textColor" (click)="prevAudio(settings.currentDuration)">
                                 <mat-icon>
                                     {{!settings.currentDuration ||
                                     settings.currentDuration>10?'skip_previous':'restart_alt'}}
@@ -119,14 +124,15 @@
                         </div>
 
                         <div class="play-button" title="Play/ Pause (Space)">
-                            <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="playAudio()">
+                            <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                                (click)="playAudio()">
                                 <mat-icon>{{settings.audioStatus?'pause':'play_arrow'}}</mat-icon>
                             </button>
                         </div>
 
                         <div class="skip-next-button" title="Next (N)">
-                            <button [disabled]="settings.loop" mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
-                                (click)="nextAudio()">
+                            <button [disabled]="settings.loop" mat-icon-button class="player-icon"
+                                [style.color]="currentSong?.textColor" (click)="nextAudio()">
                                 <mat-icon>skip_next</mat-icon>
                             </button>
                         </div>
@@ -139,7 +145,8 @@
                         </div>
 
                         <div class="forward-button" title="Forward 10s (Left Arrow)">
-                            <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor" (click)="forward()">
+                            <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
+                                (click)="forward()">
                                 <mat-icon>forward_10</mat-icon>
                             </button>
                         </div>

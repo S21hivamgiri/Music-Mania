@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
 import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
@@ -8,18 +8,18 @@ import { Settings } from '../model/settings.model';
 import { AuthService } from './auth.service';
 import { User } from '../model/user.model';
 
-
 @Injectable({
     providedIn: 'root'
 })
 export class TrackStore {
-    private subject = new BehaviorSubject<Track[]>([]);
-    tracks$: Observable<Track[]> = this.subject.asObservable();
+    private trackSubject = new BehaviorSubject<Track[]>([]);
+    applicationClosed$ = new Subject<void>();
+    tracks$: Observable<Track[]> = this.trackSubject.asObservable();
 
     constructor(private http: HttpClient, private authService: AuthService) { }
 
     getFavourite(trackId: string) {
-        this.authService.getCurrentUserDetails().subscribe((data: User | undefined) => {
+        this.authService.getCurrentUserDetails().subscribe((data?: User) => {
             let id = data?.userId;
             this.http.put(environment.apiAddress + `/playlist/like/${id}`, { track: trackId })
                 .pipe(
@@ -32,7 +32,7 @@ export class TrackStore {
     }
 
     removeFavourite(trackId: string) {
-        this.authService.getCurrentUserDetails().subscribe((data: User | undefined) => {
+        this.authService.getCurrentUserDetails().subscribe((data?: User) => {
             let id = data?.userId;
             this.http.put(environment.apiAddress + `/playlist/unlike/${id}`, { track: trackId })
                 .pipe(
@@ -50,9 +50,9 @@ export class TrackStore {
                 map(response => response),
                 catchError(err => {
                     const message = "Could not load tracks";
-                    return throwError(err);
+                    return throwError(message);
                 }),
-                tap(tracks => this.subject.next(tracks))
+                tap(tracks => this.trackSubject.next(tracks))
             );
         return loadTracks$;
     }
@@ -86,7 +86,7 @@ export class TrackStore {
 
     updateTrack(obj: Track) {
         let id = obj._id;
-        const tracks = this.subject.getValue();
+        const tracks = this.trackSubject.getValue();
         let flag = -1;
         tracks.some((data, i) => {
             let res = (data._id === id);
@@ -94,10 +94,13 @@ export class TrackStore {
             return res;
         });
 
-        if (flag === -1) tracks.push(obj);
-        else tracks[flag] = { ...tracks[flag], ...obj }
+        if (flag === -1) { 
+            tracks.push(obj); 
+        } else { 
+            tracks[flag] = { ...tracks[flag], ...obj };
+        }
 
-        this.subject.next(tracks);
+        this.trackSubject.next(tracks);
 
         return this.http.put(environment.apiAddress + `/track/update/${id}`, obj)
             .pipe(

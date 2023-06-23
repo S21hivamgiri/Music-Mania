@@ -13,7 +13,9 @@ import { Title } from '@angular/platform-browser';
 import { PlaylistComponent } from '../playlist/playlist.component';
 import { Settings } from '../model/settings.model';
 import { combineLatest } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-audio-track',
@@ -89,15 +91,17 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     event.preventDefault();
   }
 
-  constructor(private titleService: Title,
+  constructor(
+    private titleService: Title,
     private trackStore: TrackStore,
     readonly changeDetectionRef: ChangeDetectorRef,
+    readonly authService: AuthService,
     readonly sideNav: ElementRef,
     @Inject(DOCUMENT) private document: any,) {}
 
   ngOnInit() {
     this.elem = document.documentElement;
-    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).subscribe(
+    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.trackStore.applicationClosed$)).subscribe(
       ([currentSong, settings])=>
       {
         this.currentSong = currentSong;

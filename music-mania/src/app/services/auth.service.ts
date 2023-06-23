@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment as env } from '../../environments/environment';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { User } from '../model/user.model'
 
 @Injectable({
@@ -9,6 +9,8 @@ import { User } from '../model/user.model'
 })
 export class AuthService {
     headers: HttpHeaders;
+    loggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false)
+
     constructor(private client: HttpClient) {
         this.headers = new HttpHeaders({ 'content-type': 'application/json' });
     }
@@ -18,6 +20,7 @@ export class AuthService {
     }
 
     login(user: { email: string, password: string }): Observable<HttpResponse<any>> {
+        this.loggedIn.next(true);
         return this.client.post<User>(env.apiAddress + 'login', JSON.stringify(user), { headers: this.headers, observe: 'response' });
     }
 
@@ -30,15 +33,14 @@ export class AuthService {
     }
 
     logOut() {
-        sessionStorage.removeItem('user'); 
-        sessionStorage.removeItem('role')
+        sessionStorage.removeItem('user');
+        sessionStorage.removeItem('role');
+        this.loggedIn.next(false);
     }
 
     // Check is user is logged in current session.
     isLoggedIn(): Observable<Boolean> {
-        const data = sessionStorage.getItem('user');
-        if (data !== undefined && data !== null) return of(true)
-        return of(false);
+        return this.loggedIn;
     }
 
     getCurentRole(): Observable<String> {
@@ -83,7 +85,7 @@ export class AuthService {
             const user: User = JSON.parse(data);
             return of(user)
         }
-        
+
         return of(undefined);
     }
 }

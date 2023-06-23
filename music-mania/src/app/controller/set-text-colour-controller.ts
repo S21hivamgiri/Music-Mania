@@ -19,7 +19,7 @@ export function setTextColorOnHeader(e: any) {
                         background:${textColor}!important;
                         border-radius: 10px;
                     }`
-                    
+
   let sliderClass = document.getElementsByTagName('style')[0];
   if (!(sliderClass.classList.contains('audio-tag'))) {
     sliderClass.classList.add('audio-tag');

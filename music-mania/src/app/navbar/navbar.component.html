@@ -21,7 +21,7 @@
     <button class="user-wrapper" [matMenuTriggerFor]="contextMenu" #contextMenuTrigger="matMenuTrigger"
         [style.backgroundColor]="!displayTitle||'#ffffff'" [style.animationPlayState]="isPlaying?'running':'paused'"
         [title]="getTitle()">
-        {{getInitials()}}
+        {{ getInitials() }}
     </button>
     <mat-menu #contextMenu="matMenu">
         <button mat-menu-item (click)="openLoginDialog()" *ngIf="!(authService.isLoggedIn() |async)">
