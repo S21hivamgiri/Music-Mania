@@ -1,5 +1,5 @@
 import { Component, OnInit, Optional } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../services/auth.service';
@@ -14,12 +14,12 @@ import { User } from '../model/user.model';
 })
 export class SignupComponent implements OnInit {
   passwordType = 'password';
-  signUpForm: FormGroup;
+  signUpForm: UntypedFormGroup;
   errorMessage = '';
   countries = countryList;
   matcher = new MyErrorStateMatcher();
 
-  constructor(private authService: AuthService, fb: FormBuilder,
+  constructor(private authService: AuthService, fb: UntypedFormBuilder,
     @Optional() public dialogRef: MatDialogRef<LoginComponent>) {
     this.signUpForm = fb.group({
       firstNameFormControl: ['', [Validators.required]],
@@ -42,7 +42,7 @@ export class SignupComponent implements OnInit {
     event.stopPropagation();
   }
 
-  save(form: FormGroup) {
+  save(form: UntypedFormGroup) {
     let finalData: User = {
       email: this.signUpForm.get('emailFormControl')?.value,
       password: this.signUpForm.get('passwordFormControl')?.value,
@@ -69,7 +69,7 @@ export class SignupComponent implements OnInit {
 }
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(control: UntypedFormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const invalidCtrl = !!(control?.invalid && control?.parent?.dirty);
     const invalidParent = !!(control?.parent?.invalid && control?.parent?.dirty);
     return invalidCtrl || invalidParent;

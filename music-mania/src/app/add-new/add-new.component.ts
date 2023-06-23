@@ -1,5 +1,5 @@
 import { Component, Optional } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { Track } from '../model/track.model';
@@ -14,10 +14,10 @@ declare var window: any;
 })
 export class AddNewComponent {
   displayAdd = true;
-  audioFormGroup: FormGroup;
-  pictureFormGroup: FormGroup;
-  colorFormGroup: FormGroup;
-  dataFormGroup: FormGroup;
+  audioFormGroup: UntypedFormGroup;
+  pictureFormGroup: UntypedFormGroup;
+  colorFormGroup: UntypedFormGroup;
+  dataFormGroup: UntypedFormGroup;
   file?: File;
   pictureUrl?: any;
   pictureFile?: File;
@@ -26,7 +26,7 @@ export class AddNewComponent {
   songUploaded = false;
   track?: Track;
   constructor(private trackStore: TrackStore,
-    private _formBuilder: FormBuilder,
+    private _formBuilder: UntypedFormBuilder,
     @Optional() public dialogRef: MatDialogRef<AddNewComponent>) {
     this.audioFormGroup = this._formBuilder.group({
     });
@@ -36,7 +36,7 @@ export class AddNewComponent {
 
     this.dataFormGroup = this._formBuilder.group({
       album: ['', [Validators.required]],
-      artist: new FormArray([]),
+      artist: new UntypedFormArray([]),
       title: ['', [Validators.required]],
     });
 
@@ -95,24 +95,24 @@ export class AddNewComponent {
         this.dataFormGroup.patchValue({ 'title': data.title });
         this.dataFormGroup.patchValue({ 'album': data.album });
         this.track.artist.forEach((art) => {
-          const control = new FormControl(art);
-          (<FormArray>this.dataFormGroup.get('artist')).push(control);
+          const control = new UntypedFormControl(art);
+          (<UntypedFormArray>this.dataFormGroup.get('artist')).push(control);
         });
       });
     }
   }
 
   deleteFormArray(i:number){
-    (<FormArray>this.dataFormGroup.get('artist')).removeAt(i);
+    (<UntypedFormArray>this.dataFormGroup.get('artist')).removeAt(i);
   }
 
   addFormArray() {
-    const control = new FormControl('');
-    (<FormArray>this.dataFormGroup.get('artist')).push(control);
+    const control = new UntypedFormControl('');
+    (<UntypedFormArray>this.dataFormGroup.get('artist')).push(control);
   }
 
   getControls() {
-    return (this.dataFormGroup.get('artist') as FormArray).controls;
+    return (this.dataFormGroup.get('artist') as UntypedFormArray).controls;
   }
 
   sendPicture() {

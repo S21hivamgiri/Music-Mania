@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit, Optional, ElementRef } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { UntypedFormBuilder, FormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
@@ -12,13 +12,13 @@ import { MatSelect } from '@angular/material/select';
 })
 export class LoginComponent implements OnInit {
   @ViewChild('passwordField') passwordField?: ElementRef;
-  loginForm: FormGroup
+  loginForm: UntypedFormGroup
   isSet = false;
   passwordType = 'password';
   errorMessage='';
 
 
-  constructor(private authService: AuthService, fb: FormBuilder,
+  constructor(private authService: AuthService, fb: UntypedFormBuilder,
     @Optional() public dialogRef: MatDialogRef<LoginComponent>) {
     this.loginForm = fb.group({
       emailFormControl: ['', [Validators.required, Validators.email]],
@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  save(form: FormGroup) {
+  save(form: UntypedFormGroup) {
     let finalData = { email: this.loginForm.get('emailFormControl')?.value, password: this.loginForm.get('passwordFormControl')?.value }
     if (form.valid) {
       this.authService.login(finalData).subscribe((res) => {

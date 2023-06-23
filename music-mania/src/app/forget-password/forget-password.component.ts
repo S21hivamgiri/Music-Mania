@@ -1,5 +1,5 @@
 import { Component, Inject, Optional } from '@angular/core';
-import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { AbstractControl, UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AuthService } from '../services/auth.service';
 import { MyErrorStateMatcher } from '../signup/signup.component';
@@ -17,15 +17,15 @@ export interface ForgetPasswordResult {
 })
 export class ForgetPasswordComponent {
   passwordType = 'password';
-  emailFormGroup: FormGroup;
-  contactFormGroup: FormGroup;
-  passwordFormGroup: FormGroup;
+  emailFormGroup: UntypedFormGroup;
+  contactFormGroup: UntypedFormGroup;
+  passwordFormGroup: UntypedFormGroup;
   contact: any = [];
   matcher = new MyErrorStateMatcher();
   updateError = "";
   forgetError = "";
 
-  constructor(private _formBuilder: FormBuilder, private authService: AuthService, 
+  constructor(private _formBuilder: UntypedFormBuilder, private authService: AuthService, 
     @Optional() public dialogRef: MatDialogRef<ForgetPasswordComponent>, 
     @Inject(MAT_DIALOG_DATA) public data: {email:string}) {
     this.emailFormGroup = this._formBuilder.group({
@@ -33,7 +33,7 @@ export class ForgetPasswordComponent {
     });
 
     this.contactFormGroup = this._formBuilder.group({
-      contacts: new FormArray([])
+      contacts: new UntypedFormArray([])
     });
 
     this.passwordFormGroup = this._formBuilder.group({
@@ -82,8 +82,8 @@ export class ForgetPasswordComponent {
   setContact() {
     for (let i = 0; i < this.contact.length; ++i) {
       if (this.contact.length !== this.contactFormGroup.get('contacts')?.value?.length) {
-        const control = new FormControl(this.contactFormGroup.get('contacts')?.value[i] || this.contact[i] || null, [Validators.required]);
-        (<FormArray>this.contactFormGroup.get('contacts')).push(control);
+        const control = new UntypedFormControl(this.contactFormGroup.get('contacts')?.value[i] || this.contact[i] || null, [Validators.required]);
+        (<UntypedFormArray>this.contactFormGroup.get('contacts')).push(control);
       }
     }
   }
@@ -93,14 +93,14 @@ export class ForgetPasswordComponent {
   }
 
   getControls(){
-    return (this.contactFormGroup.get('contacts') as FormArray).controls;
+    return (this.contactFormGroup.get('contacts') as UntypedFormArray).controls;
   }
 
   onContactKeyDown(i: number, e: KeyboardEvent, isFiredNow: boolean = true) {
     if (e.keyCode === 8) {
       let currValue = document.getElementById("array-" + i);
       if (isFiredNow) {
-        (<FormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue(null);
+        (<UntypedFormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue(null);
       }
       if (i >= 0) {
         let prevValue = document.getElementById("array-" + (i - 1));
@@ -119,7 +119,7 @@ export class ForgetPasswordComponent {
     if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105)) {
       let currValue = document.getElementById("array-" + i);
       if (isFiredNow) {
-        (<FormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue(String.fromCharCode(e.keyCode));
+        (<UntypedFormArray>this.contactFormGroup.get('contacts')).at(i)?.patchValue(String.fromCharCode(e.keyCode));
       }
 
       if (i < this.contact.length - 1) {
@@ -140,8 +140,8 @@ export class ForgetPasswordComponent {
 
   isValidFormArray() {
     let result = true;
-    for (let j = 0; j < (<FormArray>this.contactFormGroup.get('contacts')).value.length; ++j) {
-      result = result && ((<FormArray>this.contactFormGroup.get('contacts')).value[j] !== null);
+    for (let j = 0; j < (<UntypedFormArray>this.contactFormGroup.get('contacts')).value.length; ++j) {
+      result = result && ((<UntypedFormArray>this.contactFormGroup.get('contacts')).value[j] !== null);
     }
     return result;
   }
