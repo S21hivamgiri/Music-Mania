@@ -1,6 +1,6 @@
 import { Component, OnInit, Optional } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../services/auth.service';
 import { countryList } from '../common/constants';

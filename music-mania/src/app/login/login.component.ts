@@ -1,9 +1,9 @@
 import { Component, ViewChild, OnInit, Optional, ElementRef } from '@angular/core';
 import { UntypedFormBuilder, FormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
-import { MatSelect } from '@angular/material/select';
+import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
 
 @Component({
   selector: 'app-login',

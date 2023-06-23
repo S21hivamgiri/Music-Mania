@@ -2,13 +2,13 @@ import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit, ViewC
 import { Router } from '@angular/router';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { LoginComponent } from '../login/login.component';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 import { SignupComponent } from '../signup/signup.component';
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
 import { AddNewComponent } from '../add-new/add-new.component';
 
 @Component({
