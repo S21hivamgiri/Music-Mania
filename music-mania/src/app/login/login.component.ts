@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   isSet = false;
   passwordType = 'password';
   errorMessage='';
-  
+
 
   constructor(private authService: AuthService, fb: FormBuilder,
     @Optional() public dialogRef: MatDialogRef<LoginComponent>) {
