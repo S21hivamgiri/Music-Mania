@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
-import { catchError, map, shareReplay, tap } from 'rxjs/operators';
+import { catchError, map, shareReplay, tap, share} from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
@@ -48,13 +48,13 @@ export class TrackStore {
         const loadTracks$ = this.http.get<Track[]>(environment.apiAddress + 'track/')
             .pipe(
                 map(response => response),
-                catchError(err => {
+                catchError(() => {
                     const message = "Could not load tracks";
                     return throwError(message);
                 }),
                 tap(tracks => this.trackSubject.next(tracks))
             );
-        return loadTracks$;
+        return loadTracks$.pipe(share());
     }
 
     currentSong: BehaviorSubject<Track> = new BehaviorSubject(<Track>{
@@ -109,7 +109,7 @@ export class TrackStore {
                     console.log(message, err);
                     return throwError(err);
                 }),
-                shareReplay()
+                shareReplay({refCount:true})
             );
     }
 

@@ -1,9 +1,8 @@
 import { Component, ViewChild, OnInit, Optional, ElementRef } from '@angular/core';
-import { UntypedFormBuilder, FormControl, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
-import { MatLegacySelect as MatSelect } from '@angular/material/legacy-select';
 
 @Component({
   selector: 'app-login',
@@ -15,8 +14,7 @@ export class LoginComponent implements OnInit {
   loginForm: UntypedFormGroup
   isSet = false;
   passwordType = 'password';
-  errorMessage='';
-
+  errorMessage = '';
 
   constructor(private authService: AuthService, fb: UntypedFormBuilder,
     @Optional() public dialogRef: MatDialogRef<LoginComponent>) {
@@ -44,11 +42,11 @@ export class LoginComponent implements OnInit {
     event.stopPropagation();
     if (event.key === 'Enter') {
       event.preventDefault();
-      if (this.loginForm.valid){
-      this.save(this.loginForm);
-      return;
-    }
-          this.passwordField?.nativeElement.querySelector('input').focus();
+      if (this.loginForm.valid) {
+        this.save(this.loginForm);
+        return;
+      }
+      this.passwordField?.nativeElement.querySelector('input').focus();
     }
   }
 
@@ -63,14 +61,14 @@ export class LoginComponent implements OnInit {
 
           if (user.roles.indexOf("Admin") > -1) {
             this.authService.setCurentRole('Admin')
-          } else 
-          if (user.roles.indexOf("User") > -1) {
-            this.authService.setCurentRole('User');
-          }
+          } else
+            if (user.roles.indexOf("User") > -1) {
+              this.authService.setCurentRole('User');
+            }
           this.dialogRef.close(user);
         }
-        if(res.body.success===false){
-          this.errorMessage=res.body.message;
+        if (res.body.success === false) {
+          this.errorMessage = res.body.message;
         }
       });
     }

@@ -1,6 +1,6 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, Optional } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { AuthService } from '../services/auth.service';
 import { countryList } from '../common/constants';
@@ -12,7 +12,7 @@ import { User } from '../model/user.model';
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss']
 })
-export class SignupComponent implements OnInit {
+export class SignupComponent {
   passwordType = 'password';
   signUpForm: UntypedFormGroup;
   errorMessage = '';
@@ -62,9 +62,6 @@ export class SignupComponent implements OnInit {
         }
       });
     }
-  }
-
-  ngOnInit(): void {
   }
 }
 

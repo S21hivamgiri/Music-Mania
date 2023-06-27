@@ -1,42 +1,42 @@
 .signup-form {
     display: flex;
     flex-direction: column;
-}
 
-.signup-name {
-    display: flex;
-    flex-direction: row;
-}
-
-.name-width {
-    width: 250px;
-    margin: 1px;
-}
-
-.signup-width {
-    width: 500px;
-    margin: 1px;
-}
-
-.dropdown-country {
-    display: flex;
-    align-items: center;
-
-    .flag-image {
-        width: 30px;
-        height: auto;
-        border: 1px solid silver;
-        margin-right: 10px;
+    .signup-name {
+        display: flex;
+        flex-direction: row;
     }
 
-    .code {
-        text-transform: uppercase;
-        font-weight: bold;
+    .name-width {
+        margin: 1px;
+        width: 250px;
     }
-}
 
-::ng-deep {
-    .cdk-global-overlay-wrapper {
-        justify-content: flex-end !important;
+    .signup-width {
+        margin: 1px;
+        width: 500px;
+    }
+
+    .dropdown-country {
+        align-items: center;
+        display: flex;
+
+        .flag-image {
+            border: 1px solid silver;
+            height: auto;
+            margin-right: 10px;
+            width: 30px;
+        }
+
+        .code {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+    }
+
+    ::ng-deep {
+        .cdk-global-overlay-wrapper {
+            justify-content: flex-end !important;
+        }
     }
 }

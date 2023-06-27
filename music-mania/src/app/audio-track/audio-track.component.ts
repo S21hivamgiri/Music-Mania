@@ -97,13 +97,12 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     readonly changeDetectionRef: ChangeDetectorRef,
     readonly authService: AuthService,
     readonly sideNav: ElementRef,
-    @Inject(DOCUMENT) private document: any,) {}
+    @Inject(DOCUMENT) private document: any,) { }
 
   ngOnInit() {
     this.elem = document.documentElement;
     combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.trackStore.applicationClosed$)).subscribe(
-      ([currentSong, settings])=>
-      {
+      ([currentSong, settings]) => {
         this.currentSong = currentSong;
         this.settings = settings;
       });

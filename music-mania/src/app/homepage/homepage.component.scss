@@ -61,6 +61,7 @@
             font-weight: 700;
             line-height: 40px;
             margin-bottom: 25px;
+            user-select: none;
 
             .magic {
                 animation: magical infinite 6s;
@@ -118,13 +119,13 @@
         }
 
         .material-icons {
+            animation: scale-play 5s ease-in-out infinite alternate-reverse;
             color: $music-mania-pink;
             cursor: pointer;
             font-size: 200px;
             font-size: 200px;
             height: 200px;
             width: 200px;
-            animation: scale-play 5s ease-in-out infinite alternate-reverse;
 
             &:hover {
                 animation-play-state: paused;

@@ -31,11 +31,11 @@
                 <mat-icon [style.color]="currentSong?.textColor">close</mat-icon>
             </button>
         </mat-form-field>
-        <mat-chip-list class="hotlist">
+        <mat-chip-set class="hotlist">
             <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="searchItem=hotTitle;filterSong();">
                 {{hotTitle}}
             </mat-chip>
-        </mat-chip-list>
+        </mat-chip-set>
     </div>
     <mat-divider></mat-divider>
     <div class="playlist-title" [style.color]="currentSong?.textColor">

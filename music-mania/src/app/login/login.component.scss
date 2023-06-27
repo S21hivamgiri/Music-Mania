@@ -10,5 +10,8 @@
 ::ng-deep {
     .cdk-global-overlay-wrapper {
         justify-content: flex-end !important;
+        .mat-mdc-dialog-surface{
+            overflow: hidden;
+        }
     }
 }

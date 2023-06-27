@@ -6,7 +6,7 @@ import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { filterSongs } from '../controller/filter-song-controller';
-import { debounceTime } from 'rxjs/operators';
+import { debounceTime, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Component({
@@ -59,7 +59,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       this.settings = data;
     });
 
-    this.trackStore.loadAllTracks().subscribe((data) => {
+    this.trackStore.loadAllTracks().pipe(take(1)).subscribe((data) => {
       this.tracks = data;
       this.filterSong();
     });

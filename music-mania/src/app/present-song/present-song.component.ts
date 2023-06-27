@@ -18,7 +18,9 @@ export class PresentSongComponent implements OnInit, OnDestroy {
   private readonly destroy = new Subject<void>();
   settings!: Settings;
   currentSong!: Track;
+
   constructor(private trackStore: TrackStore, readonly router: Router) { }
+  
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.keyCode === P) {

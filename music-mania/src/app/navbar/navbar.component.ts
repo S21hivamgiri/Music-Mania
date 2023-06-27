@@ -2,13 +2,13 @@ import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit, ViewC
 import { Router } from '@angular/router';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
 import { SignupComponent } from '../signup/signup.component';
 import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
-import { MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { MatMenuTrigger } from '@angular/material/menu';
 import { AddNewComponent } from '../add-new/add-new.component';
 
 @Component({
@@ -17,13 +17,14 @@ import { AddNewComponent } from '../add-new/add-new.component';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, AfterContentChecked {
-  @Input() isPlaying: boolean = false;
-  @Input() displayTitle: boolean = true;
-  @Input() isBackGroundVisible?: boolean = true;
+  @Input() isPlaying = false;
+  @Input() displayTitle = true;
+  @Input() isBackGroundVisible = true;
   @ViewChild('contextMenuTrigger', { read: MatMenuTrigger }) contextMenuTrigger?: MatMenuTrigger;
 
   currentSong?: Track;
   user?: User;
+  
   constructor(readonly authService: AuthService, readonly router: Router, private changeDetectionRef: ChangeDetectorRef, readonly trackStore: TrackStore, public dialog: MatDialog) { }
 
   ngOnInit(): void {

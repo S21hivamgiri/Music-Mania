@@ -1,9 +1,9 @@
 .page-wrapper {
     display: flex;
     height: 100%;
+    margin: 0;
     max-height: 100vh;
     overflow: hidden;
-    margin: 0;
     padding: 0;
     width: 100%;
 
@@ -151,7 +151,6 @@
 }
 
 ::ng-deep {
-
     ::-webkit-scrollbar-track {
         border-radius: 10px;
         box-shadow: inset 0 0 5px grey;
@@ -206,7 +205,6 @@
                 .drag-handle {
                     cursor: move;
                 }
-
                 .track-list-data {
                     display: flex;
                     overflow: hidden;
@@ -219,13 +217,11 @@
                         margin-right: 10px;
                         width: 50px;
                     }
-
                     .track-artist {
                         font-size: 12px;
                     }
                 }
             }
-
             .mat-list-item-content {
                 display: flex;
                 font-weight: 700;
@@ -268,7 +264,7 @@
     }
 
     .mat-slider-track-wrapper {
-        box-shadow: 0 0 0 1px #fff;
+        box-shadow: 0 0 0 1px #fff, 0 0 0 1px #000;
     }
 
     .player-icon {

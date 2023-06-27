@@ -8,16 +8,16 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AudioTrackComponent } from './audio-track/audio-track.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatLegacySliderModule as MatSliderModule } from '@angular/material/legacy-slider';
-import { MatLegacyCheckboxModule as MatCheckboxModule } from '@angular/material/legacy-checkbox';
-import { MatLegacyButtonModule as MatButtonModule } from '@angular/material/legacy-button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyListModule as MatListModule } from '@angular/material/legacy-list';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatListModule } from '@angular/material/list';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input';
-import { MatLegacyChipsModule as MatChipsModule } from '@angular/material/legacy-chips';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatInputModule } from '@angular/material/input';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatMenuModule } from '@angular/material/menu';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { EquilizerComponent } from './equilizer/equilizer.component';
 import { NextSongPreviewComponent } from './next-song-preview/next-song-preview.component';
@@ -26,15 +26,15 @@ import { HomepageComponent } from './homepage/homepage.component';
 import { PlayingAnimationComponent } from './playing-animation/playing-animation.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutComponent } from './about/about.component';
-import { MatLegacyCardModule as MatCardModule } from '@angular/material/legacy-card';
+import { MatCardModule } from '@angular/material/card';
 import { WebDeveloperComponent } from './svg/web-developer/web-developer.component';
 import { PlayerComponent } from './svg/player/player.component';
 import { LoginSvgComponent } from './svg/login-svg/login-svg.component';
 import { PresentSongComponent } from './present-song/present-song.component';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSelectModule } from '@angular/material/select';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { AddNewComponent } from './add-new/add-new.component';
@@ -66,7 +66,7 @@ import { AddNewComponent } from './add-new/add-new.component';
     FormsModule,
     MatIconModule,
     MatSidenavModule,
-    MatButtonModule, 
+    MatButtonModule,
     ReactiveFormsModule,
     MatDividerModule,
     MatSliderModule,
@@ -76,13 +76,13 @@ import { AddNewComponent } from './add-new/add-new.component';
     DragDropModule,
     AppRoutingModule,
     MatCheckboxModule,
-    MatInputModule, 
+    MatInputModule,
     MatStepperModule,
     BrowserAnimationsModule,
     MatChipsModule,
     MatMenuModule,
     MatCardModule,
-    MatDialogModule, 
+    MatDialogModule,
     MatSelectModule
   ],
   providers: [HttpClientModule],
