@@ -1,44 +1,49 @@
-<div class="navbar" [style.backgroundColor]="isBackGroundVisible?'#000000':'transparent'">
-    <div class="logo-wrapper" (click)="router.navigate(['/'])">
-        <div class="logo-container">
-            <a title="MusicMania">
-                <img src="/assets/music-mania-logo.png" class="logo-img"
-                    [style.animationPlayState]="isPlaying?'running':'paused'"
-                    [style.backgroundColor]="!displayTitle?'transparent': '#fff'">
-            </a>
+<ng-container *ngIf="isMobileView; else desktopNavbar;"></ng-container>
+<ng-template #desktopNavbar>
+    <div class="navbar" [style.backgroundColor]="isBackGroundVisible?'#000000':'transparent'">
+        <div class="logo-wrapper" (click)="router.navigate(['/'])">
+            <div class="logo-container">
+                <a title="MusicMania">
+                    <img src="/assets/music-mania-logo.png" class="logo-img"
+                        [style.animationPlayState]="isPlaying?'running':'paused'"
+                        [style.backgroundColor]="!displayTitle?'transparent': '#fff'">
+                </a>
+            </div>
+            <div class="title-name" *ngIf="displayTitle">
+                <span class="title-name-container">
+                    MUS<img src="/assets/music-mania-i.png" class="title-i">C MAN
+                    <img src="/assets/music-mania-i.png" class="title-i">A
+                </span>
+                <app-playing-animation [audioStatus]="true" color="#F75660"></app-playing-animation>
+            </div>
         </div>
-        <div class="title-name" *ngIf="displayTitle">
-            <span class="title-name-container">
-                MUS<img src="/assets/music-mania-i.png" class="title-i">C MAN
-                <img src="/assets/music-mania-i.png" class="title-i">A
-            </span>
-            <app-playing-animation [audioStatus]="true" color="#F75660"></app-playing-animation>
+        <div class="present-play" *ngIf="(router.url !== '/track') && (trackStore.currentSong|async)?._id">
+            <app-present-song></app-present-song>
         </div>
+        <button class="user-wrapper" [matMenuTriggerFor]="contextMenu" #contextMenuTrigger="matMenuTrigger"
+            [style.backgroundColor]="!displayTitle||'#ffffff'" [style.animationPlayState]="isPlaying?'running':'paused'"
+            [title]="getTitle()">
+            {{ getInitials() }}
+        </button>
+        <mat-menu #contextMenu="matMenu">
+            <button mat-menu-item (click)="openLoginDialog()" *ngIf="!(authService.isLoggedIn() |async)">
+                <mat-icon [style.color]="currentSong?.textColor">login</mat-icon>
+                <span [style.color]="currentSong?.textColor">Log In</span>
+            </button>
+            <button mat-menu-item (click)="authService.logOut();user=undefined"
+                *ngIf="(authService.isLoggedIn() |async)">
+                <mat-icon [style.color]="currentSong?.textColor">logout</mat-icon>
+                <span [style.color]="currentSong?.textColor">Log Out</span>
+            </button>
+            <button mat-menu-item (click)="openAddNewSongDialog()"
+                *ngIf="(authService.getCurentRole()|async) ==='Admin' ">
+                <mat-icon [style.color]="currentSong?.textColor">audiotrack</mat-icon>
+                <span [style.color]="currentSong?.textColor">Add New Song</span>
+            </button>
+            <button mat-menu-item (click)="openSignUpDialog()" *ngIf="!(authService.isLoggedIn() |async)">
+                <mat-icon [style.color]="currentSong?.textColor">person_add_alt_1</mat-icon>
+                <span [style.color]="currentSong?.textColor">Sign Up!</span>
+            </button>
+        </mat-menu>
     </div>
-    <div class="present-play" *ngIf="(router.url !== '/track') && (trackStore.currentSong|async)?._id">
-        <app-present-song></app-present-song>
-    </div>
-    <button class="user-wrapper" [matMenuTriggerFor]="contextMenu" #contextMenuTrigger="matMenuTrigger"
-        [style.backgroundColor]="!displayTitle||'#ffffff'" [style.animationPlayState]="isPlaying?'running':'paused'"
-        [title]="getTitle()">
-        {{ getInitials() }}
-    </button>
-    <mat-menu #contextMenu="matMenu">
-        <button mat-menu-item (click)="openLoginDialog()" *ngIf="!(authService.isLoggedIn() |async)">
-            <mat-icon [style.color]="currentSong?.textColor">login</mat-icon>
-            <span [style.color]="currentSong?.textColor">Log In</span>
-        </button>
-        <button mat-menu-item (click)="authService.logOut();user=undefined" *ngIf="(authService.isLoggedIn() |async)">
-            <mat-icon [style.color]="currentSong?.textColor">logout</mat-icon>
-            <span [style.color]="currentSong?.textColor">Log Out</span>
-        </button>
-        <button mat-menu-item (click)="openAddNewSongDialog()" *ngIf="(authService.getCurentRole()|async) ==='Admin' ">
-            <mat-icon [style.color]="currentSong?.textColor">audiotrack</mat-icon>
-            <span [style.color]="currentSong?.textColor">Add New Song</span>
-        </button>
-        <button mat-menu-item (click)="openSignUpDialog()" *ngIf="!(authService.isLoggedIn() |async)">
-            <mat-icon [style.color]="currentSong?.textColor">person_add_alt_1</mat-icon>
-            <span [style.color]="currentSong?.textColor">Sign Up!</span>
-        </button>
-    </mat-menu>
-</div>
+</ng-template>

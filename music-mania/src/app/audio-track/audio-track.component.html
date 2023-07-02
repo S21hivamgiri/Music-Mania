@@ -6,32 +6,34 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <app-navbar *ngIf="!settings.lock" [isPlaying]="settings.audioStatus" [isBackGroundVisible]="false"
-            [displayTitle]="false">
+            [isMobileView]="breakpointObserver.isMatched('(max-width: 100vh)')" [displayTitle]="false">
         </app-navbar>
-        <div class="page-wrapper">
+        <div class="page-wrapper" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')">
             <div class="album-data" [style.background]="currentSong?.backgroundColor"
                 [style.color]="currentSong?.textColor"
                 [style.boxShadow]="'0 0 100px rgba(0,0,0,0), 0 0 200px rgba(0,0,0,0), 0 0 130px '+currentSong?.backgroundColor+', 0 0 170px '+currentSong?.backgroundColor+', 0 0 160px '+currentSong?.backgroundColor+', 0 0 180px '+currentSong?.backgroundColor+', 0 0 200px '+currentSong?.backgroundColor+''">
-                
             </div>
             <div class="album-image-wrapper" [style.background]="currentSong?.backgroundColor"></div>
             <div class="album-image">
                 <img [src]="getPicture()" onerror="this.src='/assets/music-image.jpg'">
             </div>
         </div>
-        <div class="audio-container" [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
-            <div class="song-title" *ngIf="currentSong?.title">
+        <div class="audio-container" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')"
+            [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
+            <div class="flex-1" *ngIf="currentSong?.title">
+            </div>
+            <div class="song-title song-data" *ngIf="currentSong?.title">
                 <mat-icon>music_note</mat-icon>
                 <span class="text">{{currentSong?.title}}</span>
             </div>
             <mat-divider></mat-divider>
-            <div class="song-album" *ngIf="currentSong?.album">
+            <div class="song-album song-data" *ngIf="currentSong?.album">
                 <mat-icon>collections</mat-icon>
                 <span class="album" (click)="settings.lock||setSearchBar(currentSong?.album)">
                     {{currentSong?.album?.trim()}}
                 </span>
             </div>
-            <div class="song-artist" *ngIf="currentSong?.artist">
+            <div class="song-artist song-data" *ngIf="currentSong?.artist">
                 <mat-icon>people</mat-icon>
                 <div>
                     <ng-container *ngFor="let artist of currentSong?.artist; let i=index">
@@ -97,7 +99,7 @@
                         </div>
                     </div>
                     <div class="controls-wrapper" *ngIf="!settings.lock">
-                        <div class="rewind-button" title="Rewind 10s (Left Arrow)">
+                        <div class="rewind-button" title="Rewind 10s (Left Arrow ←)">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
                                 (click)="rewind()">
                                 <mat-icon>replay_10</mat-icon>
@@ -143,7 +145,7 @@
                             </button>
                         </div>
 
-                        <div class="forward-button" title="Forward 10s (Left Arrow)">
+                        <div class="forward-button" title="Forward 10s (Right Arrow →)">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
                                 (click)="forward()">
                                 <mat-icon>forward_10</mat-icon>
@@ -154,11 +156,11 @@
                 <div class="volume-layer" *ngIf="!settings.lock">
                     <div class="volume-slider">
                         <mat-slider class="audio-volume" (change)="setVolume()" max=" 1" min="0" step="0.1"
-                            vertical="true" [(ngModel)]="settings.volume" aria-labelledby="Slider for the Volume">
+                            vertical="true" [(ngModel)]="settings.volume" aria-labelledby="Slider for the Volume"
+                            [title]="!settings.volume?' Increase Volume (Top Arrow ↑)':'Decrease Volume (Down Arrow ↓)'">
                         </mat-slider>
                     </div>
-
-                    <div class="volume-button" (click)="muteAudio()" [title]="settings.muted?'Unmute (M)':'Mute (M)' ">
+                    <div class="volume-button" (click)="muteAudio()" [title]="settings.muted?'Unmute (M)':'Mute (M)'">
                         <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor">
                             <mat-icon>
                                 {{settings.muted?'volume_off ': settings.volume>0.5?'volume_up' :

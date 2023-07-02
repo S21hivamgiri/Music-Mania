@@ -20,6 +20,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   @Input() isPlaying = false;
   @Input() displayTitle = true;
   @Input() isBackGroundVisible = true;
+  @Input() isMobileView = false;
   @ViewChild('contextMenuTrigger', { read: MatMenuTrigger }) contextMenuTrigger?: MatMenuTrigger;
 
   currentSong?: Track;

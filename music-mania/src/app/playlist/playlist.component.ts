@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { sortSongsByProperty } from '../utility/sort-shuffle';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
@@ -15,7 +15,6 @@ import { Subject } from 'rxjs';
   styleUrls: ['./playlist.component.scss']
 })
 export class PlaylistComponent implements OnInit, OnDestroy {
-
   @Output() playAudio = new EventEmitter();
   @Output() closeSideBar = new EventEmitter();
   @Input() searchItem = '';

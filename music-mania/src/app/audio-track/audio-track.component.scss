@@ -1,11 +1,16 @@
 .page-wrapper {
     display: flex;
+    flex-direction: row;
     height: 100%;
     margin: 0;
     max-height: 100vh;
     overflow: hidden;
     padding: 0;
     width: 100%;
+
+    &.mobile-view {
+        flex-direction: column-reverse;
+    }
 
     .album-data {
         align-items: start;
@@ -52,40 +57,26 @@
     position: fixed;
     z-index: 200;
 
-
-    .song-title {
-        align-items: center;
-        display: flex;
-        font-size: 48px;
-        font-weight: 700;
-        gap: 30px;
-        line-height: 1;
-        text-transform: capitalize;
+    .flex-1 {
+        flex-grow: 1;
     }
 
-    .song-album {
+    .song-data {
         align-items: center;
         display: flex;
         font-size: 30px;
         font-weight: 600;
         gap: 30px;
         line-height: 1;
+        text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #ffffff, 0 0 4px #ffffff;
         text-transform: capitalize;
 
-        .album {
-            cursor: pointer;
+        &.song-title {
+            font-size: 48px;
+            font-weight: 700;
         }
-    }
 
-    .song-artist {
-        align-items: center;
-        display: flex;
-        font-size: 30px;
-        font-weight: bold;
-        gap: 30px;
-        line-height: 1;
-        text-transform: capitalize;
-
+        .album,
         .artist {
             cursor: pointer;
         }
@@ -274,10 +265,6 @@
 
     .mat-slider-thumb {
         box-shadow: 0 0 0 1px #fff;
-    }
-
-    .mat-slider-track-wrapper {
-        box-shadow: 0 0 0 1px #fff, 0 0 0 1px #000;
     }
 
     .player-icon {

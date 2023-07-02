@@ -3,6 +3,9 @@ export function setTextColorOnHeader(e: any) {
   const textCss = `.mat-accent .mat-slider-track-fill, .mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label {
                       background: ${textColor}!important;
                     }
+                    .mat-slider-track-wrapper {
+                        box-shadow: 0 0 0 1px  ${textColor}, 0 0 0 2px #fff, 0 0 0 2px #000!important;
+                    }
                     .mdc-text-field--filled .mdc-line-ripple::after {
                       border-color: ${textColor}!important;
                     }

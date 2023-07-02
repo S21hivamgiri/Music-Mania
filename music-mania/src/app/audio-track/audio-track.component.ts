@@ -16,6 +16,7 @@ import { combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 import { AuthService } from '../services/auth.service';
+import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-audio-track',
@@ -96,8 +97,9 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     private trackStore: TrackStore,
     readonly changeDetectionRef: ChangeDetectorRef,
     readonly authService: AuthService,
-    readonly sideNav: ElementRef,
-    @Inject(DOCUMENT) private document: any,) { }
+    readonly sideNav: ElementRef, 
+    public breakpointObserver: BreakpointObserver,
+    @Inject(DOCUMENT) private document: any) {}
 
   ngOnInit() {
     this.elem = document.documentElement;
