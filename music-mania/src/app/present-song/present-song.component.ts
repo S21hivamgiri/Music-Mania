@@ -3,7 +3,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { getCurrentTimeInFormat } from '../controller/time-controller';
+import { getCurrentTimeInFormat } from '../utility/time';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
 import { Track } from '../model/track.model';

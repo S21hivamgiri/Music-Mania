@@ -8,58 +8,19 @@
     width: 100%;
 
     .album-data {
+        align-items: start;
         display: flex;
+        flex: 1;
         flex-direction: column;
-        justify-content: space-around;
-        padding: 50px;
-        padding-bottom: 250px;
-        padding-top: 150px;
-        width: 50%;
-        z-index: 100;
-
-        .song-title {
-            align-items: center;
-            display: flex;
-            font-size: 48px;
-            font-weight: 700;
-            gap: 30px;
-            line-height: 1;
-            text-transform: capitalize;
-        }
-
-        .song-album {
-            align-items: center;
-            display: flex;
-            font-size: 30px;
-            font-weight: 600;
-            gap: 30px;
-            line-height: 1;
-            text-transform: capitalize;
-
-            .album {
-                cursor: pointer;
-            }
-        }
-
-        .song-artist {
-            align-items: center;
-            display: flex;
-            font-size: 30px;
-            font-weight: bold;
-            gap: 30px;
-            line-height: 1;
-            text-transform: capitalize;
-
-            .artist {
-                cursor: pointer;
-            }
-        }
+        gap: 40px;
+        justify-content: center;
+        user-select: none;
+        z-index: 200;
     }
 
     .album-image {
         background-size: cover;
         user-select: none;
-        width: 50%;
         z-index: 1;
 
         img {
@@ -75,18 +36,64 @@
         position: absolute;
         right: 0;
         width: fit-content;
-        z-index: 50
+        z-index: 50;
     }
 }
 
 .audio-container {
+    align-items: start;
     bottom: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    justify-content: center;
     padding: 2% 3%;
     position: fixed;
     z-index: 200;
 
+
+    .song-title {
+        align-items: center;
+        display: flex;
+        font-size: 48px;
+        font-weight: 700;
+        gap: 30px;
+        line-height: 1;
+        text-transform: capitalize;
+    }
+
+    .song-album {
+        align-items: center;
+        display: flex;
+        font-size: 30px;
+        font-weight: 600;
+        gap: 30px;
+        line-height: 1;
+        text-transform: capitalize;
+
+        .album {
+            cursor: pointer;
+        }
+    }
+
+    .song-artist {
+        align-items: center;
+        display: flex;
+        font-size: 30px;
+        font-weight: bold;
+        gap: 30px;
+        line-height: 1;
+        text-transform: capitalize;
+
+        .artist {
+            cursor: pointer;
+        }
+    }
+
     .control-panel-wrapper {
         display: flex;
+        width: 100%;
 
         .volume-layer {
             align-items: center;
@@ -103,10 +110,10 @@
 
             .next-audio-wrapper {
                 display: flex;
+                flex: 1;
                 height: 60px;
                 justify-content: center;
                 padding: 0 6%;
-                width: 50%;
             }
 
             .duration-slider {
@@ -205,6 +212,7 @@
                 .drag-handle {
                     cursor: move;
                 }
+
                 .track-list-data {
                     display: flex;
                     overflow: hidden;
@@ -217,11 +225,13 @@
                         margin-right: 10px;
                         width: 50px;
                     }
+
                     .track-artist {
                         font-size: 12px;
                     }
                 }
             }
+
             .mat-list-item-content {
                 display: flex;
                 font-weight: 700;
@@ -230,15 +240,14 @@
         }
     }
 
-    .mat-icon {
-        font-size: 36px !important;
-        height: 36px !important;
-        line-height: 36px !important;
-        width: 36px !important;
-    }
+    .mdc-icon-button {
+        &:hover {
+            .mat-icon {
+                transform: scale(1.8) rotate(2deg);
+            }
+        }
 
-    .mat-icon-button {
-        &.mat-button-disabled {
+        &.mdc-button-disabled {
             opacity: 0.3;
         }
     }
@@ -252,11 +261,15 @@
         text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #ffffff, 0 0 4px #ffffff;
     }
 
-    .mat-standard-chip {
-        color: #fff !important;
-        font-size: 10px;
-        min-height: 24px !important;
+    .mat-mdc-standard-chip {
+        height: 24px !important;
+        margin: 2px !important;
         opacity: 0.6;
+
+        .mat-mdc-chip-action-label {
+            color: #fff !important;
+            font-size: 10px !important;
+        }
     }
 
     .mat-slider-thumb {

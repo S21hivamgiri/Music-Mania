@@ -1,9 +1,9 @@
 <div class="track-list-data" (click)="settings?.lock||nextAudio()" [title]="nextSong?.title"
     [style.borderColor]="nextSong?.textColor" [style.background]="nextSong?.backgroundColor">
-    <div class="track-text" class="marquee" [style.color]="nextSong?.textColor">
+    <div class="track-text marquee" [style.color]="nextSong?.textColor">
         <mat-icon>library_music</mat-icon>
     </div>
-    <div class="track-text" class="marquee" [style.color]="nextSong?.textColor">
+    <div class="track-text marquee" [style.color]="nextSong?.textColor">
         <span class="track-title">
             Upcoming
         </span>
@@ -13,7 +13,7 @@
         </span>
     </div>
     <img [src]="getThumbNailSrc(nextSong?._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail" [title]="nextSong?.album">
-    <div class="track-text" class="marquee">
+    <div class="track-text marquee">
         <span class="track-title" [style.color]="nextSong?.textColor">
             {{nextSong?.title}}
         </span>

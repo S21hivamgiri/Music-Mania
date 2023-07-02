@@ -12,28 +12,7 @@
             <div class="album-data" [style.background]="currentSong?.backgroundColor"
                 [style.color]="currentSong?.textColor"
                 [style.boxShadow]="'0 0 100px rgba(0,0,0,0), 0 0 200px rgba(0,0,0,0), 0 0 130px '+currentSong?.backgroundColor+', 0 0 170px '+currentSong?.backgroundColor+', 0 0 160px '+currentSong?.backgroundColor+', 0 0 180px '+currentSong?.backgroundColor+', 0 0 200px '+currentSong?.backgroundColor+''">
-                <div class="song-title" *ngIf="currentSong?.title">
-                    <mat-icon>music_note</mat-icon>
-                    <marquee>
-                        <span class="text">{{currentSong?.title}}</span>
-                    </marquee>
-                </div>
-                <mat-divider></mat-divider>
-                <div class="song-album" *ngIf="currentSong?.album">
-                    <mat-icon>collections</mat-icon>
-                    <span class="album" (click)="settings.lock||setSearchBar(currentSong?.album)">
-                        {{currentSong?.album?.trim()}}
-                    </span>
-                </div>
-                <div class="song-artist" *ngIf="currentSong?.artist">
-                    <mat-icon>people</mat-icon>
-                    <div>
-                        <ng-container *ngFor="let artist of currentSong?.artist; let i=index">
-                            <span class="text" *ngIf="i">,&nbsp;</span><span class="artist"
-                                (click)="settings.lock||setSearchBar(artist)">{{artist?.trim()}}</span>
-                        </ng-container>
-                    </div>
-                </div>
+                
             </div>
             <div class="album-image-wrapper" [style.background]="currentSong?.backgroundColor"></div>
             <div class="album-image">
@@ -41,6 +20,26 @@
             </div>
         </div>
         <div class="audio-container" [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
+            <div class="song-title" *ngIf="currentSong?.title">
+                <mat-icon>music_note</mat-icon>
+                <span class="text">{{currentSong?.title}}</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="song-album" *ngIf="currentSong?.album">
+                <mat-icon>collections</mat-icon>
+                <span class="album" (click)="settings.lock||setSearchBar(currentSong?.album)">
+                    {{currentSong?.album?.trim()}}
+                </span>
+            </div>
+            <div class="song-artist" *ngIf="currentSong?.artist">
+                <mat-icon>people</mat-icon>
+                <div>
+                    <ng-container *ngFor="let artist of currentSong?.artist; let i=index">
+                        <span class="text" *ngIf="i">,&nbsp;</span><span class="artist"
+                            (click)="settings.lock||setSearchBar(artist)">{{artist?.trim()}}</span>
+                    </ng-container>
+                </div>
+            </div>
             <div class="control-panel-wrapper">
                 <div class="full-screen-wrapper">
                     <div class="love" *ngIf="!settings.lock && (authService.isLoggedIn()|async)" title="Favourite (H)">
@@ -159,11 +158,11 @@
                         </mat-slider>
                     </div>
 
-                    <div class="volume-button" (click)="muteAudio()">
+                    <div class="volume-button" (click)="muteAudio()" [title]="settings.muted?'Unmute (M)':'Mute (M)' ">
                         <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor">
                             <mat-icon>
-                                {{settings.muted?'volume_off ': settings.volume>0.5?'volume_up
-                                ':settings.volume===0?'volume_mute':'volume_down '}}
+                                {{settings.muted?'volume_off ': settings.volume>0.5?'volume_up' :
+                                settings.volume===0?'volume_mute':'volume_down '}}
                             </mat-icon>
                         </button>
                     </div>

@@ -15,6 +15,12 @@
     }
 
     .marquee {
+        ::ng-deep {
+            .mat-icon {
+                transform: scale(1);
+            }
+        }
+
         .track-artist {
             font-size: 12px;
         }

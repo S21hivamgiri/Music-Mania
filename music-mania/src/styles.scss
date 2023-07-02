@@ -15,7 +15,11 @@ body {
 }
 
 ::ng-deep {
-    .mat-icon-button {
-        background:transparent;
+    .mat-icon {
+        transform: scale(1.6);
+    }
+
+    .mdc-icon-button {
+        background: transparent;
     }
 }

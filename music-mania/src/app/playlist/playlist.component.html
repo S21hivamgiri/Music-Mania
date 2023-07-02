@@ -80,13 +80,11 @@
                             </span>
                         </div>
                     </div>
+                    <ng-container *ngIf="currentSong?._id===track?._id">
+                        <app-playing-animation [audioStatus]="settings.audioStatus" [color]="currentSong?.textColor">
+                        </app-playing-animation>
+                    </ng-container>
                 </div>
-                
-                <ng-container *ngIf="currentSong?._id===track?._id">
-                    <app-playing-animation [audioStatus]="settings.audioStatus" [color]="currentSong?.textColor">
-                    </app-playing-animation>
-                </ng-container>
-
             </mat-list-item>
             <mat-divider></mat-divider>
             <div *cdkDragPreview class='preview-class-text'>
