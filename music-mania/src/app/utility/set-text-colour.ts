@@ -3,13 +3,13 @@ export function setTextColorOnHeader(e: any) {
   const textCss = `.mat-accent .mat-slider-track-fill, .mat-accent .mat-slider-thumb, .mat-accent .mat-slider-thumb-label {
                       background: ${textColor}!important;
                     }
-                    .mat-form-field.mat-focused .mat-form-field-ripple {
+                    .mdc-text-field--filled .mdc-line-ripple::after {
+                      border-color: ${textColor}!important;
+                    }
+                    .mat-mdc-chip.mat-mdc-standard-chip {
                       background: ${textColor}!important;
                     }
-                    .mat-chip.mat-standard-chip {
-                      background: ${textColor}!important;
-                    }
-                    .mat-form-field-label{
+                    .mat-mdc-floating-label{
                       color: ${textColor}!important;
                     }
                     .mat-checkbox-checked.mat-accent .mat-checkbox-background, .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
