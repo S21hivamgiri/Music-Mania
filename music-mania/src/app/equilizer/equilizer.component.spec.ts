@@ -8,9 +8,9 @@ describe('EquilizerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EquilizerComponent ]
+      declarations: [EquilizerComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

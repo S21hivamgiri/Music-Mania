@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject, throwError } from 'rxjs';
 import { Track } from '../model/track.model';
-import { catchError, map, shareReplay, tap, share} from 'rxjs/operators';
+import { catchError, map, shareReplay, tap, share } from 'rxjs/operators';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
@@ -94,9 +94,9 @@ export class TrackStore {
             return res;
         });
 
-        if (flag === -1) { 
-            tracks.push(obj); 
-        } else { 
+        if (flag === -1) {
+            tracks.push(obj);
+        } else {
             tracks[flag] = { ...tracks[flag], ...obj };
         }
 
@@ -109,7 +109,7 @@ export class TrackStore {
                     console.log(message, err);
                     return throwError(err);
                 }),
-                shareReplay({refCount:true})
+                shareReplay({ refCount: true })
             );
     }
 

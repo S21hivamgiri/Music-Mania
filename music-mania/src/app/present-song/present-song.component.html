@@ -1,6 +1,5 @@
-<div class="track-list-data" (click)="settings?.lock" [title]="currentSong?.title"
-    (click)="openPlayer()" [style.borderColor]="currentSong?.textColor"
-    [style.background]="currentSong?.backgroundColor">
+<div class="track-list-data" (click)="settings?.lock" [title]="currentSong?.title" (click)="openPlayer()"
+    [style.borderColor]="currentSong?.textColor" [style.background]="currentSong?.backgroundColor">
     <div title="Close (W)">
         <button mat-icon-button [style.color]="currentSong?.textColor" (click)="closeBar();$event.stopPropagation(); ">
             <mat-icon>close</mat-icon>

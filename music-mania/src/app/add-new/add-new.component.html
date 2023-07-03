@@ -73,7 +73,7 @@
                     <div class="color-picker">
                         <mat-form-field class="example-full-width" appearance="fill">
                             <mat-label>Text Color</mat-label>
-                            <input matInput formControlName="textColor"   (keydown)="$event.stopPropagation()"
+                            <input matInput formControlName="textColor" (keydown)="$event.stopPropagation()"
                                 [value]="colorFormGroup.get('textColor')?.value">
                         </mat-form-field>
                         <button mat-icon-button>
@@ -92,7 +92,7 @@
                     <div class="color-picker">
                         <mat-form-field class="example-full-width" appearance="fill">
                             <mat-label>Background Color</mat-label>
-                            <input matInput formControlName="backgroundColor"  (keydown)="$event.stopPropagation()"
+                            <input matInput formControlName="backgroundColor" (keydown)="$event.stopPropagation()"
                                 [value]="colorFormGroup.get('backgroundColor')?.value">
                         </mat-form-field>
                         <button mat-icon-button>
@@ -142,7 +142,7 @@
                         <mat-form-field class="artist-width">
                             <mat-label>Artists {{ind+1}}</mat-label>
                             <input matInput [id]="'array-'+ind" (keydown)="$event.stopPropagation();"
-                                 [formControlName]="ind">
+                                [formControlName]="ind">
                             <button matSuffix mat-icon-button aria-label="Delete" (click)="deleteFormArray(ind)">
                                 <mat-icon>delete</mat-icon>
                             </button>
@@ -155,7 +155,8 @@
             </div>
             <mat-dialog-actions align="end">
                 <button mat-button matStepperPrevious>Back</button>
-                <button mat-raised-button cdkFocusInitial color="primary" [disabled]="!dataFormGroup.valid" (click)="submitData()">Done</button>
+                <button mat-raised-button cdkFocusInitial color="primary" [disabled]="!dataFormGroup.valid"
+                    (click)="submitData()">Done</button>
             </mat-dialog-actions>
         </form>
     </mat-step>

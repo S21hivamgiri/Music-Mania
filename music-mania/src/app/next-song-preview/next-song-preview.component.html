@@ -12,7 +12,8 @@
             Song
         </span>
     </div>
-    <img [src]="getThumbNailSrc(nextSong?._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail" [title]="nextSong?.album">
+    <img [src]="getThumbNailSrc(nextSong?._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
+        [title]="nextSong?.album">
     <div class="track-text marquee">
         <span class="track-title" [style.color]="nextSong?.textColor">
             {{nextSong?.title}}

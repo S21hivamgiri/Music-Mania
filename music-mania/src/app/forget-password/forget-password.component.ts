@@ -25,11 +25,11 @@ export class ForgetPasswordComponent {
   updateError = "";
   forgetError = "";
 
-  constructor(private _formBuilder: UntypedFormBuilder, private authService: AuthService, 
-    @Optional() public dialogRef: MatDialogRef<ForgetPasswordComponent>, 
-    @Inject(MAT_DIALOG_DATA) public data: {email:string}) {
+  constructor(private _formBuilder: UntypedFormBuilder, private authService: AuthService,
+    @Optional() public dialogRef: MatDialogRef<ForgetPasswordComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: { email: string }) {
     this.emailFormGroup = this._formBuilder.group({
-      emailFormControl: [data.email||'', [Validators.required, Validators.email]],
+      emailFormControl: [data.email || '', [Validators.required, Validators.email]],
     });
 
     this.contactFormGroup = this._formBuilder.group({
@@ -92,7 +92,7 @@ export class ForgetPasswordComponent {
     event.stopPropagation();
   }
 
-  getControls(){
+  getControls() {
     return (this.contactFormGroup.get('contacts') as UntypedFormArray).controls;
   }
 

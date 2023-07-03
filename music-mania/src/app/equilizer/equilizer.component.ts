@@ -9,7 +9,7 @@ import { TrackStore } from '../services/track-store';
 })
 export class EquilizerComponent implements OnInit {
   currentSong?: Track;
-  constructor(readonly trackStore:TrackStore) { }
+  constructor(readonly trackStore: TrackStore) { }
 
   ngOnInit(): void {
     this.trackStore.currentSong.subscribe((data) => {

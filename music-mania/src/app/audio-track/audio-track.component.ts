@@ -97,9 +97,9 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     private trackStore: TrackStore,
     readonly changeDetectionRef: ChangeDetectorRef,
     readonly authService: AuthService,
-    readonly sideNav: ElementRef, 
+    readonly sideNav: ElementRef,
     public breakpointObserver: BreakpointObserver,
-    @Inject(DOCUMENT) private document: any) {}
+    @Inject(DOCUMENT) private document: any) { }
 
   ngOnInit() {
     this.elem = document.documentElement;

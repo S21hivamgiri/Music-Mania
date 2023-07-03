@@ -1,4 +1,4 @@
-export function fullScreenContoller(e:any){
+export function fullScreenContoller(e: any) {
     if (e.settings.fullScreen) {
         if (e.elem.requestFullscreen) {
             e.elem.requestFullscreen();

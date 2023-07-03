@@ -20,7 +20,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
   currentSong!: Track;
 
   constructor(private trackStore: TrackStore, readonly router: Router) { }
-  
+
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
     if (event.keyCode === P) {
@@ -46,7 +46,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
           }
     event.preventDefault();
   }
-  
+
   ngOnInit(): void {
     this.trackStore.currentSong.pipe(takeUntil(this.destroy)).subscribe((data) => {
       this.currentSong = data;

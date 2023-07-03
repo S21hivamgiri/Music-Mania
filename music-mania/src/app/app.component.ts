@@ -13,6 +13,6 @@ export class AppComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.trackStore.applicationClosed$.next();
-    this.trackStore.applicationClosed$.complete(); 
+    this.trackStore.applicationClosed$.complete();
   }
 }

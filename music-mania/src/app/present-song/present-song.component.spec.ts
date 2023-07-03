@@ -8,9 +8,9 @@ describe('PresentSongComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PresentSongComponent ]
+      declarations: [PresentSongComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

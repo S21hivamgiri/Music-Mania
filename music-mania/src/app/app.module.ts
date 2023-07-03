@@ -36,7 +36,7 @@ import { SignupComponent } from './signup/signup.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
-import { MatStepperModule } from '@angular/material/stepper'; 
+import { MatStepperModule } from '@angular/material/stepper';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AddNewComponent } from './add-new/add-new.component';
 
@@ -66,11 +66,11 @@ import { AddNewComponent } from './add-new/add-new.component';
     HttpClientModule,
     FormsModule,
     MatIconModule,
-    MatSidenavModule, 
+    MatSidenavModule,
     MatButtonModule,
     ReactiveFormsModule,
     MatDividerModule,
-    MatSliderModule, 
+    MatSliderModule,
     LayoutModule,
     MatSnackBarModule,
     MatListModule,

@@ -85,8 +85,8 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     }
   }
 
-  getPlayList(){
-  return this.isCurrentPlaylist() ? this.settings.currentPlaylist : this.searchedPlaylist;
+  getPlayList() {
+    return this.isCurrentPlaylist() ? this.settings.currentPlaylist : this.searchedPlaylist;
   }
 
   onKeyDown(event: Event) {

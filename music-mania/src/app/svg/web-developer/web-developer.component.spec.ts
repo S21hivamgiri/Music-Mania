@@ -8,9 +8,9 @@ describe('WebDeveloperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WebDeveloperComponent ]
+      declarations: [WebDeveloperComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

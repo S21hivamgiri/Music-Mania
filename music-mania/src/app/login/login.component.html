@@ -2,10 +2,11 @@
     <h2 mat-dialog-title>Login</h2>
     <mat-form-field class="login-width" appearance="fill">
         <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="emailFormControl"
-            (keydown)="onKeyDown($event)" autocomplete="off" placeholder="Ex. pat@example.com">
+        <input type="email" matInput formControlName="emailFormControl" (keydown)="onKeyDown($event)" autocomplete="off"
+            placeholder="Ex. pat@example.com">
         <mat-hint>Your music is a step ahead.</mat-hint>
-        <mat-error *ngIf="loginForm.get('emailFormControl')?.hasError('email') && !loginForm.get('emailFormControl')?.hasError('required')">
+        <mat-error
+            *ngIf="loginForm.get('emailFormControl')?.hasError('email') && !loginForm.get('emailFormControl')?.hasError('required')">
             Please enter a valid email address.
         </mat-error>
         <mat-error *ngIf="loginForm.get('emailFormControl')?.hasError('required')">
@@ -14,12 +15,13 @@
     </mat-form-field>
     <mat-form-field #passwordField class="login-width" appearance="fill">
         <mat-label>Password</mat-label>
-        <input [type]="passwordType" matInput formControlName="passwordFormControl"
-            (keydown)="onKeyDown($event)" autocomplete="off" placeholder="Enter your password.">
+        <input [type]="passwordType" matInput formControlName="passwordFormControl" (keydown)="onKeyDown($event)"
+            autocomplete="off" placeholder="Enter your password.">
         <mat-icon (click)="passwordType=passwordType==='password'?'text':'password'" matSuffix>
             {{passwordType==='password'?'visibility':'visibility_off'}}</mat-icon>
         <mat-hint>Have a melodious Journey ahead</mat-hint>
-        <mat-error *ngIf="loginForm.get('passwordFormControl')?.hasError('minlength') && !loginForm.get('passwordFormControl')?.hasError('required')">
+        <mat-error
+            *ngIf="loginForm.get('passwordFormControl')?.hasError('minlength') && !loginForm.get('passwordFormControl')?.hasError('required')">
             Please enter minimum 8 character password
         </mat-error>
         <mat-error

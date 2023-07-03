@@ -21,10 +21,10 @@
             </button>
         </mat-menu>
     </div>
-    <div class="search-bar" [style.background]="currentSong?.backgroundColor"
-        *ngIf="settings.isSearch && matOpened">
+    <div class="search-bar" [style.background]="currentSong?.backgroundColor" *ngIf="settings.isSearch && matOpened">
         <mat-form-field class="search-input-wrapper">
-            <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyDown($event)" autocomplete="off">
+            <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyDown($event)"
+                autocomplete="off">
             <mat-label>Enter Artists, Albums or Songs</mat-label>
             <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
                 (click)="searchItem='';filterSong();">
@@ -32,7 +32,8 @@
             </button>
         </mat-form-field>
         <mat-chip-set class="hotlist">
-            <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="searchItem=hotTitle;filterSong();">
+            <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems"
+                (click)="searchItem=hotTitle;filterSong();">
                 {{hotTitle}}
             </mat-chip>
         </mat-chip-set>

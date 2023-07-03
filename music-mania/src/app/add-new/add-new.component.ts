@@ -102,7 +102,7 @@ export class AddNewComponent {
     }
   }
 
-  deleteFormArray(i:number){
+  deleteFormArray(i: number) {
     (<UntypedFormArray>this.dataFormGroup.get('artist')).removeAt(i);
   }
 
@@ -152,24 +152,24 @@ export class AddNewComponent {
     event.stopPropagation();
     setTimeout(() => {
       (event.target as HTMLInputElement)?.focus();
-  },10);
-}
+    }, 10);
+  }
 
-  submitData() { 
-    let artistData= this.dataFormGroup.get('artist')?.value.flatMap((element:string) => {
-      if(element)return element;
+  submitData() {
+    let artistData = this.dataFormGroup.get('artist')?.value.flatMap((element: string) => {
+      if (element) return element;
       return [];
     });
-   const finalData:Track= {
-     _id: this.track!._id,
-     album: this.dataFormGroup.get('album')?.value,
-     artist: artistData,
-     picture: this.track!.picture,
-     title: this.dataFormGroup.get('title')?.value,
-     backgroundColor: this.colorFormGroup.get('backgroundColor')?.value,
-     textColor: this.colorFormGroup.get('textColor')?.value,
+    const finalData: Track = {
+      _id: this.track!._id,
+      album: this.dataFormGroup.get('album')?.value,
+      artist: artistData,
+      picture: this.track!.picture,
+      title: this.dataFormGroup.get('title')?.value,
+      backgroundColor: this.colorFormGroup.get('backgroundColor')?.value,
+      textColor: this.colorFormGroup.get('textColor')?.value,
     }
-    this.trackStore.updateTrack(finalData).subscribe(()=>{
+    this.trackStore.updateTrack(finalData).subscribe(() => {
       this.dialogRef.close();
     })
   }

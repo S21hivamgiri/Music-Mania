@@ -8,9 +8,9 @@ describe('PlayingAnimationComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PlayingAnimationComponent ]
+      declarations: [PlayingAnimationComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

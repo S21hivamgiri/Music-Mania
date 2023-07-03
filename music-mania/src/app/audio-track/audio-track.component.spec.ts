@@ -8,9 +8,9 @@ describe('AudioTrackComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AudioTrackComponent ]
+      declarations: [AudioTrackComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

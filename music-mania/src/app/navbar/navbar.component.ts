@@ -25,7 +25,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
 
   currentSong?: Track;
   user?: User;
-  
+
   constructor(readonly authService: AuthService, readonly router: Router, private changeDetectionRef: ChangeDetectorRef, readonly trackStore: TrackStore, public dialog: MatDialog) { }
 
   ngOnInit(): void {
@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
   getTitle(): string {
     return `${this.user?.firstName} ${this.user?.lastName}` || 'Please Login';
   }
-  
+
   openAddNewSongDialog() {
     this.dialog.open(AddNewComponent, {
       hasBackdrop: false
