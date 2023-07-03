@@ -1,15 +1,15 @@
 import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Track } from '../model/track.model';
-import { TrackStore } from '../services/track-store';
+import { Track } from '../../model/track.model';
+import { TrackStore } from '../../services/track-store';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginComponent } from '../authentication/login/login.component';
-import { User } from '../model/user.model';
-import { AuthService } from '../services/auth.service';
-import { SignupComponent } from '../authentication/signup/signup.component';
-import { ForgetPasswordComponent } from '../authentication/forget-password/forget-password.component';
+import { LoginComponent } from '../../authentication/login/login.component';
+import { User } from '../../model/user.model';
+import { AuthService } from '../../services/auth.service';
+import { SignupComponent } from '../../authentication/signup/signup.component';
+import { ForgetPasswordComponent } from '../../authentication/forget-password/forget-password.component';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { AddNewComponent } from '../track/add-new/add-new.component';
+import { AddNewComponent } from '../../track/add-new/add-new.component';
 
 @Component({
   selector: 'app-navbar',
