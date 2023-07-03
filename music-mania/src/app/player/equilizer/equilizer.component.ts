@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Track } from '../model/track.model';
-import { TrackStore } from '../services/track-store';
+import { Track } from '../../model/track.model';
+import { TrackStore } from '../../services/track-store';
 
 @Component({
   selector: 'app-equilizer',

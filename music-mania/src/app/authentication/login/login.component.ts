@@ -1,8 +1,8 @@
 import { Component, ViewChild, OnInit, Optional, ElementRef } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { User } from '../model/user.model';
-import { AuthService } from '../services/auth.service';
+import { User } from '../../model/user.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',

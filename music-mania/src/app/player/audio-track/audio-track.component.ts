@@ -1,21 +1,21 @@
 import { SPACE, F11, LEFT_ARROW, RIGHT_ARROW, R, S, P, N, L, Z, F, M, UP_ARROW, DOWN_ARROW, X, C, Q } from '@angular/cdk/keycodes';
 import { Component, ViewChild, OnInit, ChangeDetectorRef, ElementRef, AfterContentChecked, OnDestroy, Inject, HostListener } from '@angular/core';
-import { TrackStore } from '../services/track-store';
-import { Track } from '../model/track.model';
-import { environment } from '../../environments/environment';
+import { TrackStore } from '../../services/track-store';
+import { Track } from '../../model/track.model';
+import { environment } from '../../../environments/environment';
 import { DOCUMENT } from '@angular/common';
 import { MatSidenav } from '@angular/material/sidenav';
-import { fullScreenContoller } from '../utility/full-screen';
-import { setTextColorOnHeader } from '../utility/set-text-colour';
-import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '../utility/time';
-import { shuffleAllSongs, sortSongsByProperty } from '../utility/sort-shuffle';
+import { fullScreenContoller } from '../../utility/full-screen';
+import { setTextColorOnHeader } from '../../utility/set-text-colour';
+import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '../../utility/time';
+import { shuffleAllSongs, sortSongsByProperty } from '../../utility/sort-shuffle';
 import { Title } from '@angular/platform-browser';
-import { PlaylistComponent } from '../playlist/playlist.component';
-import { Settings } from '../model/settings.model';
+import { PlaylistComponent } from '../../track/playlist/playlist.component';
+import { Settings } from '../../model/settings.model';
 import { combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
 
 @Component({

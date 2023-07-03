@@ -7,7 +7,7 @@ import { TrackStore } from './services/track-store';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnDestroy {
-  title = 'Music Mania';
+  readonly title = 'Music Mania';
 
   constructor(private trackStore: TrackStore) { }
 

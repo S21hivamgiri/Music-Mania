@@ -9,7 +9,7 @@ import { User } from '../model/user.model'
 })
 export class AuthService {
     headers: HttpHeaders;
-    loggedIn: BehaviorSubject<boolean> = new BehaviorSubject(false)
+    loggedIn = new BehaviorSubject(false)
 
     constructor(private client: HttpClient) {
         this.headers = new HttpHeaders({ 'content-type': 'application/json' });

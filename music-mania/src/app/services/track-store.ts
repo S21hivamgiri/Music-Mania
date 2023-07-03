@@ -118,12 +118,12 @@ export class TrackStore {
         formData.append('music', file);
         return this.http.post(environment.apiAddress + 'track/add/', formData, {
             reportProgress: true,
-            observe: 'response'
+            observe: 'response',
         });
     }
 
     uploadNewPicture(file: File, id?: string): Observable<HttpResponse<Object>> {
-        let formData = new FormData();
+        const formData = new FormData();
         formData.append('picture', file);
         return this.http.post(environment.apiAddress + 'track/replace-picture/' + id, formData, {
             reportProgress: true,

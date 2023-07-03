@@ -1,0 +1,103 @@
+<ng-container>
+    <div class="fixed-navbar">
+        <div class="close-button" [style.color]="currentSong?.textColor">
+            <button mat-icon-button title="Search (S)" (click)="setSearch()">
+                <mat-icon>{{settings.isSearch?'search_off':'search'}}</mat-icon>
+            </button>
+            <button mat-icon-button title="Close Playlist(Z)"
+                (click)="closeSideNav();settings.isSearch = false;searchItem='';filterSong();">
+                <mat-icon>close</mat-icon>
+            </button>
+            <button mat-icon-button [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
+                <mat-icon>sort</mat-icon>
+            </button>
+            <mat-menu #sortMenu="matMenu">
+                <button mat-menu-item (click)="sortSongByAlbum()">
+                    <mat-icon [style.color]="currentSong?.textColor">collections</mat-icon>
+                    <span [style.color]="currentSong?.textColor">Sort By Album</span>
+                </button>
+                <button mat-menu-item (click)="sortSongByTitle()">
+                    <mat-icon [style.color]="currentSong?.textColor">music_note</mat-icon>
+                    <span [style.color]="currentSong?.textColor">Sort By Title</span>
+                </button>
+            </mat-menu>
+        </div>
+        <div class="search-bar" [style.background]="currentSong?.backgroundColor"
+            *ngIf="settings.isSearch && matOpened">
+            <mat-form-field class="search-input-wrapper">
+                <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyDown($event)"
+                    autocomplete="off">
+                <mat-label>Enter Artists, Albums or Songs</mat-label>
+                <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
+                    (click)="searchItem='';filterSong();">
+                    <mat-icon [style.color]="currentSong?.textColor">close</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-chip-set class="hotlist">
+                <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems"
+                    (click)="searchItem=hotTitle;filterSong();">
+                    {{hotTitle}}
+                </mat-chip>
+            </mat-chip-set>
+        </div>
+        <mat-divider></mat-divider>
+        <div class="playlist-title" [style.color]="currentSong?.textColor">
+            <mat-icon>playlist_add_check</mat-icon>
+            <h2 class="playlist-header">Current Playlist ({{settings.currentPlaylist.length}} songs)</h2>
+            <button mat-icon-button [style.color]="currentSong?.textColor"
+                (click)="searchedPlaylist=settings.currentPlaylist; searchItem=''" *ngIf="!isCurrentPlaylist()">
+                <mat-icon>forward</mat-icon>
+            </button>
+        </div>
+        <mat-divider></mat-divider>
+        <ng-container *ngIf="!isCurrentPlaylist()">
+            <div class="playlist-title" [style.color]="currentSong?.textColor">
+                <mat-icon>queue_music</mat-icon>
+                <h2 class="playlist-header">Searched Playlist ({{searchedPlaylist.length}} songs)</h2>
+            </div>
+        </ng-container>
+    </div>
+    <mat-list role="list">
+        <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+            <div *ngFor="let track of getPlayList();let i=index;" cdkDrag>
+                <mat-list-item role="listitem" class="playlist-track" (click)="setCurrentIndex(i, track._id)">
+                    <div class="utiity-box">
+                        <div class="drag-handle mr-3" [style.color]="currentSong?.textColor" cdkDragHandle
+                            *ngIf="isCurrentPlaylist()">
+                            <div class='d-flex h-100 drag-class'>
+                                <mat-icon>
+                                    drag_indicator
+                                </mat-icon>
+                            </div>
+                        </div>
+                        <div class="track-list-data" [title]="track?.title+' ( ' +track?.album + ' ) '">
+                            <img [src]="getThumbNailSrc(track?._id)" onerror="this.src='/assets/music-thumbnail.png'"
+                                class="thumbnail" [title]="track?.album">
+                            <div class="track-text" class="marquee">
+                                <span class="track-title" [style.color]="currentSong?.textColor">
+                                    {{track?.title}}
+                                </span>
+                                <br>
+                                <span class="track-artist" [style.color]="currentSong?.textColor">
+                                    {{track?.artist}}
+                                </span>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="currentSong?._id===track?._id">
+                            <app-playing-animation [audioStatus]="settings.audioStatus"
+                                [color]="currentSong?.textColor">
+                            </app-playing-animation>
+                        </ng-container>
+                    </div>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+                <div *cdkDragPreview class='preview-class-text'>
+                    <span class="preview-panel" [style.display]="'flex'" [style.color]="currentSong?.textColor">
+                        <mat-icon>audiotrack</mat-icon>
+                        <h1 [style.fontWeight]="'bold'">{{track?.title}}</h1>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </mat-list>
+</ng-container>

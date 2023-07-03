@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { Track } from '../model/track.model';
 import { TrackStore } from '../services/track-store';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../authentication/login/login.component';
 import { User } from '../model/user.model';
 import { AuthService } from '../services/auth.service';
-import { SignupComponent } from '../signup/signup.component';
-import { ForgetPasswordComponent } from '../forget-password/forget-password.component';
+import { SignupComponent } from '../authentication/signup/signup.component';
+import { ForgetPasswordComponent } from '../authentication/forget-password/forget-password.component';
 import { MatMenuTrigger } from '@angular/material/menu';
-import { AddNewComponent } from '../add-new/add-new.component';
+import { AddNewComponent } from '../track/add-new/add-new.component';
 
 @Component({
   selector: 'app-navbar',

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { environment } from '../../environments/environment';
-import { Settings } from '../model/settings.model';
-import { Track } from '../model/track.model';
-import { TrackStore } from '../services/track-store';
+import { environment } from '../../../environments/environment';
+import { Settings } from '../../model/settings.model';
+import { Track } from '../../model/track.model';
+import { TrackStore } from '../../services/track-store';
 
 @Component({
   selector: 'app-next-song-preview',

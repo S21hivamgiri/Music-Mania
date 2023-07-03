@@ -2,10 +2,10 @@ import { Component, Optional } from '@angular/core';
 import { AbstractControl, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, FormGroupDirective, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { LoginComponent } from '../login/login.component';
-import { AuthService } from '../services/auth.service';
-import { countryList } from '../common/constants';
+import { AuthService } from '../../services/auth.service';
+import { countryList } from '../../common/constants';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { User } from '../model/user.model';
+import { User } from '../../model/user.model';
 
 @Component({
   selector: 'app-signup',

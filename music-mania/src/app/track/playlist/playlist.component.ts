@@ -1,11 +1,11 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { sortSongsByProperty } from '../utility/sort-shuffle';
-import { environment } from '../../environments/environment';
-import { Settings } from '../model/settings.model';
-import { Track } from '../model/track.model';
-import { TrackStore } from '../services/track-store';
+import { sortSongsByProperty } from '../../utility/sort-shuffle';
+import { environment } from '../../../environments/environment';
+import { Settings } from '../../model/settings.model';
+import { Track } from '../../model/track.model';
+import { TrackStore } from '../../services/track-store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { filterSongs } from '../utility/filter-song';
+import { filterSongs } from '../../utility/filter-song';
 import { debounceTime, take } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 

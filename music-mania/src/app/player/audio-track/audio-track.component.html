@@ -10,7 +10,6 @@
         </app-navbar>
         <div class="page-wrapper" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')">
             <div class="album-data" [style.background]="currentSong?.backgroundColor"
-                [style.color]="currentSong?.textColor"
                 [style.boxShadow]="'0 0 100px rgba(0,0,0,0), 0 0 200px rgba(0,0,0,0), 0 0 130px '+currentSong?.backgroundColor+', 0 0 170px '+currentSong?.backgroundColor+', 0 0 160px '+currentSong?.backgroundColor+', 0 0 180px '+currentSong?.backgroundColor+', 0 0 200px '+currentSong?.backgroundColor+''">
             </div>
             <div class="album-image-wrapper" [style.background]="currentSong?.backgroundColor"></div>
@@ -19,6 +18,7 @@
             </div>
         </div>
         <div class="audio-container" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')"
+            [style.color]="currentSong?.textColor" 
             [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
             <div class="flex-1" *ngIf="currentSong?.title">
             </div>

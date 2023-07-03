@@ -2,8 +2,8 @@ import { Component, Optional } from '@angular/core';
 import { UntypedFormArray, UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { environment } from 'src/environments/environment';
-import { Track } from '../model/track.model';
-import { TrackStore } from '../services/track-store';
+import { Track } from '../../model/track.model';
+import { TrackStore } from '../../services/track-store';
 
 declare var window: any;
 
