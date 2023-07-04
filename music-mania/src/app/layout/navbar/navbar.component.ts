@@ -17,19 +17,19 @@ import { AddNewComponent } from '../../track/add-new/add-new.component';
   styleUrls: ['./navbar.component.scss']
 })
 export class NavbarComponent implements OnInit, AfterContentChecked {
+  @ViewChild('contextMenuTrigger', { read: MatMenuTrigger }) contextMenuTrigger?: MatMenuTrigger;
+
   @Input() isPlaying = false;
   @Input() displayTitle = true;
   @Input() isBackGroundVisible = true;
-  @Input() isMobileView = false;
-  @ViewChild('contextMenuTrigger', { read: MatMenuTrigger }) contextMenuTrigger?: MatMenuTrigger;
 
   currentSong?: Track;
   user?: User;
 
-  constructor(readonly authService: AuthService, readonly router: Router, private changeDetectionRef: ChangeDetectorRef, readonly trackStore: TrackStore, public dialog: MatDialog) { }
+  constructor(readonly authService: AuthService, readonly router: Router, private changeDetectionRef: ChangeDetectorRef, readonly trackStore: TrackStore, public dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    this.trackStore.currentSong.subscribe((data) => {
+    this.trackStore.currentSong.subscribe((data: Track) => {
       this.currentSong = data;
     });
   }

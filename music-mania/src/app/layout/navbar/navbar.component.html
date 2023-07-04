@@ -1,5 +1,4 @@
-<ng-container *ngIf="isMobileView; else desktopNavbar;"></ng-container>
-<ng-template #desktopNavbar>
+<ng-container>
     <div class="navbar" [style.backgroundColor]="isBackGroundVisible?'#000000':'transparent'">
         <div class="logo-wrapper" (click)="router.navigate(['/'])">
             <div class="logo-container">
@@ -46,4 +45,4 @@
             </button>
         </mat-menu>
     </div>
-</ng-template>
+</ng-container>
