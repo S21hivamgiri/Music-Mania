@@ -22,4 +22,10 @@ body {
     .mdc-icon-button {
         background: transparent;
     }
+
+    .mobile-view {
+        .mat-icon {
+            transform: scale(1);
+        }
+    }
 }

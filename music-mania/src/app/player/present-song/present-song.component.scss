@@ -5,18 +5,21 @@
     cursor: pointer;
     display: flex;
     flex-direction: row;
-    font-weight: bold;
     line-height: initial;
     padding: 0 2px;
 
     .open-player {
-        padding-left: 10px;
+        align-items: center;
+        display: flex;
+        gap: 4px;
+        font-weight: 600;
+        padding: 0 10px;
     }
 
     .track-text {
         display: flex;
-        overflow: hidden;
         flex-direction: column;
+        overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 10vw;
@@ -27,12 +30,17 @@
     }
 
     .marquee {
-        .track-artist {
+        .track-title {
             font-size: 12px;
+            font-weight: bold;
         }
 
         .track-album {
-            font-size: 12px;
+            font-size: 11px;
+        }
+
+        .track-artist {
+            font-size: 11px;
         }
     }
 }

@@ -1,11 +1,11 @@
-<mat-sidenav-container class="container" hasBackdrop="false">
+<mat-sidenav-container class="container" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')" hasBackdrop="false">
     <mat-sidenav #sidenav class="playlist-sidenav" mode="side">
         <app-playlist #playlist [searchItem]="searchItem" [matOpened]="sidenav.opened" (playAudio)="setAndPlayAudio()"
             (closeSideBar)="sidenav.close();">
         </app-playlist>
     </mat-sidenav>
     <mat-sidenav-content>
-        <div class="track-container" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')">
+        <div class="track-container">
             <app-navbar *ngIf="!settings.lock" [isPlaying]="settings.audioStatus" [isBackGroundVisible]="false"
                 [displayTitle]="false">
             </app-navbar>
@@ -19,13 +19,13 @@
                 </div>
             </div>
             <div class="audio-container" [style.color]="currentSong?.textColor"
-                [style.width]="sidenav.opened?'70vw': '-webkit-fill-available'">
+                [style.width]="sidenav.opened ? breakpointObserver.isMatched('(max-width: 100vh)')?'90vw': '70vw': '-webkit-fill-available'">
                 <div class="flex-2"> </div>
                 <div class="song-title song-data" *ngIf="currentSong?.title">
                     <mat-icon>music_note</mat-icon>
                     <span class="text">{{currentSong?.title}}</span>
+                    <mat-divider></mat-divider>
                 </div>
-                <mat-divider></mat-divider>
                 <div class="song-album song-data" *ngIf="currentSong?.album">
                     <mat-icon>collections</mat-icon>
                     <span class="album" (click)="settings.lock||setSearchBar(currentSong?.album)">
@@ -101,15 +101,15 @@
                         </div>
                         <div class="controls-wrapper" *ngIf="!settings.lock">
                             <div class="rewind-button" title="Rewind 10s (Left Arrow ←)">
-                                <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
-                                    (click)="rewind()">
+                                <button mat-icon-button class="rewind player-icon"
+                                    [style.color]="currentSong?.textColor" (click)="rewind()">
                                     <mat-icon>replay_10</mat-icon>
                                 </button>
                             </div>
                             <div class="shuffle" title="Shuffle/ Sort(X)">
                                 <button mat-icon-button class="player-icon" [disabled]="settings.loop"
                                     [style.color]="currentSong?.textColor" (click)="setShuffle()">
-                                    <mat-icon>{{settings.shuffle?"shuffle_on":"shuffle"}}</mat-icon>
+                                    <mat-icon>{{ settings.shuffle ? "shuffle_on" : "shuffle" }}</mat-icon>
                                 </button>
                             </div>
 
@@ -119,15 +119,15 @@
                                     [style.color]="currentSong?.textColor"
                                     (click)="prevAudio(settings.currentDuration)">
                                     <mat-icon>
-                                        {{!settings.currentDuration ||
-                                        settings.currentDuration>10?'skip_previous':'restart_alt'}}
+                                        {{ !settings.currentDuration ||
+                                        settings.currentDuration>10 ? 'skip_previous' : 'restart_alt' }}
                                     </mat-icon>
                                 </button>
                             </div>
                             <div class="play-button" title="Play/ Pause (Space)">
                                 <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
                                     (click)="playAudio()">
-                                    <mat-icon>{{settings.audioStatus?'pause':'play_arrow'}}</mat-icon>
+                                    <mat-icon>{{settings.audioStatus ? 'pause' : 'play_arrow'}}</mat-icon>
                                 </button>
                             </div>
                             <div class="skip-next-button" title="Next (N)">
@@ -143,8 +143,8 @@
                                 </button>
                             </div>
                             <div class="forward-button" title="Forward 10s (Right Arrow →)">
-                                <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor"
-                                    (click)="forward()">
+                                <button mat-icon-button class="forward player-icon"
+                                    [style.color]="currentSong?.textColor" (click)="forward()">
                                     <mat-icon>forward_10</mat-icon>
                                 </button>
                             </div>
@@ -161,8 +161,8 @@
                             [title]="settings.muted?'Unmute (M)':'Mute (M)'">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong?.textColor">
                                 <mat-icon>
-                                    {{settings.muted?'volume_off ': settings.volume>0.5?'volume_up' :
-                                    settings.volume===0?'volume_mute':'volume_down '}}
+                                    {{ settings.muted ? 'volume_off' : settings.volume > 0.5 ? 'volume_up' :
+                                    !settings.volume ? 'volume_mute' : 'volume_down' }}
                                 </mat-icon>
                             </button>
                         </div>
