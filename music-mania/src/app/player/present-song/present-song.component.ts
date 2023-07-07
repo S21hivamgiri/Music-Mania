@@ -1,13 +1,12 @@
 import { N, O, P, Q, SPACE, W } from '@angular/cdk/keycodes';
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { getCurrentTimeInFormat } from '../../utility/time';
 import { environment } from '../../../environments/environment';
-import { Settings } from '../../model/settings.model';
-import { Track } from '../../model/track.model';
 import { TrackStore } from '../../services/track-store';
+import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 
 @Component({
   selector: 'app-present-song',
@@ -16,8 +15,8 @@ import { TrackStore } from '../../services/track-store';
 })
 export class PresentSongComponent implements OnInit, OnDestroy {
   private readonly destroy = new Subject<void>();
-  settings!: Settings;
-  currentSong!: Track;
+  currentSong = DEFAULT_TRACK;
+  settings = DEFAULT_SETTING;
 
   constructor(private trackStore: TrackStore, readonly router: Router) { }
 
@@ -48,16 +47,15 @@ export class PresentSongComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.trackStore.currentSong.pipe(takeUntil(this.destroy)).subscribe((data) => {
-      this.currentSong = data;
-    });
-    this.trackStore.settings.pipe(takeUntil(this.destroy)).subscribe((data) => {
-      this.settings = data;
-    });
+    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.destroy)).subscribe(
+      ([currentSong, settings]) => {
+        this.currentSong = currentSong;
+        this.settings = settings;
+      });
   }
 
-  getThumbNailSrc(id?: string) {
-    return this.settings?.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
+  getThumbNailSrc(id: string) {
+    return this.settings.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
   playSong() {
@@ -110,7 +108,6 @@ export class PresentSongComponent implements OnInit, OnDestroy {
     this.playSong();
   }
 
-
   closeBar() {
     this.trackStore.settings.next({
       isSearch: false,
@@ -128,15 +125,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
       loop: false
     });
     this.settings.currentDuration = 0;
-    this.trackStore.currentSong.next({
-      backgroundColor: '',
-      _id: '',
-      textColor: '',
-      title: '',
-      artist: [],
-      album: '',
-      picture: ''
-    });
+    this.trackStore.currentSong.next(DEFAULT_TRACK);
     this.settings.audioStatus = !this.settings.audioStatus;
     this.playSong();
   }
@@ -146,8 +135,8 @@ export class PresentSongComponent implements OnInit, OnDestroy {
     this.settings.audioStatus = !this.settings.audioStatus;
     if (this.settings.loop) this.settings.currentTrackIndex;
     else {
-      if (this.settings.currentTrackIndex < this.settings.currentPlaylist.length - 1) ++this.settings.currentTrackIndex;
-      else this.settings.currentTrackIndex = 0;
+      if (this.settings.currentTrackIndex < this.settings.currentPlaylist.length - 1) { ++this.settings.currentTrackIndex; }
+      else { this.settings.currentTrackIndex = 0; }
     }
     this.setAudioPlayer();
     this.playSong();

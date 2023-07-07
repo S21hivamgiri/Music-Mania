@@ -12,6 +12,6 @@ export interface Settings {
     currentTrackIndex: number;
     muted: boolean;
     volume: number;
-    currentPlaylist: Track[]
+    currentPlaylist: Track[];
     loop: boolean;
 }

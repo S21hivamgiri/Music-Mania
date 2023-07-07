@@ -12,11 +12,12 @@ import { shuffleAllSongs, sortSongsByProperty } from '../../utility/sort-shuffle
 import { Title } from '@angular/platform-browser';
 import { PlaylistComponent } from '../../track/playlist/playlist.component';
 import { Settings } from '../../model/settings.model';
-import { combineLatest } from 'rxjs';
+import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { BreakpointObserver } from '@angular/cdk/layout';
+import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 
 @Component({
   selector: 'app-audio-track',
@@ -26,13 +27,14 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('playlist') playlist?: PlaylistComponent;
+  private readonly destroy = new Subject<void>();
 
   tracks: Track[] = [];
   elem?: HTMLElement;
   interval?: ReturnType<typeof setTimeout>;
-  searchItem: string = '';
-  currentSong!: Track;
-  settings!: Settings;
+  searchItem = '';
+  currentSong = DEFAULT_TRACK;
+  settings = DEFAULT_SETTING;
 
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
@@ -103,7 +105,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   ngOnInit() {
     this.elem = document.documentElement;
-    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.trackStore.applicationClosed$)).subscribe(
+    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.destroy)).subscribe(
       ([currentSong, settings]) => {
         this.currentSong = currentSong;
         this.settings = settings;
@@ -186,7 +188,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   getPicture() {
     return this.tracks.length ?
-      `${environment.streamAddress}images/album/${this.currentSong?.picture}` : '/assets/music-image.jpg';
+      `${environment.streamAddress}images/album/${this.currentSong.picture}` : '/assets/music-image.jpg';
   }
 
   sortAndShuffleSongs() {
@@ -307,7 +309,9 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   }
 
   ngOnDestroy() {
-    clearInterval(this.interval!);
+    this.destroy.next();
+    this.destroy.complete();
+    if (this.interval) clearInterval(this.interval!);
     let sliderClass = document.getElementsByTagName('style')[0];
     if ((sliderClass.classList.contains('audio-tag'))) {
       sliderClass.innerText = sliderClass.innerText.replace(sliderClass.innerText, '');

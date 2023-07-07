@@ -1,13 +1,13 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { sortSongsByProperty } from '../../utility/sort-shuffle';
 import { environment } from '../../../environments/environment';
-import { Settings } from '../../model/settings.model';
 import { Track } from '../../model/track.model';
 import { TrackStore } from '../../services/track-store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { filterSongs } from '../../utility/filter-song';
-import { debounceTime, take } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { debounceTime, take, takeUntil } from 'rxjs/operators';
+import { Subject, combineLatest } from 'rxjs';
+import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 
 @Component({
   selector: 'app-playlist',
@@ -21,15 +21,16 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   @Input() matOpened = false;
   @ViewChild('searchInput') searchTextInput?: ElementRef;
 
-  constructor(private trackStore: TrackStore) { }
-
   hotListItems = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
-  currentSong!: Track;
-  settings!: Settings;
+  currentSong = DEFAULT_TRACK;
+  settings = DEFAULT_SETTING;
   tracks: Track[] = [];
   searchedPlaylist: Track[] = [];
-  textValueSubject: Subject<any> = new Subject();
+  textValueSubject: Subject<void> = new Subject();
+  private readonly destroy = new Subject<void>();
   timeOut: any;
+
+  constructor(private trackStore: TrackStore) { }
 
   closeSideNav() {
     this.closeSideBar.emit();
@@ -50,14 +51,11 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.trackStore.currentSong.subscribe((data) => {
-      this.currentSong = data;
-    });
-
-    this.trackStore.settings.subscribe((data) => {
-      this.settings = data;
-    });
-
+    combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.destroy)).subscribe(
+      ([currentSong, settings]) => {
+        this.currentSong = currentSong;
+        this.settings = settings;
+      });
     this.trackStore.loadAllTracks().pipe(take(1)).subscribe((data) => {
       this.tracks = data;
       this.filterSong();
@@ -114,7 +112,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     this.playAudio.emit();
   }
 
-  getThumbNailSrc(id?: string) {
+  getThumbNailSrc(id: string) {
     return this.settings.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
@@ -156,6 +154,8 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
     this.textValueSubject.unsubscribe();
     clearTimeout(this.timeOut);
   }

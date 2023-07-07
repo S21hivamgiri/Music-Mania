@@ -54,18 +54,18 @@
             <input type="password" matInput formControlName="confirmPasswordFormControl" (keydown)="onKeyDown($event)"
                 autocomplete="off" placeholder="Enter your password." [errorStateMatcher]="matcher">
             <mat-icon matSuffix>
-                {{ !signUpForm?.hasError('notSame') &&
+                {{ !signUpForm.hasError('notSame') &&
                 !signUpForm.get('passwordFormControl')?.hasError('pattern') &&
                 !signUpForm.get('passwordFormControl')?.hasError('required') &&
                 !signUpForm.get('passwordFormControl')?.hasError('minlength') ? 'check' : 'password'}}
             </mat-icon>
-            <mat-hint *ngIf="!signUpForm?.hasError('notSame')  && 
+            <mat-hint *ngIf="!signUpForm.hasError('notSame')  && 
                              !signUpForm.get('passwordFormControl')?.hasError('pattern') &&
                              !signUpForm.get('passwordFormControl')?.hasError('required') &&
                              !signUpForm.get('passwordFormControl')?.hasError('minlength')">
                 Your password is matched.
             </mat-hint>
-            <mat-error *ngIf="signUpForm?.hasError('notSame') ">
+            <mat-error *ngIf="signUpForm.hasError('notSame') ">
                 Password does not <strong>match.</strong>
             </mat-error>
         </mat-form-field>

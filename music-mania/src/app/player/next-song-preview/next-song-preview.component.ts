@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { Settings } from '../../model/settings.model';
-import { Track } from '../../model/track.model';
 import { TrackStore } from '../../services/track-store';
+import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 
 @Component({
   selector: 'app-next-song-preview',
@@ -11,8 +10,8 @@ import { TrackStore } from '../../services/track-store';
 })
 export class NextSongPreviewComponent implements OnInit {
   @Output() nextAudioEvent = new EventEmitter();
-  nextSong?: Track;
-  settings!: Settings;
+  nextSong = DEFAULT_TRACK;
+  settings = DEFAULT_SETTING;
 
   constructor(private trackStore: TrackStore) { }
 
@@ -32,8 +31,8 @@ export class NextSongPreviewComponent implements OnInit {
     }
   }
 
-  getThumbNailSrc(_id?: string) {
-    return this.settings?.currentPlaylist.length && _id ? `${environment.streamAddress}images/thumbnail/${_id}.png` : '/assets/music-thumbnail.png';
+  getThumbNailSrc(_id: string) {
+    return this.settings.currentPlaylist.length && _id ? `${environment.streamAddress}images/thumbnail/${_id}.png` : '/assets/music-thumbnail.png';
   }
 
   nextAudio() {

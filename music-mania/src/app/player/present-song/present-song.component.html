@@ -1,44 +1,44 @@
-<div class="track-list-data" (click)="settings?.lock" [title]="currentSong?.title" (click)="openPlayer()"
-    [style.borderColor]="currentSong?.textColor" [style.background]="currentSong?.backgroundColor">
+<div class="track-list-data" (click)="settings.lock" [title]="currentSong.title" (click)="openPlayer()"
+    [style.borderColor]="currentSong.textColor" [style.background]="currentSong.backgroundColor">
     <div title="Close (W)">
-        <button mat-icon-button [style.color]="currentSong?.textColor" (click)="closeBar();$event.stopPropagation(); ">
+        <button mat-icon-button [style.color]="currentSong.textColor" (click)="closeBar();$event.stopPropagation(); ">
             <mat-icon>close</mat-icon>
         </button>
     </div>
-    <img [src]="getThumbNailSrc(currentSong?._id)" onerror="  this.src='/assets/music-thumbnail.png'" class="thumbnail"
-        [title]="currentSong?.album">
+    <img [src]="getThumbNailSrc(currentSong._id)" onerror="  this.src='/assets/music-thumbnail.png'" class="thumbnail"
+        [title]="currentSong.album">
     <div class="track-text marquee">
-        <span class="track-title" [style.color]="currentSong?.textColor">
-            {{currentSong?.title}}
+        <span class="track-title" [style.color]="currentSong.textColor">
+            {{currentSong.title}}
         </span>
-        <span class="track-album" [style.color]="currentSong?.textColor">
-            {{currentSong?.album}}
+        <span class="track-album" [style.color]="currentSong.textColor">
+            {{currentSong.album}}
         </span>
-        <span class="track-artist" [style.color]="currentSong?.textColor">
-            {{currentSong?.artist}}
+        <span class="track-artist" [style.color]="currentSong.textColor">
+            {{currentSong.artist}}
         </span>
     </div>
 
     <div class="skip-previous-button" title="Previous (P)/ Restart (Q)">
-        <button [disabled]="settings.loop" mat-icon-button [style.color]="currentSong?.textColor"
+        <button [disabled]="settings.loop" mat-icon-button [style.color]="currentSong.textColor"
             (click)="prevAudio(settings.currentDuration);$event.stopPropagation(); ">
             <mat-icon>skip_previous</mat-icon>
         </button>
     </div>
 
     <div class="play-button" title="Play/ Pause (Space)">
-        <button mat-icon-button [style.color]="currentSong?.textColor" (click)="playSong();$event.stopPropagation();">
+        <button mat-icon-button [style.color]="currentSong.textColor" (click)="playSong();$event.stopPropagation();">
             <mat-icon>{{settings.audioStatus?'pause':'play_arrow'}}</mat-icon>
         </button>
     </div>
 
     <div class="skip-next-button" title="Next (N)">
-        <button [disabled]="settings.loop" mat-icon-button [style.color]="currentSong?.textColor"
+        <button [disabled]="settings.loop" mat-icon-button [style.color]="currentSong.textColor"
             (click)="nextAudio();$event.stopPropagation(); ">
             <mat-icon>skip_next</mat-icon>
         </button>
     </div>
-    <div class="open-player" [style.color]="currentSong?.textColor" title="Open(O)">
+    <div class="open-player" [style.color]="currentSong.textColor" title="Open(O)">
         <span class="open-player-text">
             Open <br> Player
         </span>

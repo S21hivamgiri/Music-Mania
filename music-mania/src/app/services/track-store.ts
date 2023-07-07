@@ -7,13 +7,13 @@ import { environment } from '../../environments/environment';
 import { Settings } from '../model/settings.model';
 import { AuthService } from './auth.service';
 import { User } from '../model/user.model';
+import { DEFAULT_SETTING, DEFAULT_TRACK } from '../common/constants';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TrackStore {
     private trackSubject = new BehaviorSubject<Track[]>([]);
-    applicationClosed$ = new Subject<void>();
     tracks$: Observable<Track[]> = this.trackSubject.asObservable();
 
     constructor(private http: HttpClient, private authService: AuthService) { }
@@ -57,32 +57,9 @@ export class TrackStore {
         return loadTracks$.pipe(share());
     }
 
-    currentSong: BehaviorSubject<Track> = new BehaviorSubject(<Track>{
-        backgroundColor: '',
-        _id: '',
-        textColor: '',
-        title: '',
-        artist: [],
-        album: '',
-        picture: ''
-    });
+    currentSong: BehaviorSubject<Track> = new BehaviorSubject(DEFAULT_TRACK);
 
-    settings: BehaviorSubject<Settings> = new BehaviorSubject(<Settings>{
-        isSearch: false,
-        lock: false,
-        sort: 'title',
-        audioStatus: false,
-        duration: 1,
-        currentDuration: 0,
-        shuffle: true,
-        fullScreen: false,
-        currentTrackIndex: 0,
-        muted: false,
-        currentPlaylist: [],
-        volume: 1,
-        loop: false,
-        liked: []
-    });
+    settings: BehaviorSubject<Settings> = new BehaviorSubject(DEFAULT_SETTING);
 
     updateTrack(obj: Track) {
         let id = obj._id;
