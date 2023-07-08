@@ -1,0 +1,31 @@
+.search-bar {
+    animation: 0.5s slide-left;
+    padding: 0 0 10px 10px;
+    z-index: 2000;
+    width: 100%;
+
+    .search-input-wrapper {
+        animation: 0.5s slide-left;
+        padding: 20px 0;
+        width: 100%;
+
+        ::ng-deep .mdc-text-field {
+            background-color: transparent !important;
+
+            .mdc-icon-button {
+                .mat-icon {
+                    transform: scale(1.2);
+                    transition: 1s ease-in-out;
+                }
+
+                &:hover {
+                    transform: scale(1.25);
+                }
+            }
+        }
+
+        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+    }
+}

@@ -26,8 +26,8 @@ import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('playlist') playlist?: PlaylistComponent;
+  
   private readonly destroy = new Subject<void>();
-
   tracks: Track[] = [];
   elem?: HTMLElement;
   interval?: ReturnType<typeof setTimeout>;
@@ -74,7 +74,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
         this.settings.lock || (this.settings.loop = !this.settings.loop);
       }
       else if (event.keyCode === Z) {
-        this.settings.lock || this.sidenav?.toggle();
+        this.settings.lock || this.onSideNavToggle();
       }
       else if (event.keyCode === L) {
         this.setLock();
@@ -133,6 +133,13 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     document.addEventListener('MSFullscreenChange', () => { this.onFullScreen(this) });
   }
 
+  onSideNavToggle(){
+    this.sidenav?.toggle();
+    if (this.sidenav?.close){
+      this.settings.isSearch = false;
+    }
+  }
+
   setAndPlayAudio() {
     this.setAudioPlayer();
     this.playAudio();
@@ -165,9 +172,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   setSearchBar(searchText?: string) {
     this.sidenav?.open();
-    this.settings.isSearch = true;
     this.searchItem = searchText || '';
-    this.playlist?.setSearchBarFocus();
+    this.settings.isSearch = true;
     this.trackStore.settings.next(this.settings);
   }
 

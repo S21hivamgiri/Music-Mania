@@ -6,7 +6,7 @@
         </button>
     </div>
     <img [src]="getThumbNailSrc(currentSong._id)" onerror="  this.src='/assets/music-thumbnail.png'" class="thumbnail"
-        [title]="currentSong.album">
+        [title]="currentSong.album" loading="lazy">
     <div class="track-text marquee">
         <span class="track-title" [style.color]="currentSong.textColor">
             {{currentSong.title}}

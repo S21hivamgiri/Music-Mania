@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { sortSongsByProperty } from '../../utility/sort-shuffle';
 import { environment } from '../../../environments/environment';
 import { Track } from '../../model/track.model';
@@ -19,36 +19,15 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   @Output() closeSideBar = new EventEmitter();
   @Input() searchItem = '';
   @Input() matOpened = false;
-  @ViewChild('searchInput') searchTextInput?: ElementRef;
 
-  hotListItems = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
   currentSong = DEFAULT_TRACK;
   settings = DEFAULT_SETTING;
   tracks: Track[] = [];
   searchedPlaylist: Track[] = [];
   textValueSubject: Subject<void> = new Subject();
-  private readonly destroy = new Subject<void>();
-  timeOut: any;
+  private readonly destroy = new Subject<void>
 
   constructor(private trackStore: TrackStore) { }
-
-  closeSideNav() {
-    this.closeSideBar.emit();
-  }
-
-  setSearch() {
-    this.settings.isSearch = !this.settings.isSearch;
-    this.trackStore.settings.next(this.settings);
-    this.setSearchBarFocus();
-  }
-
-  setSearchBarFocus() {
-    //The setTimOut is set because as soona s search bar opens focus cannot be attained 10ms timing for opening it after animation. 
-    this.timeOut = setTimeout(() => {
-      this.searchTextInput?.nativeElement.focus();
-      this.filterSong();
-    }, 10);
-  }
 
   ngOnInit(): void {
     combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.destroy)).subscribe(
@@ -66,6 +45,20 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.filterSong();
       });
+  }
+
+  closeSideNav() {
+    this.closeSideBar.emit();
+  }
+
+  onSearch(searchText: string) {
+    this.searchItem = searchText;
+    this.filterSong();
+  }
+
+  setSearch() {
+    this.settings.isSearch = !this.settings.isSearch;
+    this.trackStore.settings.next(this.settings);
   }
 
   isCurrentPlaylist() {
@@ -87,8 +80,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     return this.isCurrentPlaylist() ? this.settings.currentPlaylist : this.searchedPlaylist;
   }
 
-  onKeyDown(event: Event) {
-    event.stopPropagation();
+  onKeyDown() {
     this.textValueSubject.next();
   }
 
@@ -127,16 +119,16 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 
 
   drop(event: CdkDragDrop<Track[]>) {
-    if (event.previousIndex === this.settings.currentTrackIndex) this.settings.currentTrackIndex = event.currentIndex;
-    else if (event.previousIndex < this.settings.currentTrackIndex && event.currentIndex >= this.settings.currentTrackIndex)
-      --this.settings.currentTrackIndex;
-    else if (event.previousIndex >= this.settings.currentTrackIndex && event.currentIndex <= this.settings.currentTrackIndex)
-      ++this.settings.currentTrackIndex;
+    if (event.previousIndex === this.settings.currentTrackIndex) {
+      this.settings.currentTrackIndex = event.currentIndex;
+    }
+    else if (event.previousIndex < this.settings.currentTrackIndex && event.currentIndex >= this.settings.currentTrackIndex) { --this.settings.currentTrackIndex; }
+    else if (event.previousIndex >= this.settings.currentTrackIndex && event.currentIndex <= this.settings.currentTrackIndex) { ++this.settings.currentTrackIndex; }
     moveItemInArray(this.settings.currentPlaylist, event.previousIndex, event.currentIndex);
     this.trackStore.settings.next(this.settings);
   }
 
-  sortSong(sortKey='title') {
+  sortSong(sortKey = 'title') {
     this.settings.sort = sortKey;
     this.sortSongByProperty();
     //Set the current Index with respect to sorted list if current playlist === searched playlist
@@ -145,9 +137,9 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   closePlayList() {
-    this.closeSideNav(); 
-    this.settings.isSearch = false; 
-    this.searchItem = ''; 
+    this.closeSideNav();
+    this.settings.isSearch = false;
+    this.searchItem = '';
     this.filterSong();
   }
 
@@ -159,6 +151,5 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     this.destroy.next();
     this.destroy.complete();
     this.textValueSubject.unsubscribe();
-    clearTimeout(this.timeOut);
   }
 }

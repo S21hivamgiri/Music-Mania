@@ -1,0 +1,15 @@
+<div class="search-bar" [style.background]="currentSong.backgroundColor" *ngIf="settings.isSearch && matOpened">
+    <mat-form-field class="search-input-wrapper">
+        <input matInput type="text" #searchInput (input)="searchemit($event);" (keydown)="keyDown($event);"
+            autocomplete="off">
+        <mat-label>Enter Artists, Albums or Songs</mat-label>
+        <button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.emit('');">
+            <mat-icon [style.color]="currentSong.textColor">close</mat-icon>
+        </button>
+    </mat-form-field>
+    <mat-chip-set class="hotlist">
+        <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="search.emit(hotTitle)">
+            {{hotTitle}}
+        </mat-chip>
+    </mat-chip-set>
+</div>

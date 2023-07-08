@@ -2,23 +2,8 @@
     <div class="fixed-toolbar">
         <app-playlist-tool [settings]="settings" [textColor]="currentSong.textColor" (sortSong)="sortSong($event)"
             (closePlayList)="closePlayList()" (searchSong)="setSearch()"></app-playlist-tool>
-        <div class="search-bar" [style.background]="currentSong.backgroundColor" *ngIf="settings.isSearch && matOpened">
-            <mat-form-field class="search-input-wrapper">
-                <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyDown($event)"
-                    autocomplete="off">
-                <mat-label>Enter Artists, Albums or Songs</mat-label>
-                <button *ngIf="searchItem" matSuffix mat-icon-button aria-label="Clear"
-                    (click)="searchItem='';filterSong();">
-                    <mat-icon [style.color]="currentSong.textColor">close</mat-icon>
-                </button>
-            </mat-form-field>
-            <mat-chip-set class="hotlist">
-                <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems"
-                    (click)="searchItem=hotTitle;filterSong();">
-                    {{hotTitle}}
-                </mat-chip>
-            </mat-chip-set>
-        </div>
+        <app-search-bar [searchStarted]="settings.isSearch" [settings]="settings" [currentSong]="currentSong" [matOpened]="matOpened"
+            (search)="onSearch($event)" (onKeyDown)="onKeyDown()"></app-search-bar>
         <mat-divider></mat-divider>
         <div class="playlist-title" [style.color]="currentSong.textColor">
             <mat-icon>playlist_add_check</mat-icon>

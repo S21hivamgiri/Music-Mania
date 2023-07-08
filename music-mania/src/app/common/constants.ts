@@ -35,3 +35,5 @@ export const DEFAULT_SETTING: Settings = {
     volume: 1,
     loop: false,
 };
+
+export const HOTLIST_ITEMS:string[] = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
