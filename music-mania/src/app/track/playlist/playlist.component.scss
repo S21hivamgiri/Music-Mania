@@ -14,14 +14,6 @@
         }
     }
 
-    .button-panel {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        left: 25vw;
-        position: fixed;
-        width: 100%;
-    }
 
     .search-bar {
         animation: 0.5s slide-left;
@@ -67,7 +59,7 @@
             .utiity-box-child {
                 align-items: center;
                 display: flex;
-                justify-content: start;
+                justify-content: flex-start;
                 cursor: pointer;
                 width: 100%;
 
@@ -106,9 +98,15 @@
     }
 }
 
-::ng-deep .mdc-list{
-    padding: 0!important;
-} 
+::ng-deep {
+    .mdc-list {
+        padding: 0 !important;
+    }
+
+    .mdc-list-item {
+        padding: 0 !important;
+    }
+}
 
 @keyframes slide-left {
     from {

@@ -42,9 +42,9 @@
                     </div>
                 </div>
                 <div class="flex-1"> </div>
-                <div class="control-panel-wrapper">
+                <div class="control-panel-wrapper" *ngIf="currentSong._id">
                     <div class="full-screen-wrapper">
-                        <div class="love" *ngIf="!settings.lock && (authService.isLoggedIn()|async)"
+                        <div class="favourite" *ngIf="!settings.lock && (authService.isLoggedIn()|async)"
                             title="Favourite (H)">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong.textColor"
                                 (click)="favourite()">

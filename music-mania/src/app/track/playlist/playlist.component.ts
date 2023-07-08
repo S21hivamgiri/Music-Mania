@@ -125,12 +125,6 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     }
   }
 
-  sortSongByTitle() {
-    this.settings.sort = 'title';
-    this.sortSongByProperty();
-    //Set the current Index with respect to sorted list if current playlist === searched playlist
-    this.settings.currentTrackIndex = this.getCurrentIndex();
-  }
 
   drop(event: CdkDragDrop<Track[]>) {
     if (event.previousIndex === this.settings.currentTrackIndex) this.settings.currentTrackIndex = event.currentIndex;
@@ -142,11 +136,19 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     this.trackStore.settings.next(this.settings);
   }
 
-  sortSongByAlbum() {
-    this.settings.sort = 'album';
+  sortSong(sortKey='title') {
+    this.settings.sort = sortKey;
     this.sortSongByProperty();
+    //Set the current Index with respect to sorted list if current playlist === searched playlist
     this.settings.currentTrackIndex = this.getCurrentIndex();
     this.trackStore.settings.next(this.settings);
+  }
+
+  closePlayList() {
+    this.closeSideNav(); 
+    this.settings.isSearch = false; 
+    this.searchItem = ''; 
+    this.filterSong();
   }
 
   filterSong() {

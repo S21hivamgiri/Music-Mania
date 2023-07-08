@@ -1,4 +1,4 @@
-import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Track } from '../../model/track.model';
 import { TrackStore } from '../../services/track-store';
@@ -10,27 +10,33 @@ import { SignupComponent } from '../../authentication/signup/signup.component';
 import { ForgetPasswordComponent } from '../../authentication/forget-password/forget-password.component';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { AddNewComponent } from '../../track/add-new/add-new.component';
+import { DEFAULT_TRACK } from 'src/app/common/constants';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit, AfterContentChecked {
+export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('contextMenuTrigger', { read: MatMenuTrigger }) contextMenuTrigger?: MatMenuTrigger;
-
   @Input() isPlaying = false;
   @Input() displayTitle = true;
   @Input() isBackGroundVisible = true;
 
-  currentSong?: Track;
+  private readonly destroy = new Subject<void>();
+  currentSong: Track = DEFAULT_TRACK;
   user?: User;
 
-  constructor(readonly authService: AuthService, readonly router: Router, private changeDetectionRef: ChangeDetectorRef, readonly trackStore: TrackStore, public dialog: MatDialog,) { }
+  constructor(readonly authService: AuthService, readonly router: Router, readonly trackStore: TrackStore, public dialog: MatDialog,) { }
 
   ngOnInit(): void {
-    this.trackStore.currentSong.subscribe((data: Track) => {
+    this.trackStore.currentSong.pipe(takeUntil(this.destroy)).subscribe((data: Track) => {
       this.currentSong = data;
+    });
+    this.authService.getCurrentUserDetails().pipe(takeUntil(this.destroy)).subscribe((userData?: User) => {
+      this.user = userData;
     });
   }
 
@@ -72,7 +78,7 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     this.contextMenuTrigger?.openMenu();
   }
 
-  forgetPasswordDialog(email: string) {
+  forgetPasswordDialog(email?: string) {
     const dialogRef = this.dialog.open(ForgetPasswordComponent, {
       data: { email: email },
       hasBackdrop: false
@@ -82,10 +88,8 @@ export class NavbarComponent implements OnInit, AfterContentChecked {
     });
   }
 
-  ngAfterContentChecked() {
-    this.authService.getCurrentUserDetails().subscribe((userData?: User) => {
-      this.user = userData;
-    });
-    this.changeDetectionRef.detectChanges();
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 }

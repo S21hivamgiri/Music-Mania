@@ -1,29 +1,8 @@
 <ng-container>
     <div class="fixed-toolbar">
-        <div class="button-panel" [style.color]="currentSong.textColor">
-            <button mat-icon-button title="Search (S)" (click)="setSearch()">
-                <mat-icon>{{settings.isSearch?'search_off':'search'}}</mat-icon>
-            </button>
-            <button mat-icon-button title="Close Playlist(Z)"
-                (click)="closeSideNav();settings.isSearch = false;searchItem='';filterSong();">
-                <mat-icon>close</mat-icon>
-            </button>
-            <button mat-icon-button [matMenuTriggerFor]="sortMenu" aria-label="Example icon-button with a menu">
-                <mat-icon>sort</mat-icon>
-            </button>
-            <mat-menu #sortMenu="matMenu">
-                <button mat-menu-item (click)="sortSongByAlbum()">
-                    <mat-icon [style.color]="currentSong.textColor">collections</mat-icon>
-                    <span [style.color]="currentSong.textColor">Sort By Album</span>
-                </button>
-                <button mat-menu-item (click)="sortSongByTitle()">
-                    <mat-icon [style.color]="currentSong.textColor">music_note</mat-icon>
-                    <span [style.color]="currentSong.textColor">Sort By Title</span>
-                </button>
-            </mat-menu>
-        </div>
-        <div class="search-bar" [style.background]="currentSong.backgroundColor"
-            *ngIf="settings.isSearch && matOpened">
+        <app-playlist-tool [settings]="settings" [textColor]="currentSong.textColor" (sortSong)="sortSong($event)"
+            (closePlayList)="closePlayList()" (searchSong)="setSearch()"></app-playlist-tool>
+        <div class="search-bar" [style.background]="currentSong.backgroundColor" *ngIf="settings.isSearch && matOpened">
             <mat-form-field class="search-input-wrapper">
                 <input matInput type="text" [(ngModel)]="searchItem" #searchInput (keydown)="onKeyDown($event)"
                     autocomplete="off">
@@ -72,9 +51,8 @@
                                 </div>
                             </div>
                             <div class="track-list-data" [title]="track.title+' ( ' +track.album + ' ) '">
-                                <img [src]="getThumbNailSrc(track._id)"
-                                    onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
-                                    [title]="track.album">
+                                <img [src]="getThumbNailSrc(track._id)" onerror="this.src='/assets/music-thumbnail.png'"
+                                    class="thumbnail" [title]="track.album" loading="lazy">
                                 <div class="track-text" class="marquee">
                                     <span class="track-title" [style.color]="currentSong.textColor">
                                         {{track.title}}
@@ -87,8 +65,7 @@
                             </div>
                         </div>
                         <ng-container *ngIf="currentSong._id===track._id">
-                            <app-playing-animation [audioStatus]="settings.audioStatus"
-                                [color]="currentSong.textColor">
+                            <app-playing-animation [audioStatus]="settings.audioStatus" [color]="currentSong.textColor">
                             </app-playing-animation>
                         </ng-container>
                     </div>

@@ -100,7 +100,7 @@
             max-height: 100vh;
 
             .album-data {
-                align-items: start;
+                align-items: flex-start;
                 display: flex;
                 flex: 1;
                 flex-direction: column;
@@ -133,7 +133,7 @@
         }
 
         .audio-container {
-            align-items: start;
+            align-items: flex-start;
             bottom: 0;
             display: flex;
             flex-direction: column;

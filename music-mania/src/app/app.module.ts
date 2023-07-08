@@ -39,6 +39,7 @@ import { ForgetPasswordComponent } from './authentication/forget-password/forget
 import { MatStepperModule } from '@angular/material/stepper';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AddNewComponent } from './track/add-new/add-new.component';
+import { PlaylistToolComponent } from './track/playlist-tool/playlist-tool.component';
 
 
 @NgModule({
@@ -61,6 +62,7 @@ import { AddNewComponent } from './track/add-new/add-new.component';
     SignupComponent,
     ForgetPasswordComponent,
     AddNewComponent,
+    PlaylistToolComponent,
   ],
   imports: [
     HttpClientModule,

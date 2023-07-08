@@ -11,11 +11,11 @@ export const countryList = [
 ]
 
 export const DEFAULT_TRACK: Track = {
-    backgroundColor: '',
+    backgroundColor: '#fcf9eb',
     _id: '',
-    textColor: '',
-    title: '',
-    artist: [],
+    textColor: '#000000',
+    title: 'Love Yet to Come',
+    artist: ['Shivam Kumar Giri'],
     album: '',
     picture: '',
 };
@@ -31,7 +31,7 @@ export const DEFAULT_SETTING: Settings = {
     fullScreen: false,
     currentTrackIndex: 0,
     muted: false,
-    currentPlaylist: [],
+    currentPlaylist: [DEFAULT_TRACK],
     volume: 1,
     loop: false,
 };

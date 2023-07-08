@@ -11,7 +11,6 @@ import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '.
 import { shuffleAllSongs, sortSongsByProperty } from '../../utility/sort-shuffle';
 import { Title } from '@angular/platform-browser';
 import { PlaylistComponent } from '../../track/playlist/playlist.component';
-import { Settings } from '../../model/settings.model';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
