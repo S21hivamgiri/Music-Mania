@@ -3,12 +3,12 @@
         <input matInput type="text" #searchInput (input)="searchemit($event);" (keydown)="keyDown($event);"
             autocomplete="off">
         <mat-label>Enter Artists, Albums or Songs</mat-label>
-        <button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.emit('');">
+        <button *ngIf="searchInput.value" matSuffix mat-icon-button aria-label="Clear" (click)="search.emit('');searchInput.value=''">
             <mat-icon [style.color]="currentSong.textColor">close</mat-icon>
         </button>
     </mat-form-field>
     <mat-chip-set class="hotlist">
-        <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="search.emit(hotTitle)">
+        <mat-chip class="example-box" *ngFor="let hotTitle of hotListItems" (click)="search.emit(hotTitle);searchInput.value=hotTitle;">
             {{hotTitle}}
         </mat-chip>
     </mat-chip-set>

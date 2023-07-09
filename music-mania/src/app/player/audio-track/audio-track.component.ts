@@ -29,7 +29,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   
   private readonly destroy = new Subject<void>();
   tracks: Track[] = [];
-  elem?: HTMLElement;
   interval?: ReturnType<typeof setTimeout>;
   searchItem = '';
   currentSong = DEFAULT_TRACK;
@@ -103,7 +102,6 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     @Inject(DOCUMENT) private document: any) { }
 
   ngOnInit() {
-    this.elem = document.documentElement;
     combineLatest([this.trackStore.currentSong, this.trackStore.settings]).pipe(takeUntil(this.destroy)).subscribe(
       ([currentSong, settings]) => {
         this.currentSong = currentSong;

@@ -9,6 +9,7 @@ import { DEFAULT_SETTING, DEFAULT_TRACK, HOTLIST_ITEMS } from 'src/app/common/co
 export class SearchBarComponent implements OnChanges, OnDestroy {
   @ViewChild('searchInput') searchTextInput?: ElementRef;
   @Input() settings = DEFAULT_SETTING;
+  @Input() searchItem = '';
   @Input() currentSong = DEFAULT_TRACK;
   @Input() matOpened = false;
   @Input() searchStarted = false;
@@ -19,13 +20,19 @@ export class SearchBarComponent implements OnChanges, OnDestroy {
   readonly hotListItems = HOTLIST_ITEMS;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchStarted']) {
+    if (changes['searchStarted'] || changes['searchItem']) {
       this.timeOut = setTimeout(() => {
         if (this.searchTextInput) {
-          this.searchTextInput?.nativeElement.focus();
+          if (changes['searchItem']) {
+            this.searchTextInput?.nativeElement.focus();
+            (this.searchTextInput?.nativeElement as HTMLInputElement).value = this.searchItem
+            this.search.emit(this.searchItem);
+            return;
+          }
           this.search.emit((this.searchTextInput?.nativeElement as HTMLInputElement).value);
+
         }
-      }, 100);
+      }, 0);
     }
   }
 

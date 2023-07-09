@@ -28,7 +28,7 @@
                 </div>
                 <div class="song-album song-data" *ngIf="currentSong.album">
                     <mat-icon>collections</mat-icon>
-                    <span class="album" (click)="settings.lock||setSearchBar(currentSong.album)">
+                    <span class="album" (click)="settings.lock || setSearchBar(currentSong.album)">
                         {{currentSong.album.trim()}}
                     </span>
                 </div>

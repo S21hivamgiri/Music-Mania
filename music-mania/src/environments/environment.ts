@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiAddress: 'http://localhost:3000/api/',
-  streamAddress: 'http://localhost:3000/stream/',
+  apiAddress: 'http://192.168.1.6:3000/api/',
+  streamAddress: 'http://192.168.1.6:3000/stream/',
 };
 
 /*
