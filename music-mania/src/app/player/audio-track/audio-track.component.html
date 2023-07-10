@@ -1,4 +1,5 @@
-<mat-sidenav-container class="container" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')" hasBackdrop="false">
+<mat-sidenav-container class="container" [class.mobile-view]="breakpointObserver.isMatched('(max-width: 100vh)')"
+    hasBackdrop="false">
     <mat-sidenav #sidenav class="playlist-sidenav" mode="side">
         <app-playlist #playlist [searchItem]="searchItem" [matOpened]="sidenav.opened" (playAudio)="setAndPlayAudio()"
             (closeSideBar)="sidenav.close();">
@@ -57,17 +58,17 @@
                                 <mat-icon>queue_music</mat-icon>
                             </button>
                         </div>
-                        <div class="lock" [title]="settings.lock?'Unlock (U)':'Lock (L)'">
+                        <div class="lock" [title]="settings.lock ? 'Unlock (U)' : 'Lock (L)'">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong.textColor"
                                 (click)="setLock()">
-                                <mat-icon>{{settings.lock?'lock':'lock_open'}}</mat-icon>
+                                <mat-icon>{{settings.lock ? 'lock' : 'lock_open'}}</mat-icon>
                             </button>
                         </div>
                         <div class="full-screen" *ngIf="!settings.lock"
-                            [title]="settings.fullScreen?'Exit Full Screen (F/F11/ ESC)':'Full Screen (F/F11)'">
+                            [title]="settings.fullScreen ? 'Exit Full Screen (F/F11/ ESC)' : 'Full Screen (F/F11)'">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong.textColor"
                                 (click)="setFullScreen()">
-                                <mat-icon>{{settings.fullScreen?'fullscreen_exit':'fullscreen'}}</mat-icon>
+                                <mat-icon>{{settings.fullScreen ? 'fullscreen_exit' : 'fullscreen'}}</mat-icon>
                             </button>
                         </div>
                     </div>
@@ -101,8 +102,8 @@
                         </div>
                         <div class="controls-wrapper" *ngIf="!settings.lock">
                             <div class="rewind-button" title="Rewind 10s (Left Arrow ←)">
-                                <button mat-icon-button class="rewind player-icon"
-                                    [style.color]="currentSong.textColor" (click)="rewind()">
+                                <button mat-icon-button class="rewind player-icon" [style.color]="currentSong.textColor"
+                                    (click)="rewind()">
                                     <mat-icon>replay_10</mat-icon>
                                 </button>
                             </div>
@@ -116,8 +117,7 @@
                             <div class="skip-previous-button"
                                 [title]="!settings.currentDuration || settings.currentDuration>10?'Previous (P)':'Restart(Q)'">
                                 <button [disabled]="settings.loop" mat-icon-button class="player-icon"
-                                    [style.color]="currentSong.textColor"
-                                    (click)="prevAudio(settings.currentDuration)">
+                                    [style.color]="currentSong.textColor" (click)="prevAudio(settings.currentDuration)">
                                     <mat-icon>
                                         {{ !settings.currentDuration ||
                                         settings.currentDuration>10 ? 'skip_previous' : 'restart_alt' }}

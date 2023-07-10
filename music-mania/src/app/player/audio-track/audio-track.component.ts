@@ -26,7 +26,7 @@ import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('playlist') playlist?: PlaylistComponent;
-  
+
   private readonly destroy = new Subject<void>();
   tracks: Track[] = [];
   interval?: ReturnType<typeof setTimeout>;
@@ -131,9 +131,9 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
     document.addEventListener('MSFullscreenChange', () => { this.onFullScreen(this) });
   }
 
-  onSideNavToggle(){
+  onSideNavToggle() {
     this.sidenav?.toggle();
-    if (this.sidenav?.close){
+    if (this.sidenav?.close) {
       this.settings.isSearch = false;
     }
   }
@@ -159,7 +159,10 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   setAudioPlayer() {
     this.trackStore.currentSong.next(this.settings.currentPlaylist[this.settings.currentTrackIndex]);
-    this.titleService.setTitle('MusicMania | ' + this.currentSong.title);
+    this.titleService.setTitle(this.currentSong.title + ' | MusicMania');
+    if (this.currentSong._id) {
+      this.document.getElementById('favicon').setAttribute('href', `${environment.streamAddress}images/thumbnail/${this.currentSong._id}.png`);
+    }
     let audioSource = `${environment.streamAddress}songs/${this.currentSong._id}`;
     let myAudio: HTMLMediaElement | null = this.getPlayer();
     myAudio.src = audioSource;
@@ -314,6 +317,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   ngOnDestroy() {
     this.destroy.next();
     this.destroy.complete();
+    this.document.getElementById('favicon').setAttribute('href', 'assets/music-mania-logo-favicon.png');
+
     if (this.interval) clearInterval(this.interval!);
     let sliderClass = document.getElementsByTagName('style')[0];
     if ((sliderClass.classList.contains('audio-tag'))) {
