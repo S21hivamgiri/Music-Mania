@@ -1,5 +1,8 @@
+@import "/src/styles.scss";
+
 .track-list-data {
     align-items: center;
+    border: 3px solid black;
     background: rgba(255, 255, 255, 0.3);
     cursor: pointer;
     display: flex;
@@ -13,6 +16,9 @@
         gap: 4px;
         font-weight: 600;
         padding: 0 10px;
+        mat-icon {
+            text-shadow: $music-mania-text-shadow;
+        }
     }
 
     .track-text {
@@ -28,16 +34,20 @@
         margin: 0 10px;
     }
 
+    .button-panel {
+        display: flex;
+
+        mat-icon {
+            text-shadow: $music-mania-text-shadow;
+        }
+    }
+
     .marquee {
         .track-title {
             font-size: 12px;
             font-weight: bold;
         }
-
-        .track-album {
-            font-size: 11px;
-        }
-
+        .track-album,
         .track-artist {
             font-size: 11px;
         }

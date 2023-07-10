@@ -25,24 +25,29 @@
             {{ getInitials() }}
         </button>
         <mat-menu #contextMenu="matMenu">
-            <button mat-menu-item (click)="openLoginDialog()" *ngIf="!(authService.isLoggedIn() |async)">
-                <mat-icon [style.color]="currentSong.textColor">login</mat-icon>
-                <span [style.color]="currentSong.textColor">Log In</span>
-            </button>
-            <button mat-menu-item (click)="authService.logOut();user=undefined"
-                *ngIf="(authService.isLoggedIn() |async)">
-                <mat-icon [style.color]="currentSong.textColor">logout</mat-icon>
-                <span [style.color]="currentSong.textColor">Log Out</span>
-            </button>
-            <button mat-menu-item (click)="openAddNewSongDialog()"
-                *ngIf="(authService.getCurentRole()|async) ==='Admin' ">
-                <mat-icon [style.color]="currentSong.textColor">audiotrack</mat-icon>
-                <span [style.color]="currentSong.textColor">Add New Song</span>
-            </button>
-            <button mat-menu-item (click)="openSignUpDialog()" *ngIf="!(authService.isLoggedIn() |async)">
-                <mat-icon [style.color]="currentSong.textColor">person_add_alt_1</mat-icon>
-                <span [style.color]="currentSong.textColor">Sign Up!</span>
-            </button>
+            <ng-container *ngIf="!(authService.isLoggedIn() |async)">
+                <button mat-menu-item (click)="openLoginDialog()">
+                    <mat-icon [style.color]="currentSong.textColor">login</mat-icon>
+                    <span [style.color]="currentSong.textColor">Log In</span>
+                </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="openSignUpDialog()">
+                    <mat-icon [style.color]="currentSong.textColor">person_add_alt_1</mat-icon>
+                    <span [style.color]="currentSong.textColor">Sign Up!</span>
+                </button>
+            </ng-container>
+            <ng-container *ngIf="(authService.isLoggedIn() |async)">
+                <button mat-menu-item (click)="authService.logOut();user=undefined">
+                    <mat-icon [style.color]="currentSong.textColor">logout</mat-icon>
+                    <span [style.color]="currentSong.textColor">Log Out</span>
+                </button><mat-divider></mat-divider>
+                <button mat-menu-item (click)="openAddNewSongDialog()"
+                    *ngIf="(authService.getCurentRole()|async) ==='Admin'">
+                    <mat-icon [style.color]="currentSong.textColor">audiotrack</mat-icon>
+                    <span [style.color]="currentSong.textColor">Add New Song</span>
+                </button>
+                <mat-divider></mat-divider>
+            </ng-container>
         </mat-menu>
     </div>
 </ng-container>

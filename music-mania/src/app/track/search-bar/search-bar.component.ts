@@ -23,14 +23,13 @@ export class SearchBarComponent implements OnChanges, OnDestroy {
     if (changes['searchStarted'] || changes['searchItem']) {
       this.timeOut = setTimeout(() => {
         if (this.searchTextInput) {
+          this.searchTextInput?.nativeElement.focus();
           if (changes['searchItem']) {
-            this.searchTextInput?.nativeElement.focus();
             (this.searchTextInput?.nativeElement as HTMLInputElement).value = this.searchItem
             this.search.emit(this.searchItem);
             return;
           }
           this.search.emit((this.searchTextInput?.nativeElement as HTMLInputElement).value);
-
         }
       }, 0);
     }

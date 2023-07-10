@@ -1,15 +1,16 @@
 .search-bar {
     animation: 0.5s slide-left;
-    padding: 0 0 10px 10px;
+    padding: 0 10px 10px;
     z-index: 2000;
-    width: 100%;
 
     .search-input-wrapper {
         animation: 0.5s slide-left;
         padding: 20px 0;
         width: 100%;
+    }
 
-        ::ng-deep .mdc-text-field {
+    ::ng-deep {
+        .mdc-text-field {
             background-color: transparent !important;
 
             .mdc-icon-button {
@@ -24,8 +25,12 @@
             }
         }
 
-        ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+        .mat-mdc-form-field-subscript-wrapper {
             display: none !important;
+        }
+
+        .mdc-evolution-chip-set__chips {
+            justify-content: center;
         }
     }
 }

@@ -14,8 +14,7 @@ import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
   templateUrl: './playlist.component.html',
   styleUrls: ['./playlist.component.scss']
 })
-export class 
-PlaylistComponent implements OnInit, OnDestroy {
+export class PlaylistComponent implements OnInit, OnDestroy {
   @Output() playAudio = new EventEmitter();
   @Output() closeSideBar = new EventEmitter();
   @Input() searchItem = '';
@@ -71,9 +70,7 @@ PlaylistComponent implements OnInit, OnDestroy {
     if (!this.isCurrentPlaylist()) {
       return this.settings.currentTrackIndex;
     } else {
-      let currentTrackId = this.currentSong._id
-      let data = this.settings.currentPlaylist.findIndex((data) => { return data._id === currentTrackId })
-      return data;
+      return this.settings.currentPlaylist.findIndex((data) => { return data._id === this.currentSong._id });
     }
   }
 

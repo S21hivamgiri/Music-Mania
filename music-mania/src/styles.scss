@@ -3,6 +3,10 @@
 $music-mania-pink:#F75660;
 $music-mania-black:#000000;
 $music-mania-white:#ffffff;
+$music-mania-text-shadow: 0 0 2px $music-mania-white,
+0 0 2px $music-mania-white,
+0 0 4px $music-mania-white,
+0 0 4px $music-mania-white;
 
 html,
 body {
@@ -15,6 +19,10 @@ body {
 }
 
 ::ng-deep {
+    .mat-mdc-menu-content {
+        padding: 8px 12px !important;
+    }
+
     .mat-icon {
         transform: scale(1.6);
     }
@@ -23,7 +31,9 @@ body {
         background: transparent;
     }
 
-    .mobile-view {
+    .mobile-view,
+    .mat-mdc-menu-content,
+    .mat-mdc-form-field-icon-suffix {
         .mat-icon {
             transform: scale(1);
         }
