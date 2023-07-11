@@ -41,6 +41,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { AddNewComponent } from './track/add-new/add-new.component';
 import { PlaylistToolComponent } from './playlist/playlist-tool/playlist-tool.component';
 import { SearchBarComponent } from './playlist/search-bar/search-bar.component';
+import { ListTileComponent } from './playlist/list-tile/list-tile.component';
 
 
 @NgModule({
@@ -65,6 +66,7 @@ import { SearchBarComponent } from './playlist/search-bar/search-bar.component';
     AddNewComponent,
     PlaylistToolComponent,
     SearchBarComponent,
+    ListTileComponent,
   ],
   imports: [
     HttpClientModule,

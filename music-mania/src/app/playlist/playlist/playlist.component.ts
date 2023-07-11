@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { sortSongsByProperty } from '../../utility/sort-shuffle';
-import { environment } from '../../../environments/environment';
 import { Track } from '../../model/track.model';
 import { TrackStore } from '../../services/track-store';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -102,10 +101,6 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     this.playAudio.emit();
   }
 
-  getThumbNailSrc(id: string) {
-    return this.settings.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
-  }
-
   sortSongByProperty() {
     if (!this.isCurrentPlaylist()) {
       this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.settings.sort);
@@ -114,7 +109,6 @@ export class PlaylistComponent implements OnInit, OnDestroy {
       this.settings.currentPlaylist = sortSongsByProperty(this.settings.currentPlaylist, this.settings.sort);
     }
   }
-
 
   drop(event: CdkDragDrop<Track[]>) {
     if (event.previousIndex === this.settings.currentTrackIndex) {

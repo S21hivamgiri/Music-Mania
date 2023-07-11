@@ -1,0 +1,32 @@
+<mat-list-item role="listitem" class="playlist-track">
+    <div class="utiity-box">
+        <div class="utiity-box-child" [class.current-song]="currentSong._id===track._id">
+            <div class="drag-handle mr-3" [style.color]="currentSong.textColor" cdkDragHandle
+                *ngIf="isCurrentPlaylist">
+                <div class='d-flex h-100 drag-class'>
+                    <mat-icon>
+                        drag_indicator
+                    </mat-icon>
+                </div>
+            </div>
+            <div class="track-list-data" [title]="track.title+' ( ' +track.album + ' ) '">
+                <img [src]="getThumbNailSrc(track._id)" onerror="this.src='/assets/music-thumbnail.png'"
+                    class="thumbnail" [title]="track.album" loading="lazy">
+                <div class="track-text" class="marquee">
+                    <span class="track-title" [style.color]="currentSong.textColor">
+                        {{ track.title }}
+                    </span>
+                    <br>
+                    <span class="track-artist" [style.color]="currentSong.textColor">
+                        {{ track.artist }}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <ng-container *ngIf="currentSong._id===track._id">
+            <app-playing-animation [audioStatus]="settings.audioStatus" [color]="currentSong.textColor">
+            </app-playing-animation>
+        </ng-container>
+    </div>
+</mat-list-item>
+<mat-divider></mat-divider>

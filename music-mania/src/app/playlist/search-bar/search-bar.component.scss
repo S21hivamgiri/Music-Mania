@@ -34,3 +34,14 @@
         }
     }
 }
+
+@keyframes slide-left {
+    from {
+        margin-left: 10%;
+        width: 0vw;
+    }
+    to {
+        margin-left: 0%;
+        width: 23vw;
+    }
+}

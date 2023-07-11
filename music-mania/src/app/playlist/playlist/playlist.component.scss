@@ -17,76 +17,13 @@
 
 .track-list {
     padding: 0 0 20px;
-    
-    .playlist-track {
-        .utiity-box {
-            align-items: center;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-
-            .utiity-box-child {
-                align-items: center;
-                cursor: pointer;
-                display: flex;
-                justify-content: flex-start;
-                width: 100%;
-
-                &.current-song {
-                    width: calc(100% - 60px);
-                }
-            }
-
-            .drag-handle {
-                cursor: move;
-
-                .drag-class {
-                    margin: 0 2px;
-                }
-            }
-
-            .track-list-data {
-                display: flex;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                user-select: none;
-                white-space: nowrap;
-
-                .thumbnail {
-                    height: 50px;
-                    margin: 0 10px 0 6px;
-                    width: 50px;
-                }
-                .track-title {
-                    font-size: 16px;
-                    font-weight: 600;
-                    user-select: none;
-                }
-                .track-artist {
-                    font-size: 14px;
-                    font-weight: 500;
-                }
-            }
+    ::ng-deep {
+        .mdc-list {
+            padding: 0 !important;
         }
-    }
-}
 
-::ng-deep {
-    .mdc-list {
-        padding: 0 !important;
-    }
-    .mdc-list-item {
-        padding: 0 !important;
-    }
-}
-
-@keyframes slide-left {
-    from {
-        margin-left: 10%;
-        width: 0vw;
-    }
-    to {
-        margin-left: 0%;
-        width: 23vw;
+        .mdc-list-item {
+            padding: 0 !important;
+        }
     }
 }
