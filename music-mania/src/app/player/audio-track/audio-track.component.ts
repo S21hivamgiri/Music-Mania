@@ -27,6 +27,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('playlist') playlist?: PlaylistComponent;
 
+
   private readonly destroy = new Subject<void>();
   tracks: Track[] = [];
   interval?: ReturnType<typeof setTimeout>;
