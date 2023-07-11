@@ -1,9 +1,11 @@
 <ng-container>
     <div class="fixed-toolbar">
         <app-playlist-tool [settings]="settings" [textColor]="currentSong.textColor" (sortSong)="sortSong($event)"
-            (closePlayList)="closePlayList()" (searchSong)="setSearch()"></app-playlist-tool>
+            (closePlayList)="closePlayList()" (searchSong)="setSearch()">
+        </app-playlist-tool>
         <app-search-bar [searchItem]="searchItem" [searchStarted]="settings.isSearch" [settings]="settings" [currentSong]="currentSong" [matOpened]="matOpened"
-            (search)="onSearch($event)" (onKeyDown)="onKeyDown()"></app-search-bar>
+            (search)="onSearch($event)" (onKeyDown)="onKeyDown()">
+        </app-search-bar>
         <mat-divider></mat-divider>
         <div class="playlist-title" [style.color]="currentSong.textColor">
             <mat-icon>playlist_add_check</mat-icon>

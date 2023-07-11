@@ -1,16 +1,16 @@
 export function fullScreenContoller(e: any) {
     if (e.settings.fullScreen) {
-        if (e.elem.requestFullscreen) {
-            e.elem.requestFullscreen();
-        } else if (e.elem.mozRequestFullScreen) {
+        if (e.document.documentElement.requestFullscreen) {
+            e.document.documentElement.requestFullscreen();
+        } else if (e.document.documentElement.mozRequestFullScreen) {
             /* Firefox */
-            e.elem.mozRequestFullScreen();
-        } else if (e.elem.webkitRequestFullscreen) {
+            e.document.documentElement.mozRequestFullScreen();
+        } else if (e.document.documentElement.webkitRequestFullscreen) {
             /* Chrome, Safari and Opera */
-            e.elem.webkitRequestFullscreen();
-        } else if (e.elem.msRequestFullscreen) {
+            e.document.documentElement.webkitRequestFullscreen();
+        } else if (e.document.documentElement.msRequestFullscreen) {
             /* IE/Edge */
-            e.elem.msRequestFullscreen();
+            e.document.documentElement.msRequestFullscreen();
         }
     }
     else {

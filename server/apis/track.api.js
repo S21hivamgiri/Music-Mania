@@ -69,7 +69,7 @@ router.route('/add').post(upload.single("music"), (req, res) => {
                     return;
                 }
                 sharp(initialFolder + fileName)
-                    .resize(50)
+                    .resize(48)
                     .toFormat("png")
                     .toFile(finalFolder + fileName.split('.')[0] + '.png')
                     .catch(err => { console.log(err) });
@@ -97,7 +97,7 @@ router.route('/replace-picture/:id').post(uploadImage.single("picture"), (req, r
         }
         else {
             sharp(initialFolder + fileName)
-                .resize(50)
+                .resize(48)
                 .toFormat("png")
                 .toFile(finalFolder + fileName.split('.')[0] + '.png')
                 .catch(err => { console.log(err) });
@@ -118,6 +118,27 @@ router.route('/replace-picture/:id').post(uploadImage.single("picture"), (req, r
         }
 
     });
+});
+
+
+router.route('/replace-all-thumbnail-image').post((req, res) => {
+    const initialFolder = __dirname + '/../data/pictures/';
+    const finalFolder = __dirname + '/../data/thumbnail/';
+
+    fs.readdir(initialFolder, function (err, filenames) {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        filenames.forEach(function (filename) {
+        sharp(initialFolder + filename)
+            .resize(48)
+            .toFormat("png")
+            .toFile(finalFolder + filename.split('.')[0] + '.png')
+            .catch(err => { console.log(err) });
+        })
+    });
+    res.send('done');
 });
 
 router.route('/').get((req, res) => {

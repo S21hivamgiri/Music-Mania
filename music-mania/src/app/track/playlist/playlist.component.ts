@@ -15,10 +15,10 @@ import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
   styleUrls: ['./playlist.component.scss']
 })
 export class PlaylistComponent implements OnInit, OnDestroy {
-  @Output() playAudio = new EventEmitter();
-  @Output() closeSideBar = new EventEmitter();
   @Input() searchItem = '';
   @Input() matOpened = false;
+  @Output() playAudio = new EventEmitter();
+  @Output() closeSideBar = new EventEmitter();
 
   currentSong = DEFAULT_TRACK;
   settings = DEFAULT_SETTING;
@@ -41,7 +41,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
     });
 
     this.textValueSubject
-      .pipe(debounceTime(300))
+      .pipe(debounceTime(300), takeUntil(this.destroy))
       .subscribe(() => {
         this.filterSong();
       });
@@ -148,6 +148,5 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.destroy.next();
     this.destroy.complete();
-    this.textValueSubject.unsubscribe();
   }
 }

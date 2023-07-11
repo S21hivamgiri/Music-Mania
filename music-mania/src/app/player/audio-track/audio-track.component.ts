@@ -26,7 +26,7 @@ import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestroy {
   @ViewChild('sidenav') sidenav?: MatSidenav;
   @ViewChild('playlist') playlist?: PlaylistComponent;
-  
+
   private readonly destroy = new Subject<void>();
   tracks: Track[] = [];
   interval?: ReturnType<typeof setTimeout>;
@@ -125,15 +125,25 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       this.trackStore.settings.next(this.settings);
     }, 500);
 
+    let myAudio: HTMLMediaElement | null = this.getPlayer();
+    myAudio.onplay = () => {
+      myAudio?.play();
+      this.settings.audioStatus = true;
+    }
+    myAudio.onpause = () => {
+      myAudio?.pause();
+      this.settings.audioStatus = false;
+    }
+
     document.addEventListener('fullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('webkitfullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('mozfullscreenchange', () => { this.onFullScreen(this) });
     document.addEventListener('MSFullscreenChange', () => { this.onFullScreen(this) });
   }
 
-  onSideNavToggle(){
+  onSideNavToggle() {
     this.sidenav?.toggle();
-    if (this.sidenav?.close){
+    if (this.sidenav?.close) {
       this.settings.isSearch = false;
     }
   }
@@ -159,13 +169,20 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
 
   setAudioPlayer() {
     this.trackStore.currentSong.next(this.settings.currentPlaylist[this.settings.currentTrackIndex]);
-    this.titleService.setTitle('MusicMania | ' + this.currentSong.title);
-    let audioSource = `${environment.streamAddress}songs/${this.currentSong._id}`;
-    let myAudio: HTMLMediaElement | null = this.getPlayer();
-    myAudio.src = audioSource;
-    myAudio.onended = () => { this.nextAudio(); }
+    this.titleService.setTitle(this.currentSong.title + ' | MusicMania');
+    if (this.currentSong._id) {
+      this.setFavicon(this.currentSong._id);
+      let myAudio: HTMLMediaElement | null = this.getPlayer();
+      let audioSource = `${environment.streamAddress}songs/${this.currentSong._id}`;
+      myAudio.src = audioSource;
+    }
     this.getPicture();
     this.settextColor();
+  }
+
+  setFavicon(id: string) {
+    this.document.getElementById('favicon').setAttribute('href', `${environment.streamAddress}images/thumbnail/${id}.png`);
+    this.document.getElementById('shortcut-favicon').setAttribute('href', `${environment.streamAddress}images/thumbnail/${id}.png`);
   }
 
   setSearchBar(searchText?: string) {
@@ -314,6 +331,8 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   ngOnDestroy() {
     this.destroy.next();
     this.destroy.complete();
+    this.document.getElementById('favicon').setAttribute('href', 'assets/music-mania-logo-favicon.png');
+    this.document.getElementById('shortcut-favicon').setAttribute('href', 'assets/music-mania-logo-favicon.png');
     if (this.interval) clearInterval(this.interval!);
     let sliderClass = document.getElementsByTagName('style')[0];
     if ((sliderClass.classList.contains('audio-tag'))) {
