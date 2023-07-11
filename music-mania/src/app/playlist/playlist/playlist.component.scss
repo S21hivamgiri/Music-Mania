@@ -16,18 +16,20 @@
 }
 
 .track-list {
+    padding: 0 0 20px;
+    
     .playlist-track {
         .utiity-box {
             align-items: center;
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
-            cursor: pointer;
 
             .utiity-box-child {
                 align-items: center;
+                cursor: pointer;
                 display: flex;
                 justify-content: flex-start;
-                cursor: pointer;
                 width: 100%;
 
                 &.current-song {
@@ -37,28 +39,32 @@
 
             .drag-handle {
                 cursor: move;
+
+                .drag-class {
+                    margin: 0 2px;
+                }
             }
 
             .track-list-data {
                 display: flex;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                user-select: none;
                 white-space: nowrap;
 
                 .thumbnail {
                     height: 50px;
-                    margin-right: 10px;
+                    margin: 0 10px 0 6px;
                     width: 50px;
                 }
-
                 .track-title {
-                    font-weight: 600;
                     font-size: 16px;
+                    font-weight: 600;
+                    user-select: none;
                 }
-
                 .track-artist {
-                    font-weight: 500;
                     font-size: 14px;
+                    font-weight: 500;
                 }
             }
         }
@@ -69,7 +75,6 @@
     .mdc-list {
         padding: 0 !important;
     }
-
     .mdc-list-item {
         padding: 0 !important;
     }
@@ -80,7 +85,6 @@
         margin-left: 10%;
         width: 0vw;
     }
-
     to {
         margin-left: 0%;
         width: 23vw;

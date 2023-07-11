@@ -18,7 +18,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatInputModule } from '@angular/material/input';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
-import { PlaylistComponent } from './track/playlist/playlist.component';
+import { PlaylistComponent } from './playlist/playlist/playlist.component';
 import { EquilizerComponent } from './player/equilizer/equilizer.component';
 import { NextSongPreviewComponent } from './player/next-song-preview/next-song-preview.component';
 import { NavbarComponent } from './layout/navbar/navbar.component';
@@ -39,8 +39,8 @@ import { ForgetPasswordComponent } from './authentication/forget-password/forget
 import { MatStepperModule } from '@angular/material/stepper';
 import { LayoutModule } from '@angular/cdk/layout';
 import { AddNewComponent } from './track/add-new/add-new.component';
-import { PlaylistToolComponent } from './track/playlist-tool/playlist-tool.component';
-import { SearchBarComponent } from './track/search-bar/search-bar.component';
+import { PlaylistToolComponent } from './playlist/playlist-tool/playlist-tool.component';
+import { SearchBarComponent } from './playlist/search-bar/search-bar.component';
 
 
 @NgModule({

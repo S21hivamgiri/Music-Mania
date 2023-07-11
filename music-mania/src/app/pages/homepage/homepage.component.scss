@@ -2,24 +2,6 @@
 
 .homepage-container {
     display: flex;
-    flex-direction: column;
-    scroll-snap-type: y mandatory;
-
-    .container {
-        align-items: center;
-        background: #373737;
-        background-size: cover;
-        display: flex;
-        flex-direction: column;
-        height: 100vh;
-        justify-content: center;
-        margin-left: auto;
-        margin-right: auto;
-
-        &.second {
-            background: #000000;
-.homepage-container {
-    display: flex;
     scroll-snap-type: y mandatory;
     flex-direction: column;
 
@@ -44,6 +26,7 @@
                     }
                 }
             }
+
             .intro-text {
                 .intro-lead-in {
                     .closing {
@@ -54,213 +37,226 @@
 
             .player {
                 color: #000000;
-            .player {
-                color: #000000;
 
-                .cta-button {
-                    .mat-icon {
-                        color: #000000;
+                .player {
+                    color: #000000;
+
+                    .cta-button {
+                        .mat-icon {
+                            color: #000000;
+                        }
                     }
                 }
             }
-        }
-                .cta-button {
-                    .mat-icon {
-                        color: #000000;
-                    }
-                }
-            }
-        }
-
-        &.third {
-            .intro-text {
-                .intro-lead-in {
-                    .closing {
-                        margin-left: 225px;
-                    }
-                }
-            }
-        &.third {
-            .intro-text {
-                .intro-lead-in {
-                    .closing {
-                        margin-left: 225px;
-                    }
-                }
-            }
-
-            .player {
-                .cta-button {
-                    .mat-icon {
-                        color: #373737;
-                    }
-            .player {
-                .cta-button {
-                    .mat-icon {
-                        color: #373737;
-                    }
-
-                    color: #373737;
-                }
-            }
-        }
-                    color: #373737;
-                }
-            }
-        }
-
-        .intro-text {
-            .intro-lead-in {
-                color: white;
-                font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                font-size: 40px;
-                font-weight: 700;
-                line-height: 40px;
-                margin-bottom: 25px;
-                user-select: none;
-        .intro-text {
-            .intro-lead-in {
-                color: white;
-                font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
-                font-size: 40px;
-                font-weight: 700;
-                line-height: 40px;
-                margin-bottom: 25px;
-                user-select: none;
-
-                .magic {
-                    animation: magical infinite 6s;
-                    margin-top: -32px;
-                    position: absolute;
-                    visibility: hidden;
-                }
-                .magic {
-                    animation: magical infinite 6s;
-                    margin-top: -32px;
-                    position: absolute;
-                    visibility: hidden;
-                }
-
-                .music {
-                    animation: music infinite 6s;
-                    margin-top: 0;
-                    position: absolute;
-                }
-                .music {
-                    animation: music infinite 6s;
-                    margin-top: 0;
-                    position: absolute;
-                }
-
-                .closing {
-                    margin-left: 50px;
-                }
-            }
-        }
-                .closing {
-                    margin-left: 50px;
-                }
-            }
-        }
-
-        .player {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        .player {
-            align-items: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
 
             .cta-button {
-                align-items: center;
-                background: $music-mania-pink;
-                border-radius: 40px 10px;
-                cursor: pointer;
-                display: flex;
-                font-size: 25px;
-                font-weight: 600;
-                justify-content: center;
-                padding: 10px 30px 10px 10px;
-            .cta-button {
-                align-items: center;
-                background: $music-mania-pink;
-                border-radius: 40px 10px;
-                cursor: pointer;
-                display: flex;
-                font-size: 25px;
-                font-weight: 600;
-                justify-content: center;
-                padding: 10px 30px 10px 10px;
-
-                &:hover {
-                    transform: scale(1.2);
-                }
-                &:hover {
-                    transform: scale(1.2);
-                }
-
                 .mat-icon {
-                    font-size: 40px;
-                    font-size: 40px;
-                    height: 40px;
-                    padding-right: 20px;
-                    width: 40px;
-                }
-            }
-                .mat-icon {
-                    font-size: 40px;
-                    font-size: 40px;
-                    height: 40px;
-                    padding-right: 20px;
-                    width: 40px;
-                }
-            }
-
-            .intro-desc {
-                color: $music-mania-white;
-                font-size: 20px;
-                padding-top: 10px;
-            }
-            .intro-desc {
-                color: $music-mania-white;
-                font-size: 20px;
-                padding-top: 10px;
-            }
-
-            .material-icons {
-                animation: scale-play 5s ease-in-out infinite alternate-reverse;
-                color: $music-mania-pink;
-                cursor: pointer;
-                font-size: 200px;
-                font-size: 200px;
-                height: 200px;
-                user-select: none;
-                width: 200px;
-            .material-icons {
-                animation: scale-play 5s ease-in-out infinite alternate-reverse;
-                color: $music-mania-pink;
-                cursor: pointer;
-                font-size: 200px;
-                font-size: 200px;
-                height: 200px;
-                user-select: none;
-                width: 200px;
-
-                &:hover {
-                    animation-play-state: paused;
+                    color: #000000;
                 }
             }
         }
     }
-}
-                &:hover {
-                    animation-play-state: paused;
+
+    &.third {
+        .intro-text {
+            .intro-lead-in {
+                .closing {
+                    margin-left: 225px;
                 }
             }
         }
+
+        &.third {
+            .intro-text {
+                .intro-lead-in {
+                    .closing {
+                        margin-left: 225px;
+                    }
+                }
+            }
+
+            .player {
+                .cta-button {
+                    .mat-icon {
+                        color: #373737;
+                    }
+
+                    .player {
+                        .cta-button {
+                            .mat-icon {
+                                color: #373737;
+                            }
+
+                            color: #373737;
+                        }
+                    }
+                }
+
+                color: #373737;
+            }
+        }
+    }
+
+    .intro-text {
+        .intro-lead-in {
+            color: white;
+            font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 40px;
+            font-weight: 700;
+            line-height: 40px;
+            margin-bottom: 25px;
+            user-select: none;
+
+            .intro-text {
+                .intro-lead-in {
+                    color: white;
+                    font-family: "Droid Serif", "Helvetica Neue", Helvetica, Arial, sans-serif;
+                    font-size: 40px;
+                    font-weight: 700;
+                    line-height: 40px;
+                    margin-bottom: 25px;
+                    user-select: none;
+
+                    .magic {
+                        animation: magical infinite 6s;
+                        margin-top: -32px;
+                        position: absolute;
+                        visibility: hidden;
+                    }
+
+                    .magic {
+                        animation: magical infinite 6s;
+                        margin-top: -32px;
+                        position: absolute;
+                        visibility: hidden;
+                    }
+
+                    .music {
+                        animation: music infinite 6s;
+                        margin-top: 0;
+                        position: absolute;
+                    }
+
+                    .music {
+                        animation: music infinite 6s;
+                        margin-top: 0;
+                        position: absolute;
+                    }
+
+                    .closing {
+                        margin-left: 50px;
+                    }
+                }
+            }
+
+            .closing {
+                margin-left: 50px;
+            }
+        }
+    }
+
+    .player {
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .player {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .cta-button {
+                align-items: center;
+                background: $music-mania-pink;
+                border-radius: 40px 10px;
+                cursor: pointer;
+                display: flex;
+                font-size: 25px;
+                font-weight: 600;
+                justify-content: center;
+                padding: 10px 30px 10px 10px;
+
+                .cta-button {
+                    align-items: center;
+                    background: $music-mania-pink;
+                    border-radius: 40px 10px;
+                    cursor: pointer;
+                    display: flex;
+                    font-size: 25px;
+                    font-weight: 600;
+                    justify-content: center;
+                    padding: 10px 30px 10px 10px;
+
+                    &:hover {
+                        transform: scale(1.2);
+                    }
+
+                    &:hover {
+                        transform: scale(1.2);
+                    }
+
+                    .mat-icon {
+                        font-size: 40px;
+                        font-size: 40px;
+                        height: 40px;
+                        padding-right: 20px;
+                        width: 40px;
+                    }
+                }
+
+                .mat-icon {
+                    font-size: 40px;
+                    font-size: 40px;
+                    height: 40px;
+                    padding-right: 20px;
+                    width: 40px;
+                }
+            }
+
+            .intro-desc {
+                color: $music-mania-white;
+                font-size: 20px;
+                padding-top: 10px;
+            }
+
+            .intro-desc {
+                color: $music-mania-white;
+                font-size: 20px;
+                padding-top: 10px;
+            }
+
+            .material-icons {
+                animation: scale-play 5s ease-in-out infinite alternate-reverse;
+                color: $music-mania-pink;
+                cursor: pointer;
+                font-size: 200px;
+                font-size: 200px;
+                height: 200px;
+                user-select: none;
+                width: 200px;
+
+                .material-icons {
+                    animation: scale-play 5s ease-in-out infinite alternate-reverse;
+                    color: $music-mania-pink;
+                    cursor: pointer;
+                    font-size: 200px;
+                    font-size: 200px;
+                    height: 200px;
+                    user-select: none;
+                    width: 200px;
+
+                    &:hover {
+                        animation-play-state: paused;
+                    }
+                }
+            }
+        }
+    }
+
+    &:hover {
+        animation-play-state: paused;
     }
 }
 

@@ -3,8 +3,8 @@
         <app-playlist-tool [settings]="settings" [textColor]="currentSong.textColor" (sortSong)="sortSong($event)"
             (closePlayList)="closePlayList()" (searchSong)="setSearch()">
         </app-playlist-tool>
-        <app-search-bar [searchItem]="searchItem" [searchStarted]="settings.isSearch" [settings]="settings" [currentSong]="currentSong" [matOpened]="matOpened"
-            (search)="onSearch($event)" (onKeyDown)="onKeyDown()">
+        <app-search-bar [searchItem]="searchItem" [searchStarted]="settings.isSearch" [settings]="settings"
+            [currentSong]="currentSong" [matOpened]="matOpened" (search)="onSearch($event)" (onKeyDown)="onKeyDown()">
         </app-search-bar>
         <mat-divider></mat-divider>
         <div class="playlist-title" [style.color]="currentSong.textColor">
@@ -42,11 +42,11 @@
                                     class="thumbnail" [title]="track.album" loading="lazy">
                                 <div class="track-text" class="marquee">
                                     <span class="track-title" [style.color]="currentSong.textColor">
-                                        {{track.title}}
+                                        {{ track.title }}
                                     </span>
                                     <br>
                                     <span class="track-artist" [style.color]="currentSong.textColor">
-                                        {{track.artist}}
+                                        {{ track.artist }}
                                     </span>
                                 </div>
                             </div>

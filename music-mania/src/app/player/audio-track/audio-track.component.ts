@@ -10,7 +10,7 @@ import { setTextColorOnHeader } from '../../utility/set-text-colour';
 import { getCurrentTimeInFormat, getDurationInFormat, getFormattedTime } from '../../utility/time';
 import { shuffleAllSongs, sortSongsByProperty } from '../../utility/sort-shuffle';
 import { Title } from '@angular/platform-browser';
-import { PlaylistComponent } from '../../track/playlist/playlist.component';
+import { PlaylistComponent } from '../../playlist/playlist/playlist.component';
 import { Subject, combineLatest } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { take } from 'rxjs/operators';
