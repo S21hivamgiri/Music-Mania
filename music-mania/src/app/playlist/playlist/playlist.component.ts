@@ -57,7 +57,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   setSearch() {
-    this.settings.isSearch = !this.settings.isSearch;
+    this.settings.isSearching = !this.settings.isSearching;
     this.trackStore.settings.next(this.settings);
   }
 
@@ -131,7 +131,7 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 
   closePlayList() {
     this.closeSideNav();
-    this.settings.isSearch = false;
+    this.settings.isSearching = false;
     this.searchItem = '';
     this.filterSong();
   }

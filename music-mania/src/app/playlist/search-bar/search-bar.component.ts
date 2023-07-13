@@ -12,7 +12,7 @@ export class SearchBarComponent implements OnChanges, OnDestroy {
   @Input() searchItem = '';
   @Input() currentSong = DEFAULT_TRACK;
   @Input() matOpened = false;
-  @Input() searchStarted = false;
+  @Input() isSearching = false;
   @Output() onKeyDown = new EventEmitter<void>();
   @Output() search = new EventEmitter<string>();
 
@@ -20,7 +20,7 @@ export class SearchBarComponent implements OnChanges, OnDestroy {
   readonly hotListItems = HOTLIST_ITEMS;
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['searchStarted'] || changes['searchItem']) {
+    if (changes['isSearching'] || changes['searchItem']) {
       this.timeOut = setTimeout(() => {
         if (this.searchTextInput) {
           this.searchTextInput?.nativeElement.focus();
@@ -31,7 +31,7 @@ export class SearchBarComponent implements OnChanges, OnDestroy {
           }
           this.search.emit((this.searchTextInput?.nativeElement as HTMLInputElement).value);
         }
-      }, 0);
+      }, 100);
     }
   }
 

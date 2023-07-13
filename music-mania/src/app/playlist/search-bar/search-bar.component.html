@@ -1,4 +1,4 @@
-<div class="search-bar" [style.background]="currentSong.backgroundColor" *ngIf="settings.isSearch && matOpened">
+<div class="search-bar" [style.background]="currentSong.backgroundColor" *ngIf="settings.isSearching && matOpened">
     <mat-form-field class="search-input-wrapper">
         <input matInput type="text" #searchInput (input)="searchemit($event);" (keydown)="keyDown($event);"
             autocomplete="off">

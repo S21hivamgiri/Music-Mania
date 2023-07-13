@@ -110,7 +110,7 @@ export class PresentSongComponent implements OnInit, OnDestroy {
 
   closeBar() {
     this.trackStore.settings.next({
-      isSearch: false,
+      isSearching: false,
       lock: false,
       sort: 'title',
       audioStatus: false,

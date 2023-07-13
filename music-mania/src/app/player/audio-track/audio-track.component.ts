@@ -88,7 +88,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
       else if (event.keyCode === C) {
         this.settings.lock || (this.sidenav?.open() &&
           (this.playlist!.searchedPlaylist = this.settings.currentPlaylist) &&
-          (this.settings.isSearch = false) && (this.searchItem = ''));
+          (this.settings.isSearching = false) && (this.searchItem = ''));
       }
     event.preventDefault();
   }
@@ -145,7 +145,7 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   onSideNavToggle() {
     this.sidenav?.toggle();
     if (this.sidenav?.close) {
-      this.settings.isSearch = false;
+      this.settings.isSearching = false;
     }
   }
 
@@ -189,13 +189,13 @@ export class AudioTrackComponent implements OnInit, AfterContentChecked, OnDestr
   setSearchBar(searchText?: string) {
     this.sidenav?.open();
     this.searchItem = searchText || '';
-    this.settings.isSearch = true;
+    this.settings.isSearching = true;
     this.trackStore.settings.next(this.settings);
   }
 
   setLock() {
     this.searchItem = '';
-    this.settings.isSearch = false;
+    this.settings.isSearching = false;
     this.sidenav?.close();
     this.settings.lock = !this.settings.lock;
     this.settings.fullScreen = !this.settings.lock;

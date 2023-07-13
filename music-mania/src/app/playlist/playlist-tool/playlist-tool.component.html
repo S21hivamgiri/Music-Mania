@@ -1,6 +1,6 @@
 <div class="button-panel" [style.color]="textColor">
     <button mat-icon-button title="Search (S)" (click)="searchSong.emit();">
-        <mat-icon>{{settings.isSearch?'search_off':'search'}}</mat-icon>
+        <mat-icon>{{settings.isSearching?'search_off':'search'}}</mat-icon>
     </button> 
     <button mat-icon-button title="Close Playlist(Z)"
         (click)="closePlayList.emit()">

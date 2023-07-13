@@ -3,7 +3,7 @@
         <app-playlist-tool [settings]="settings" [textColor]="currentSong.textColor" (sortSong)="sortSong($event)"
             (closePlayList)="closePlayList()" (searchSong)="setSearch()">
         </app-playlist-tool>
-        <app-search-bar [searchItem]="searchItem" [searchStarted]="settings.isSearch" [settings]="settings"
+        <app-search-bar [searchItem]="searchItem" [isSearching]="settings.isSearching" [settings]="settings"
             [currentSong]="currentSong" [matOpened]="matOpened" (search)="onSearch($event)" (onKeyDown)="onKeyDown()">
         </app-search-bar>
         <mat-divider></mat-divider>

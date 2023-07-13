@@ -1,7 +1,7 @@
 import { Track } from "./track.model";
 
 export interface Settings {
-    isSearch: boolean;
+    isSearching: boolean;
     lock: boolean;
     sort: string;
     audioStatus: boolean;

@@ -21,7 +21,7 @@ export const DEFAULT_TRACK: Track = {
 };
 
 export const DEFAULT_SETTING: Settings = {
-    isSearch: false,
+    isSearching: false,
     lock: false,
     sort: 'title',
     audioStatus: false,
