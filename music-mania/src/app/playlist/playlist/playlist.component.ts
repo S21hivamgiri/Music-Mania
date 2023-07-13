@@ -6,6 +6,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { filterSongs } from '../../utility/filter-song';
 import { debounceTime, take, takeUntil } from 'rxjs/operators';
 import { Subject, combineLatest } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { DEFAULT_SETTING, DEFAULT_TRACK } from 'src/app/common/constants';
 
 @Component({
@@ -137,6 +138,10 @@ export class PlaylistComponent implements OnInit, OnDestroy {
 
   filterSong() {
     filterSongs(this);
+  }
+
+  getThumbNailSrc(id: string) {
+    return this.settings.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';
   }
 
   ngOnDestroy() {

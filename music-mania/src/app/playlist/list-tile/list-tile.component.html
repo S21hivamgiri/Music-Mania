@@ -1,6 +1,6 @@
 <mat-list-item role="listitem" class="playlist-track">
-    <div class="utiity-box">
-        <div class="utiity-box-child" [class.current-song]="currentSong._id===track._id">
+    <div class="utiity-box" [class.current-song]="isCurrenSongSelected">
+        <div class="utiity-box-child">
             <div class="drag-handle mr-3" [style.color]="currentSong.textColor" cdkDragHandle
                 *ngIf="isCurrentPlaylist">
                 <div class='d-flex h-100 drag-class'>

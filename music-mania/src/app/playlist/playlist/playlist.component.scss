@@ -1,3 +1,5 @@
+@import "/src/styles.scss";
+
 .fixed-toolbar {
     .playlist-title {
         align-items: center;
@@ -17,6 +19,7 @@
 
 .track-list {
     padding: 0 0 20px;
+
     ::ng-deep {
         .mdc-list {
             padding: 0 !important;
@@ -24,6 +27,29 @@
 
         .mdc-list-item {
             padding: 0 !important;
+        }
+    }
+}
+
+::ng-deep {
+    .preview-class-text {
+        .preview-panel {
+            margin-left: 30px;
+            display: flex;
+            gap: 10px;
+            text-shadow: $music-mania-text-shadow;
+            img{
+                height:50px;
+            }
+
+            .preview-title {
+                display: flex;
+                flex-direction: column;
+
+                .title {
+                    font-weight: bold;
+                }
+            }
         }
     }
 }

@@ -12,6 +12,10 @@ export class ListTileComponent {
   @Input() currentSong = DEFAULT_TRACK;
   @Input() track = DEFAULT_TRACK;
   @Input() settings = DEFAULT_SETTING;
+
+  get isCurrenSongSelected(){
+    return this.currentSong._id === this.track._id
+  }
   
   getThumbNailSrc(id: string) {
     return this.settings.currentPlaylist.length && id ? `${environment.streamAddress}images/thumbnail/${id}.png` : '/assets/music-thumbnail.png';

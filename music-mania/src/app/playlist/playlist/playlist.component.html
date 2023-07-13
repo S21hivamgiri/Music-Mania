@@ -29,9 +29,13 @@
                 <app-list-tile [isCurrentPlaylist]="isCurrentPlaylist()" [settings]="settings"[currentSong]="currentSong" [track]="track">
                 </app-list-tile>
                 <div *cdkDragPreview class='preview-class-text'>
-                    <span class="preview-panel" [style.display]="'flex'" [style.color]="currentSong.textColor">
-                        <mat-icon>audiotrack</mat-icon>
-                        <h1 [style.fontWeight]="'bold'">{{track.title}}</h1>
+                    <span class="preview-panel" [style.color]="currentSong.textColor">
+                        <div class="preview-title">
+                            <p class="title">{{track.title}}</p>
+                            <p class="album">{{track.album}}</p>
+                        </div>
+                        <img [src]="getThumbNailSrc(track._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
+                            [title]="track.album" loading="lazy">
                     </span>
                 </div>
             </div>
