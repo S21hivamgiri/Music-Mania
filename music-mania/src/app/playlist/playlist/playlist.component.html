@@ -25,17 +25,18 @@
     </div>
     <mat-list role="list">
         <div cdkDropList class="track-list" (cdkDropListDropped)="drop($event)">
-            <div *ngFor="let track of getPlayList();let i=index;" cdkDrag  (click)="setCurrentIndex(i, track._id)">
-                <app-list-tile [isCurrentPlaylist]="isCurrentPlaylist()" [settings]="settings"[currentSong]="currentSong" [track]="track">
+            <div *ngFor="let track of getPlayList();let i=index;" cdkDrag (click)="setCurrentIndex(i, track._id)">
+                <app-list-tile [searchItem]="searchItem" [isCurrentPlaylist]="isCurrentPlaylist()" [settings]="settings"
+                    [currentSong]="currentSong" [track]="track">
                 </app-list-tile>
                 <div *cdkDragPreview class='preview-class-text'>
                     <span class="preview-panel" [style.color]="currentSong.textColor">
-                        <div class="preview-title">
-                            <p class="title">{{track.title}}</p>
-                            <p class="album">{{track.album}}</p>
+                        <div class="preview-title-container">
+                            <span class="preview-title">{{track.title}}</span>
+                            <span class="preview-album">{{track.album}}</span>
                         </div>
-                        <img [src]="getThumbNailSrc(track._id)" onerror="this.src='/assets/music-thumbnail.png'" class="thumbnail"
-                            [title]="track.album" loading="lazy">
+                        <img [src]="getThumbNailSrc(track._id)" onerror="this.src='/assets/music-thumbnail.png'"
+                            class="thumbnail" [title]="track.album" loading="lazy">
                     </span>
                 </div>
             </div>

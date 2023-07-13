@@ -12,6 +12,7 @@ export class ListTileComponent {
   @Input() currentSong = DEFAULT_TRACK;
   @Input() track = DEFAULT_TRACK;
   @Input() settings = DEFAULT_SETTING;
+  @Input() searchItem = '';
 
   get isCurrenSongSelected(){
     return this.currentSong._id === this.track._id

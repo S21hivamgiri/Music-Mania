@@ -1,8 +1,7 @@
 <mat-list-item role="listitem" class="playlist-track">
     <div class="utiity-box" [class.current-song]="isCurrenSongSelected">
         <div class="utiity-box-child">
-            <div class="drag-handle mr-3" [style.color]="currentSong.textColor" cdkDragHandle
-                *ngIf="isCurrentPlaylist">
+            <div class="drag-handle mr-3" [style.color]="currentSong.textColor" cdkDragHandle *ngIf="isCurrentPlaylist">
                 <div class='d-flex h-100 drag-class'>
                     <mat-icon>
                         drag_indicator
@@ -13,12 +12,12 @@
                 <img [src]="getThumbNailSrc(track._id)" onerror="this.src='/assets/music-thumbnail.png'"
                     class="thumbnail" [title]="track.album" loading="lazy">
                 <div class="track-text" class="marquee">
-                    <span class="track-title" [style.color]="currentSong.textColor">
-                        {{ track.title }}
+                    <span class="track-title" [style.color]="currentSong.textColor"
+                        [innerHTML]="track.title | highlightSearch: searchItem |safeHtml">
                     </span>
                     <br>
-                    <span class="track-artist" [style.color]="currentSong.textColor">
-                        {{ track.artist }}
+                    <span class="track-artist" [style.color]="currentSong.textColor"
+                        [innerHTML]="track.artist.join(', ') | highlightSearch: searchItem  |safeHtml">
                     </span>
                 </div>
             </div>

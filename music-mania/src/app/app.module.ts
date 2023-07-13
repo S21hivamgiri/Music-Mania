@@ -42,6 +42,8 @@ import { AddNewComponent } from './track/add-new/add-new.component';
 import { PlaylistToolComponent } from './playlist/playlist-tool/playlist-tool.component';
 import { SearchBarComponent } from './playlist/search-bar/search-bar.component';
 import { ListTileComponent } from './playlist/list-tile/list-tile.component';
+import { HighlightSearchPipe } from './pipes/highlight-search/highlight-search.pipe';
+import { SafeHtmlPipe } from './pipes/safe-html/safe-html.pipe';
 
 
 @NgModule({
@@ -67,6 +69,8 @@ import { ListTileComponent } from './playlist/list-tile/list-tile.component';
     PlaylistToolComponent,
     SearchBarComponent,
     ListTileComponent,
+    HighlightSearchPipe,
+    SafeHtmlPipe,
   ],
   imports: [
     HttpClientModule,

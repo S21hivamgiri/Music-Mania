@@ -34,20 +34,27 @@
 ::ng-deep {
     .preview-class-text {
         .preview-panel {
-            margin-left: 30px;
+            background-color: $music-mania-white;
             display: flex;
-            gap: 10px;
+            gap: 20px;
+            margin: 0 0 0 80px;
+            padding: 0 0 0 10px;
             text-shadow: $music-mania-text-shadow;
-            img{
-                height:50px;
+
+            img {
+                height: 50px;
             }
 
-            .preview-title {
+            .preview-title-container {
                 display: flex;
                 flex-direction: column;
+                justify-content: space-between;
 
-                .title {
+                .preview-title {
                     font-weight: bold;
+                }
+                .preview-album {
+                    font-size: smaller;
                 }
             }
         }
