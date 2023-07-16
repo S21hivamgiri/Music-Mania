@@ -103,6 +103,8 @@ export class PlaylistComponent implements OnInit, OnDestroy {
   }
 
   sortSongByProperty() {
+    this.settings.shuffle = false;
+    this.trackStore.settings.next(this.settings);
     if (!this.isCurrentPlaylist()) {
       this.searchedPlaylist = sortSongsByProperty(this.searchedPlaylist, this.settings.sort);
     } else {

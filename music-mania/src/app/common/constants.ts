@@ -36,4 +36,34 @@ export const DEFAULT_SETTING: Settings = {
     loop: false,
 };
 
-export const HOTLIST_ITEMS:string[] = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera']
+export const DEFAULT_SORT_INDEX: { [key: string]: boolean } = {
+    "#": false,
+    "A": false,
+    "B": false,
+    "C": false,
+    "D": false,
+    "E": false,
+    "F": false,
+    "G": false,
+    "H": false,
+    "I": false,
+    "J": false,
+    "K": false,
+    "L": false,
+    "M": false,
+    "N": false,
+    "O": false,
+    "P": false,
+    "Q": false,
+    "R": false,
+    "S": false,
+    "T": false,
+    "U": false,
+    "V": false,
+    "W": false,
+    "X": false,
+    "Y": false,
+    "Z": false,
+};
+
+export const HOTLIST_ITEMS: string[] = ['Arijit Singh', 'I Hate Luv Storys', 'Nazm Nazm', 'K.K.', 'Ajab Prem Ki Ghazab Kahani', 'Mann Mera', 'Sab Tera',]

@@ -32,7 +32,7 @@
             <ng-template matStepLabel>Customize Track Album</ng-template>
             <div class="image-container" *ngIf="songUploaded">
                 <div>
-                    <img *ngIf="!pictureFile" [src]="getPicture(track?.picture)" height="250px" />
+                    <img *ngNot="!!pictureFile" [src]="getPicture(track?.picture)" height="250px" />
                     <img *ngIf="pictureFile" [src]="pictureUrl" height="250px" />
                 </div>
                 <div class="input-picture">
@@ -57,7 +57,7 @@
             </div>
 
             <mat-dialog-actions align="end">
-                <button mat-button matStepperPrevious *ngIf="!songUploaded">Back</button>
+                <button mat-button matStepperPrevious *ngNot="songUploaded">Back</button>
                 <button mat-raised-button color="primary" matStepperNext cdkFocusInitial (click)="sendPicture()">
                     {{pictureFile?'Upload and Next':'Next'}}
                 </button>

@@ -11,12 +11,12 @@
             <mat-icon>playlist_add_check</mat-icon>
             <h2 class="playlist-header">Current Playlist ({{settings.currentPlaylist.length}} songs)</h2>
             <button mat-icon-button [style.color]="currentSong.textColor"
-                (click)="searchedPlaylist=settings.currentPlaylist; searchItem=''" *ngIf="!isCurrentPlaylist()">
+                (click)="searchedPlaylist=settings.currentPlaylist; searchItem=''" *ngNot="isCurrentPlaylist()">
                 <mat-icon>forward</mat-icon>
             </button>
         </div>
         <mat-divider></mat-divider>
-        <ng-container *ngIf="!isCurrentPlaylist()">
+        <ng-container *ngNot="isCurrentPlaylist()">
             <div class="playlist-title" [style.color]="currentSong.textColor">
                 <mat-icon>queue_music</mat-icon>
                 <h2 class="playlist-header">Searched Playlist ({{searchedPlaylist.length}} songs)</h2>

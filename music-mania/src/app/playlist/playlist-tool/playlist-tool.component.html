@@ -1,13 +1,12 @@
 <div class="button-panel" [style.color]="textColor">
     <button mat-icon-button title="Search (S)" (click)="searchSong.emit();">
-        <mat-icon>{{settings.isSearching?'search_off':'search'}}</mat-icon>
-    </button> 
-    <button mat-icon-button title="Close Playlist(Z)"
-        (click)="closePlayList.emit()">
+        <mat-icon>{{ settings.isSearching ? 'search_off' : 'search' }}</mat-icon>
+    </button>
+    <button mat-icon-button title="Close Playlist(Z)" (click)="closePlayList.emit()">
         <mat-icon>close</mat-icon>
     </button>
-    <button mat-icon-button [matMenuTriggerFor]="sortMenu">
-        <mat-icon>sort</mat-icon>
+    <button mat-icon-button [matMenuTriggerFor]="sortMenu" title="Sort">
+        <mat-icon>sort_by_alpha</mat-icon>
     </button>
     <mat-menu #sortMenu="matMenu">
         <button mat-menu-item (click)="sortSong.emit('album')">

@@ -44,7 +44,7 @@ import { SearchBarComponent } from './playlist/search-bar/search-bar.component';
 import { ListTileComponent } from './playlist/list-tile/list-tile.component';
 import { HighlightSearchPipe } from './pipes/highlight-search/highlight-search.pipe';
 import { SafeHtmlPipe } from './pipes/safe-html/safe-html.pipe';
-
+import { NgNotDirective } from './directives/ngNot/ng-not.directive';
 
 @NgModule({
   declarations: [
@@ -71,6 +71,7 @@ import { SafeHtmlPipe } from './pipes/safe-html/safe-html.pipe';
     ListTileComponent,
     HighlightSearchPipe,
     SafeHtmlPipe,
+    NgNotDirective,
   ],
   imports: [
     HttpClientModule,

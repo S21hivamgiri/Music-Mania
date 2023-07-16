@@ -7,7 +7,7 @@
     </mat-sidenav>
     <mat-sidenav-content>
         <div class="track-container">
-            <app-navbar *ngIf="!settings.lock" [isPlaying]="settings.audioStatus" [isBackGroundVisible]="false"
+            <app-navbar *ngNot="settings.lock" [isPlaying]="settings.audioStatus" [isBackGroundVisible]="false"
                 [displayTitle]="false">
             </app-navbar>
             <div class="page-wrapper">
@@ -52,7 +52,7 @@
                                 <mat-icon> favorite_border </mat-icon>
                             </button>
                         </div>
-                        <div class="playlist" *ngIf="!settings.lock" title="Open PlayList (Z)">
+                        <div class="playlist" *ngNot="settings.lock" title="Open PlayList (Z)">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong.textColor"
                                 (click)="sidenav.toggle()">
                                 <mat-icon>queue_music</mat-icon>
@@ -64,7 +64,7 @@
                                 <mat-icon>{{settings.lock ? 'lock' : 'lock_open'}}</mat-icon>
                             </button>
                         </div>
-                        <div class="full-screen" *ngIf="!settings.lock"
+                        <div class="full-screen" *ngNot="settings.lock"
                             [title]="settings.fullScreen ? 'Exit Full Screen (F/F11/ ESC)' : 'Full Screen (F/F11)'">
                             <button mat-icon-button class="player-icon" [style.color]="currentSong.textColor"
                                 (click)="setFullScreen()">
@@ -82,13 +82,13 @@
                                 <app-next-song-preview (nextAudioEvent)='nextAudio()'></app-next-song-preview>
                             </div>
                         </div>
-                        <div class="duration-slider" *ngIf="!settings.lock">
+                        <div class="duration-slider" *ngNot="settings.lock">
                             <mat-slider class="audio-player" (input)="onPlayerInputChange($event)"
                                 [max]="settings.duration" min="0" step="1" aria-labelledby="Slider for the Audio"
                                 [(ngModel)]="settings.currentDuration" [displayWith]="formatTimeLabel" thumbLabel>
                             </mat-slider>
                         </div>
-                        <div class="duration-wrapper" *ngIf="!settings.lock">
+                        <div class="duration-wrapper" *ngNot="settings.lock">
                             <div class="current-duration">
                                 <span class="current-duration" id="duration-content"
                                     [style.color]="currentSong.textColor">00:00
@@ -100,7 +100,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="controls-wrapper" *ngIf="!settings.lock">
+                        <div class="controls-wrapper"  *ngNot="settings.lock">
                             <div class="rewind-button" title="Rewind 10s (Left Arrow ←)">
                                 <button mat-icon-button class="rewind player-icon" [style.color]="currentSong.textColor"
                                     (click)="rewind()">
@@ -149,7 +149,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="volume-layer" *ngIf="!settings.lock">
+                    <div class="volume-layer"  *ngNot="settings.lock">
                         <div class="volume-slider">
                             <mat-slider class="audio-volume" (change)="setVolume()" max=" 1" min="0" step="0.1"
                                 vertical="true" [(ngModel)]="settings.volume" aria-labelledby="Slider for the Volume"

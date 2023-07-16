@@ -1,4 +1,6 @@
-export function filterSongs(e: any) {
+import { PlaylistComponent } from "../playlist/playlist/playlist.component";
+
+export function filterSongs(e: PlaylistComponent) {
     let searchedValue = e.searchItem.toLowerCase().trim();
     if (!searchedValue) {
         e.searchedPlaylist = e.tracks;
@@ -8,11 +10,11 @@ export function filterSongs(e: any) {
     let allTracks = [];
     for (let j = 0; j < e.searchedPlaylist.length; ++j) {
         let result = true;
-        result = result && !(e.searchedPlaylist[j].title.toLowerCase().trim().startsWith(searchedValue));
-        result = result && !(e.searchedPlaylist[j].album.toLowerCase().trim().startsWith(searchedValue));
+        result = result && !(e.searchedPlaylist[j].title.toLowerCase().trim().includes(searchedValue));
+        result = result && !(e.searchedPlaylist[j].album.toLowerCase().trim().includes(searchedValue));
         result = result && !(e.searchedPlaylist[j].artist.reduce((
             (previousValue: boolean, currentValue: string) => {
-                return previousValue || currentValue.toLowerCase().trim().startsWith(searchedValue);
+                return previousValue || currentValue.toLowerCase().trim().includes(searchedValue);
             }
         ), false));
         if (!result) {
